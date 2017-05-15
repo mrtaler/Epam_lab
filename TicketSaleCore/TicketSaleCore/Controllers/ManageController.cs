@@ -19,7 +19,7 @@ namespace WebApplication1.Controllers
         private readonly UserManager<User> userManager;
         private readonly SignInManager<User> signInManager;
         private readonly string externalCookieScheme;
-        private readonly ILogger _logger;
+        private readonly ILogger logger;
 
         public ManageController(
           UserManager<User> userManager,
@@ -30,7 +30,7 @@ namespace WebApplication1.Controllers
             this.userManager = userManager;
             this.signInManager = signInManager;
             externalCookieScheme = identityCookieOptions.Value.ExternalCookieAuthenticationScheme;
-            _logger = loggerFactory.CreateLogger<ManageController>();
+            logger = loggerFactory.CreateLogger<ManageController>();
         }
 
         //
@@ -122,7 +122,7 @@ namespace WebApplication1.Controllers
             {
                 await userManager.SetTwoFactorEnabledAsync(user, true);
                 await signInManager.SignInAsync(user, isPersistent: false);
-                _logger.LogInformation(1, "User enabled two-factor authentication.");
+                logger.LogInformation(1, "User enabled two-factor authentication.");
             }
             return RedirectToAction(nameof(Index), "Manage");
         }
@@ -138,7 +138,7 @@ namespace WebApplication1.Controllers
             {
                 await userManager.SetTwoFactorEnabledAsync(user, false);
                 await signInManager.SignInAsync(user, isPersistent: false);
-                _logger.LogInformation(2, "User disabled two-factor authentication.");
+                logger.LogInformation(2, "User disabled two-factor authentication.");
             }
             return RedirectToAction(nameof(Index), "Manage");
         }
@@ -227,7 +227,7 @@ namespace WebApplication1.Controllers
                 if (result.Succeeded)
                 {
                     await signInManager.SignInAsync(user, isPersistent: false);
-                    _logger.LogInformation(3, "User changed their password successfully.");
+                    logger.LogInformation(3, "User changed their password successfully.");
                     return RedirectToAction(nameof(Index), new { Message = ManageMessageId.ChangePasswordSuccess });
                 }
                 AddErrors(result);

@@ -12,6 +12,11 @@ namespace TicketSaleCore.Models
         public ApplicationContext(DbContextOptions<ApplicationContext> options)
             : base(options)
         {
+
         }
+        public DbSet<Event> Event { get; set; }
+
+        public DbSet<Venue> Venue { get; set; }
+        public DbSet<City> City { get; set; }
     }
 }

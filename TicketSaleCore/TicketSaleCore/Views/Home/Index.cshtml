@@ -1,4 +1,5 @@
-﻿@{
+﻿@model TicketSaleCore.Models.Event
+@{
     ViewData["Title"] = "Home Page";
 }
 
@@ -14,6 +15,7 @@ else
 {
     <a asp-controller="Account" asp-action="Login">Вход</a>
     <a asp-controller="Account" asp-action="Register">Регистрация</a>
+    
 }
 
 <div class="row">
@@ -29,5 +31,14 @@ else
     <div class="col-md-3">
         <h2>Run & Deploy</h2>
 
+    </div>
+    <div class="col-md-5">
+        <h3>@ViewData["MyTitle"].ToString()</h3>
+        <h3>@ViewData["MyTitle1"].ToString()</h3>
+       
+        @if (Model.Banner != null){
+            @Html.Raw("<img style='height:60px;' src=\"data:image/jpeg;base64,"
+                      + Convert.ToBase64String(Model.Banner) + "\" />")}  
+       
     </div>
 </div>
