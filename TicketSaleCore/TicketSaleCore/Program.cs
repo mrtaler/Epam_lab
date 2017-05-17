@@ -13,7 +13,8 @@ namespace TicketSaleCore
         public static void Main(string[] args)
         {
             var host = new WebHostBuilder()
-                .UseKestrel((o) =>
+                .UseKestrel(
+                (o) =>
                {
                    o.UseHttps(new X509Certificate2(@"Taler-WST.crt"));
                })
