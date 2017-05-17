@@ -11,7 +11,7 @@ namespace TicketSaleCore.Models
         public string Name { get; set; }
         public DateTime Date { get; set; }
         public Venue Venue { get; set; }
-        public byte[] Banner { get; set; }
+        public string Banner { get; set; }
         public int Description { get; set; }
 
     }

@@ -15,6 +15,17 @@
   <ItemGroup>
     <None Remove="Properties\PublishProfiles\CustomProfile.pubxml" />
   </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="wwwroot\images\EventImg\0cb43207294335ec2b6274a39a54aa72.jpg" />
+    <Content Include="wwwroot\images\EventImg\1cbdc2f1aecb4b433cf6c1bb70d80fac.jpg" />
+    <Content Include="wwwroot\images\EventImg\3086cc801a9e6f0ea6a49d5a53db325e.jpg" />
+    <Content Include="wwwroot\images\EventImg\35ededa9f9b90c0111ca47c9353e053d.jpg" />
+    <Content Include="wwwroot\images\EventImg\74b1f6fc18645c765d1ef7fbf1676c68.jpg" />
+    <Content Include="wwwroot\images\EventImg\766acf8cb41372ae861680932ff90f09.jpg" />
+    <Content Include="wwwroot\images\EventImg\7d231d214ad5e2f20dd321342f6d4ca3.jpg" />
+    <Content Include="wwwroot\images\EventImg\d2faf957332ebe65f73cee77def0996a.jpg" />
+  </ItemGroup>
   <ItemGroup>
     <PackageReference Include="MailKit" Version="1.16.1" />
     <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.0.0" />
