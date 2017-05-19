@@ -6,31 +6,27 @@
 
 @if (SignInManager.IsSignedIn(User))
 {
-    <form asp-area="" asp-controller="Account" asp-action="LogOff" method="post" id="logoutForm" class="navbar-right">
-        <ul class="nav navbar-nav navbar-right">
-            <li>
-                <a asp-area="" asp-controller="Manage" asp-action="Index" title="Manage">Hello @UserManager.GetUserName(User)!</a>
-            </li>
-            <li>
-                <button type="submit" class="btn btn-link navbar-btn navbar-link">Log out</button>
-            </li>
-        </ul>
+    <a class="item" asp-controller="Manage" asp-action="Index" title="Manage">Hello @UserManager.GetUserName(User)!</a>
+    <form asp-area="" asp-controller="Account" asp-action="LogOff" method="post" class="item">
+        <button type="submit" class="negative ui button">Log out</button>
     </form>
     if (User.IsInRole("admin"))
     {
-        <ul class="nav navbar-nav navbar-right">
-            <li>
-                <a asp-area="" asp-controller="Users" asp-action="Index" >Admin</a>
-            </li>
-        </ul>
+        <div class="item">
+            <a class="circular ui icon button" asp-controller="Users" asp-action="Index">
+                <i class="icon settings"></i>
+            </a>
+        </div>
+
     }
+
 }
 
 else
 {
-    <ul class="nav navbar-nav navbar-right">
-        <li><a asp-area="" asp-controller="Account" asp-action="Register">Register</a></li>
-        <li><a asp-area="" asp-controller="Account" asp-action="Login">Log in</a></li>
-    </ul>
+    <div class="ui buttons">
+        <a class="ui button" asp-controller="Account" asp-action="Register">Register</a>
+        <div class="or"></div>
+        <a class="ui positive button" asp-action="Login" asp-controller="Account">Login</a>
+    </div>
 }
-
