@@ -13,6 +13,7 @@ namespace TicketSaleCore.Models
         public Venue Venue { get; set; }
         public string Banner { get; set; }
         public int Description { get; set; }
+        public EventType EventType { get; set ; }
 
     }
 }

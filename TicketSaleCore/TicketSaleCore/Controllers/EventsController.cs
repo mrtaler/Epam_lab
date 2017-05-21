@@ -133,7 +133,7 @@ namespace TicketSaleCore.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction("Index");
+                return View(@event); //RedirectToAction("Index");
             }
             return View(@event);
         }

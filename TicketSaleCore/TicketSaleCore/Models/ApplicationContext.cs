@@ -14,9 +14,9 @@ namespace TicketSaleCore.Models
         {
 
         }
-        public DbSet<Event> Event { get; set; }
-
-        public DbSet<Venue> Venue { get; set; }
-        public DbSet<City> City { get; set; }
+        public DbSet<Event> EventsDbSet { get; set; }
+        public DbSet<EventType> EventTypesDbSet { get; set; }
+        public DbSet<Venue> VenueDbSet { get; set; }
+        public DbSet<City> CityDbSet { get; set; }
     }
 }
