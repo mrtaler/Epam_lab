@@ -34,7 +34,7 @@ namespace TicketSaleCore.Controllers
         // GET: Events
         public async Task<IActionResult> Index()
         {
-            return View(await context.Event.ToListAsync());
+            return View(await context.EventDbSet.ToListAsync());
         }
 
         // GET: Events/Details/5
@@ -45,7 +45,7 @@ namespace TicketSaleCore.Controllers
                 return NotFound();
             }
 
-            var @event = await context.Event
+            var @event = await context.EventDbSet
                 .SingleOrDefaultAsync(m => m.Id == id);
             if (@event == null)
             {
@@ -85,7 +85,7 @@ namespace TicketSaleCore.Controllers
                 return NotFound();
             }
 
-            var @event = await context.Event.SingleOrDefaultAsync(m => m.Id == id);
+            var @event = await context.EventDbSet.SingleOrDefaultAsync(m => m.Id == id);
             if (@event == null)
             {
                 return NotFound();
@@ -146,7 +146,7 @@ namespace TicketSaleCore.Controllers
                 return NotFound();
             }
 
-            var @event = await context.Event
+            var @event = await context.EventDbSet
                 .SingleOrDefaultAsync(m => m.Id == id);
             if (@event == null)
             {
@@ -161,15 +161,15 @@ namespace TicketSaleCore.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var @event = await context.Event.SingleOrDefaultAsync(m => m.Id == id);
-            context.Event.Remove(@event);
+            var @event = await context.EventDbSet.SingleOrDefaultAsync(m => m.Id == id);
+            context.EventDbSet.Remove(@event);
             await context.SaveChangesAsync();
             return RedirectToAction("Index");
         }
 
         private bool EventExists(int id)
         {
-            return context.Event.Any(e => e.Id == id);
+            return context.EventDbSet.Any(e => e.Id == id);
         }
     }
 }

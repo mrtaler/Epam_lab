@@ -33,8 +33,8 @@ namespace TicketSaleCore.Controllers
             ViewData["MyTitle"] = localizer["Yourapplicationdescriptionpage"];
             ViewData["MyTitle1"] = localizer["Yourcontactpage"];
          //   ViewData["Event"] = _context.Event.First();
-            var qwe = _context.Event.First();
-            return View(_context.Event.First());
+            var qwe = _context.EventDbSet.First();
+            return View(_context.EventDbSet.First());
         }
        // [Authorize(Policy = "AgeLimit")]
         public IActionResult About()
