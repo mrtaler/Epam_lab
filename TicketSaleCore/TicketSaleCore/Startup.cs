@@ -39,11 +39,12 @@ namespace TicketSaleCore
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            //use HTTPS
             services.Configure<MvcOptions>(options =>
             {
                 options.Filters.Add(new RequireHttpsAttribute());
             });
-
+            //use localization
             services.Configure<RequestLocalizationOptions>(options =>
             {
                 var supportedCultures = new[]
@@ -67,19 +68,21 @@ namespace TicketSaleCore
 
 
 
-
+            //Add Pasword validator
             services.AddTransient<IPasswordValidator<User>,
                 CustomPasswordValidator>(serv => new CustomPasswordValidator(5));
 
-
+            //Add localizaion based on Resx files
             services.AddLocalization(options => options.ResourcesPath = "Resources");
 
-
+            //use EF in memory
             services.AddDbContext<ApplicationContext>(opt => opt.UseInMemoryDatabase());
-
-            // services.AddDbContext<ApplicationContext>(options =>
-            //    options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
-
+            //Use existing DB
+            /*
+             services.AddDbContext<ApplicationContext>(options =>
+               options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+         */
+            //Add Identity to services
             services.AddIdentity<User, IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationContext>()
                 .AddDefaultTokenProviders();
@@ -92,21 +95,18 @@ namespace TicketSaleCore
                 // Add support for localizing strings in data annotations (e.g. validation messages)
                 .AddDataAnnotationsLocalization();
 
-            /* services.AddMvc()
-                 .AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix,
-                     opts => { opts.ResourcesPath = "Resources"; })
-                 .AddDataAnnotationsLocalization();*/
-            //.AddDataAnnotationsLocalization();
+
 
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
+            //Logger settings
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
 
-
+            //Available localization
             var supportedCultures = new[]
             {
                 new CultureInfo("en"),
@@ -114,7 +114,7 @@ namespace TicketSaleCore
                 new CultureInfo("ja"),
                 new CultureInfo("be")
             };
-
+            //Add Localization (default is en-US)
             app.UseRequestLocalization(new RequestLocalizationOptions
             {
                 DefaultRequestCulture = new RequestCulture("en-US"),
@@ -137,7 +137,7 @@ namespace TicketSaleCore
 
 
             app.UseStaticFiles();
-
+            //use Identity
             app.UseIdentity();
 
             app.UseMvc(routes =>
@@ -146,91 +146,44 @@ namespace TicketSaleCore
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
-            // инициализация базы данных
 
+            #region DbInit
+            //User&role Init 
             DatabaseInitialize(app.ApplicationServices).Wait();
+            //Db content init
             AddTestData(app.ApplicationServices.GetService<ApplicationContext>());
+            #endregion
         }
 
         private static void AddTestData(ApplicationContext context)
         {
+            #region City Table Init
             context.CityDbSet.Add(new City { Name = "Minsk" });
             context.CityDbSet.Add(new City { Name = "Gomel" });
             context.CityDbSet.Add(new City { Name = "Grodno" });
             context.CityDbSet.Add(new City { Name = "Vitebsk" });
             context.CityDbSet.Add(new City { Name = "Brest" });
             context.CityDbSet.Add(new City { Name = "Mogilev" });
+            #endregion
 
-            context.StatusDbSet.Add(new Status { StatusName = "Wiating for conformation" });
+            #region TiketStatus Table Init
+            context.StatusDbSet.Add(new Status { StatusName = "Waiting for conformation" });
             context.StatusDbSet.Add(new Status { StatusName = "Confirmed" });
             context.StatusDbSet.Add(new Status { StatusName = "Rejected" });
+            #endregion
 
-          
-          /*  context.UserDbSet.Add(new TicketSaleCore.Models.User
-            {
-                FirstName = "Firstname2",
-                LastName = "LastName2",
-                Localization = "ru-RU",
-                Address = "adress1",
-                PhoneNumber = "5-53-53-56"
-            });
-            context.UserDbSet.Add(new TicketSaleCore.Models.User
-            {
-                FirstName = "Firstname3",
-                LastName = "LastName3",
-                Localization = "ru-RU",
-                Address = "adress1",
-                PhoneNumber = "5-53-53-56"
-            });
-            context.UserDbSet.Add(new TicketSaleCore.Models.User
-            {
-                FirstName = "Firstname4",
-                LastName = "LastName4",
-                Localization = "ru-RU",
-                Address = "adress1",
-                PhoneNumber = "5-53-53-56"
-            });
-            context.UserDbSet.Add(new TicketSaleCore.Models.User
-            {
-                FirstName = "Firstname5",
-                LastName = "LastName5",
-                Localization = "ru-RU",
-                Address = "adress1",
-                PhoneNumber = "5-53-53-56"
-            });
-            context.UserDbSet.Add(new TicketSaleCore.Models.User
-            {
-                FirstName = "Firstname6",
-                LastName = "LastName6",
-                Localization = "ru-RU",
-                Address = "adress1",
-                PhoneNumber = "5-53-53-56"
-            });
-            context.UserDbSet.Add(new TicketSaleCore.Models.User
-            {
-                FirstName = "Firstname7",
-                LastName = "LastName7",
-                Localization = "ru-RU",
-                Address = "adress1",
-                PhoneNumber = "5-53-53-56"
-            });
-            context.UserDbSet.Add(new TicketSaleCore.Models.User
-            {
-                FirstName = "Firstname8",
-                LastName = "LastName8",
-                Localization = "ru-RU",
-                Address = "adress1",
-                PhoneNumber = "5-53-53-56"
-            });
-            context.UserDbSet.Add(new TicketSaleCore.Models.User
-            {
-                FirstName = "Firstname9",
-                LastName = "LastName9",
-                Localization = "ru-RU",
-                Address = "adress1",
-                PhoneNumber = "5-53-53-56"
-            });
-            */
+
+
+
+
+
+
+
+
+
+
+
+
             context.EventDbSet.Add(new Event
             {
                 Name = "Event1",
@@ -282,7 +235,7 @@ namespace TicketSaleCore
             RoleManager<IdentityRole> roleManager =
                 serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
 
-            string adminEmail = "admin@gmail.com";
+            string adminEmail = "Admin";
             string password = "Admin";
             if (await roleManager.FindByNameAsync("admin") == null)
             {
@@ -300,22 +253,49 @@ namespace TicketSaleCore
                 {
                     await userManager.AddToRoleAsync(admin, "admin");
                 }
-
-                User us1 =new User
+                List<User> users = new List<User>();
+                users.Add(new User
                 {
-                    Email = "User1@me.com",
-                    UserName = "User1@me.com",
+                    Email = "User1",
+                    UserName = "User1",
                     EmailConfirmed = true,
                     FirstName = "Firstname1",
                     LastName = "LastName1",
                     Localization = "ru-RU",
                     Address = "adress1",
                     PhoneNumber = "5-53-53-56"
-                };
-                IdentityResult result1 = await userManager.CreateAsync(us1, password);
-                if (result1.Succeeded)
+                });
+
+                users.Add(new User
                 {
-                    await userManager.AddToRoleAsync(us1, "user");
+                    Email = "User2",
+                    UserName = "User2",
+                    EmailConfirmed = true,
+                    FirstName = "Firstname2",
+                    LastName = "LastName2",
+                    Localization = "ru-RU",
+                    Address = "adress2",
+                    PhoneNumber = "5-53-53-56"
+                });
+                users.Add(new User
+                {
+                    Email = "User3",
+                    UserName = "User3",
+                    EmailConfirmed = true,
+                    FirstName = "Firstname3",
+                    LastName = "LastName3",
+                    Localization = "ru-RU",
+                    Address = "adress3",
+                    PhoneNumber = "5-53-53-56"
+                });
+
+                foreach (var item in users)
+                {
+                    IdentityResult result1 = await userManager.CreateAsync(item, item.Email);
+                    if (result1.Succeeded)
+                    {
+                        await userManager.AddToRoleAsync(item, "user");
+                    }
                 }
             }
         }
