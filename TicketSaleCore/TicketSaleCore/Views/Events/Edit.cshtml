@@ -19,13 +19,19 @@
                 <span asp-validation-for="Name" class="text-danger"></span>
             </div>
         </div>
-        <div class="form-group">
+        
+        <div class="item">
             <label asp-for="Date" class="col-md-2 control-label"></label>
-            <div class="col-md-10">
-                <input type="text"  asp-for="Date" id="datetimepicker" data-date-format="yyyy-mm-dd hh:ii"/>
-                <span asp-validation-for="Date" class="text-danger"></span>
+
+            <div class="ui calendar" id="DateTime1">
+                <div class="ui input left icon">
+                    <i class="calendar icon"></i>
+                    <input asp-for="Date" type="text" placeholder="Date/Time">
+                </div>
             </div>
+            @*<span asp-validation-for="Date" class="text-danger"></span>*@
         </div>
+
         <div class="form-group">
             <label asp-for="Banner" class="col-md-2 control-label"></label>
             <div class="col-md-10">
@@ -54,3 +60,9 @@
     <a asp-action="Index">Back to List</a>
 </div>
 
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/lib/semantic/dist/semantic.min.js"></script>
+<script src="~/lib/semantic-ui-calendar/dist/calendar.js"></script>
+<script type="text/javascript">
+    $('#DateTime1').calendar();
+</script>

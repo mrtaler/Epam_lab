@@ -1,3 +1,4 @@
+@using TicketSaleCore.Models
 @model TicketSaleCore.Models.Event
 
 @{
@@ -8,16 +9,16 @@
 
 <h2>Create</h2>
 
-<form asp-action="Create">
-   
+<form asp-action="Create" enctype="multipart/form-data">
+
     <div class="form-horizontal">
         <h4>Event</h4>
-        <hr/>
+        <hr />
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
         <div class="form-group">
             <label asp-for="Name" class="col-md-2 control-label"></label>
             <div class="col-md-10">
-                <input asp-for="Name" class="form-control"/>
+                <input asp-for="Name" class="form-control" />
                 <span asp-validation-for="Name" class="text-danger"></span>
             </div>
         </div>
@@ -25,7 +26,7 @@
         <div class="item">
             <label asp-for="Date" class="col-md-2 control-label"></label>
 
-            <div class="ui calendar" id="example1">
+            <div class="ui calendar" id="DateTime1">
                 <div class="ui input left icon">
                     <i class="calendar icon"></i>
                     <input asp-for="Date" type="text" placeholder="Date/Time">
@@ -34,26 +35,49 @@
             @*<span asp-validation-for="Date" class="text-danger"></span>*@
         </div>
 
+       
         <div class="item">
-            <label asp-for="Banner" class="col-md-2 control-label"></label>
+            <label asp-for="Banner" class="ui label"></label>
             <div class="col-md-10">
-                <input asp-for="Banner" class="form-control"/>
-                <span asp-validation-for="Banner" class="text-danger"></span>
+                <input type="hidden" asp-for="Banner"/>
+                @*<span asp-validation-for="Banner" class="text-danger"></span>*@
+                <img id="BanerImage" src="" />
+                <input type="file" name="uploadedFile" id="i_file"/><br>
             </div>
         </div>
+        
+
         <div class="item">
             <label asp-for="Description" class="col-md-2 control-label"></label>
             <div class="col-md-10">
-                <input asp-for="Description" class="form-control"/>
+                <input asp-for="Description" class="form-control" />
                 <span asp-validation-for="Description" class="text-danger"></span>
             </div>
         </div>
+
         <div class="item">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Create" class="btn btn-default"/>
-            </div>
+            <label asp-for="Venue"></label>
+            <select class="ui search dropdown" asp-for="VenueId" asp-items="ViewBag.VenueFk" >
+                <option value="">Select Venue</option>
+                @*asp-items="ViewBag.VenueFk"*@
+
+                @*@foreach (var item in ViewBag.VenueFk)
+                {
+                    <div class="item" data-value="@item.Value">@item.Text</div>
+
+                    <option value="@item.Value">@item.Text</option>
+                }
+
+                @*<option value="" class="item">Select Venue</option>*@
+            </select>
+    </div>
+
+    <div class="item">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="Create" class="btn btn-default" />
         </div>
     </div>
+</div>
 </form>
 
 <div>
@@ -63,5 +87,26 @@
 <script src="~/lib/semantic/dist/semantic.min.js"></script>
 <script src="~/lib/semantic-ui-calendar/dist/calendar.js"></script>
 <script type="text/javascript">
-    $('#example1').calendar();
+    $('#DateTime1').calendar();
+</script>
+<script type="text/javascript">
+
+        $('#i_file').change( function(event) {
+            var tmppath = URL.createObjectURL(event.target.files[0]);
+            $("img").fadeIn("fast").attr('src',URL.createObjectURL(event.target.files[0]));
+
+           // $("#disp_tmp_path").value(tmppath);
+            $("#Banner").fadeIn("fast").attr('value', URL.createObjectURL(event.target.files[0]));
+        });
+
+   //     document.getElementById('BanerImage').setAttribute('src', file.value);
+        $(document).ready(function() {
+            var qwe = '@Model.Banner';
+          
+                alert('@Model.Banner');
+        });
+
+       // document.getElementById('BanerImage').setAttribute('src', @Model.Banner);
+
+
 </script>

@@ -58,6 +58,7 @@ namespace TicketSaleCore.Controllers
         // GET: Events/Create
         public IActionResult Create()
         {
+            ViewData["VenueFk"] = new SelectList(context.VenueDbSet, "Id", "Address");
             return View();
         }
 
@@ -66,14 +67,43 @@ namespace TicketSaleCore.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Date,Banner,Description")] Event @event)
+        public async Task<IActionResult> Create(
+            [Bind("Id,Name,Date,Banner,Description,VenueId")] Event @event,
+            IFormFile uploadedFile)
         {
             if (ModelState.IsValid)
             {
-                context.Add(@event);
-                await context.SaveChangesAsync();
+                try
+                {
+                    if (uploadedFile != null)
+                    {
+                        string path = "/images/EventImg/" + uploadedFile.FileName;
+                        using (var fileStream = new FileStream(appEnvironment.WebRootPath + path, FileMode.Create))
+                        {
+                            await uploadedFile.CopyToAsync(fileStream);
+                        }
+                        @event.Banner = path;
+                    }
+
+                    context.Add(@event);
+                    await context.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!EventExists(@event.Id))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+
                 return RedirectToAction("Index");
             }
+    
+            ViewData["VenueFk"] = new SelectList(context.VenueDbSet, "Id", "Address",@event.VenueId);
             return View(@event);
         }
 

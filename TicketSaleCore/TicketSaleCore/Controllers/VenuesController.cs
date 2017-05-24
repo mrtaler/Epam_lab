@@ -56,7 +56,8 @@ namespace TicketSaleCore.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Address,CityFk")] Venue venue)
+        public async Task<IActionResult> Create(
+            [Bind("Id,Name,Address,CityFk")] Venue venue)
         {
             if (ModelState.IsValid)
             {
