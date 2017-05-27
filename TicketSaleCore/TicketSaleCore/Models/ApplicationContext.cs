@@ -19,7 +19,6 @@ namespace TicketSaleCore.Models
         public virtual DbSet<Order> OrderDbSet { get; set; }
         public virtual DbSet<Ticket> TicketDbSet { get; set; }
         public virtual DbSet<Venue> VenueDbSet { get; set; }
-     //   public virtual DbSet<User> UserDbSet { get; set; }
         public virtual DbSet<Status> StatusDbSet { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -85,6 +84,8 @@ namespace TicketSaleCore.Models
                 .WithMany(t => t.Venues)
                 .HasForeignKey(t => t.CityFk);
             #endregion
+
+
             //modelBuilder.AddConfiguration(new CityConfiguration());
             // modelBuilder.AddConfiguration(new EventConfiguration());
             // modelBuilder.AddConfiguration(new OrderConfiguration());

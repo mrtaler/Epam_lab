@@ -4,6 +4,10 @@ namespace TicketSaleCore.Models
 {
     public class Venue
     {
+        public Venue()
+        {
+            Events=new HashSet<Event>();
+        }
         public int Id { get; set; }
         public string Name { get; set; }
         public string Address { get; set; }

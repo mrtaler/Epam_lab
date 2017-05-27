@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -9,21 +10,22 @@ using TicketSaleCore.Models;
 
 namespace TicketSaleCore.Controllers
 {
+    [Authorize]
     public class CitiesController : Controller
     {
-        private readonly ApplicationContext _context;
+        private readonly ApplicationContext context;
 
         public CitiesController(ApplicationContext context)
         {
-            _context = context;    
+            this.context = context;    
         }
-
+        [AllowAnonymous]
         // GET: Cities
         public async Task<IActionResult> Index()
         {
-            return View(await _context.CityDbSet.ToListAsync());
+            return View(await context.CityDbSet.ToListAsync());
         }
-
+        [AllowAnonymous]
         // GET: Cities/Details/5
         public async Task<IActionResult> Details(int? id)
         {
@@ -32,7 +34,7 @@ namespace TicketSaleCore.Controllers
                 return NotFound();
             }
 
-            var city = await _context.CityDbSet
+            var city = await context.CityDbSet
                 .SingleOrDefaultAsync(m => m.Id == id);
             if (city == null)
             {
@@ -41,7 +43,7 @@ namespace TicketSaleCore.Controllers
 
             return View(city);
         }
-
+        [Authorize(Roles = "admin")]
         // GET: Cities/Create
         public IActionResult Create()
         {
@@ -52,18 +54,19 @@ namespace TicketSaleCore.Controllers
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
+        [Authorize(Roles = "admin")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Name")] City city)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(city);
-                await _context.SaveChangesAsync();
+                context.Add(city);
+                await context.SaveChangesAsync();
                 return RedirectToAction("Index");
             }
             return View(city);
         }
-
+        [Authorize(Roles = "admin")]
         // GET: Cities/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
@@ -72,7 +75,7 @@ namespace TicketSaleCore.Controllers
                 return NotFound();
             }
 
-            var city = await _context.CityDbSet.SingleOrDefaultAsync(m => m.Id == id);
+            var city = await context.CityDbSet.SingleOrDefaultAsync(m => m.Id == id);
             if (city == null)
             {
                 return NotFound();
@@ -84,6 +87,7 @@ namespace TicketSaleCore.Controllers
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
+        [Authorize(Roles = "admin")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Name")] City city)
         {
@@ -96,8 +100,8 @@ namespace TicketSaleCore.Controllers
             {
                 try
                 {
-                    _context.Update(city);
-                    await _context.SaveChangesAsync();
+                    context.Update(city);
+                    await context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -114,7 +118,7 @@ namespace TicketSaleCore.Controllers
             }
             return View(city);
         }
-
+        [Authorize(Roles = "admin")]
         // GET: Cities/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
@@ -123,7 +127,7 @@ namespace TicketSaleCore.Controllers
                 return NotFound();
             }
 
-            var city = await _context.CityDbSet
+            var city = await context.CityDbSet
                 .SingleOrDefaultAsync(m => m.Id == id);
             if (city == null)
             {
@@ -135,18 +139,19 @@ namespace TicketSaleCore.Controllers
 
         // POST: Cities/Delete/5
         [HttpPost, ActionName("Delete")]
+        [Authorize(Roles = "admin")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var city = await _context.CityDbSet.SingleOrDefaultAsync(m => m.Id == id);
-            _context.CityDbSet.Remove(city);
-            await _context.SaveChangesAsync();
+            var city = await context.CityDbSet.SingleOrDefaultAsync(m => m.Id == id);
+            context.CityDbSet.Remove(city);
+            await context.SaveChangesAsync();
             return RedirectToAction("Index");
         }
 
         private bool CityExists(int id)
         {
-            return _context.CityDbSet.Any(e => e.Id == id);
+            return context.CityDbSet.Any(e => e.Id == id);
         }
     }
 }

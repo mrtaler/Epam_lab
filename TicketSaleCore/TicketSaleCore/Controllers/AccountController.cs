@@ -145,12 +145,13 @@ namespace TicketSaleCore.Controllers
         #region LogOff HttpPost
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> LogOff()
+        public async Task<IActionResult> LogOff(string returnUrl = null)
         {
             // удаляем аутентификационные куки
             await signInManager.SignOutAsync();
             logger.LogInformation(4, "User logged out.");
-            return RedirectToAction("Index", "Home");
+            return RedirectToLocal(returnUrl);
+            // return RedirectToAction("Index", "Home");
         }
         #endregion
 

@@ -9,6 +9,11 @@ namespace TicketSaleCore.Models
 {
     public class City
     {
+        public City()
+        {
+            Venues=new HashSet<Venue>();
+        }
+
         public int Id { get; set; }
         public string Name { get; set; }
 

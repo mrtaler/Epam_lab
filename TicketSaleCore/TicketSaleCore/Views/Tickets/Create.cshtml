@@ -1,4 +1,4 @@
-@model TicketSaleCore.Models.Venue
+@model TicketSaleCore.Models.Ticket
 
 @{
     ViewData["Title"] = "Create";
@@ -8,27 +8,26 @@
 
 <form asp-action="Create" asp-route-returnUrl="@ViewBag.ReturnUrl">
     <div class="form-horizontal">
-        <h4>Venue</h4>
+        <h4>Ticket</h4>
         <hr />
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
         <div class="form-group">
-            <label asp-for="Name" class="col-md-2 control-label"></label>
+            <label asp-for="Price" class="col-md-2 control-label"></label>
             <div class="col-md-10">
-                <input asp-for="Name" class="form-control" />
-                <span asp-validation-for="Name" class="text-danger"></span>
+                <input asp-for="Price" class="form-control" />
+                <span asp-validation-for="Price" class="text-danger"></span>
             </div>
         </div>
         <div class="form-group">
-            <label asp-for="Address" class="col-md-2 control-label"></label>
+            <label asp-for="SellerId" class="col-md-2 control-label"></label>
             <div class="col-md-10">
-                <input asp-for="Address" class="form-control" />
-                <span asp-validation-for="Address" class="text-danger"></span>
+                <select asp-for="SellerId" class ="form-control" asp-items="ViewBag.SellerId"></select>
             </div>
         </div>
         <div class="form-group">
-            <label asp-for="CityFk" class="col-md-2 control-label"></label>
+            <label asp-for="EventId" class="col-md-2 control-label"></label>
             <div class="col-md-10">
-                <select asp-for="CityFk" class ="form-control" asp-items="ViewBag.CitiesFk"></select>
+                <select asp-for="EventId" class ="form-control" asp-items="ViewBag.EventId"></select>
             </div>
         </div>
         <div class="form-group">
@@ -40,6 +39,6 @@
 </form>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index" asp-route-returnUrl="@ViewBag.ReturnUrl">Back to List</a>
 </div>
 

@@ -1,10 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace TicketSaleCore.Models
 {
     public class Event
     {
+        public Event()
+        {
+            Tickets=new HashSet<Ticket>();
+        }
+
         public int Id { get; set; }
         public string Name { get; set; }
         public DateTime Date { get; set; }
@@ -17,6 +23,8 @@ namespace TicketSaleCore.Models
         public virtual Venue Venue { get; set; }
 
         public virtual ICollection<Ticket> Tickets { get; set; }
+        [NotMapped]
+        public string ReturnUrl { get; set; }
     }
     //public class EventConfiguration : EntityTypeConfiguration<Event>
     //{

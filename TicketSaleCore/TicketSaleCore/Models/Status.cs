@@ -4,6 +4,10 @@ namespace TicketSaleCore.Models
 {
     public class Status
     {
+        public Status()
+        {
+            Orders=new HashSet<Order>();
+        }
         public int Id { get; set; }
         public string StatusName { get; set; }
 

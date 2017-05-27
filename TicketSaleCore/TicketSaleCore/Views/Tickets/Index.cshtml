@@ -1,0 +1,72 @@
+@model IEnumerable<TicketSaleCore.Models.Ticket>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h2>Index</h2>
+@if (User.IsInRole("admin"))
+{
+    <p>
+        <a asp-action="Create" asp-route-returnUrl="@Context.Request.Path">Create New</a>
+    </p>
+}
+
+<div class="ui message">
+    @if (@ViewBag.CurentEvent != null)
+    {
+        <div class="header">@ViewBag.CurentEvent.Name </div>
+    }
+    else
+    {
+        <div class="header">All  ticket</div>
+    }
+
+
+</div>
+
+
+
+<table class="ui celled padded table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Price)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Event)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Seller)
+            </th>
+            @if (User.IsInRole("admin"))
+            {
+                <th></th>
+            }
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+            {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Price)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Event.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Seller.FirstName)
+                </td>
+                @if (User.IsInRole("admin"))
+                {
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@item.Id" asp-route-returnUrl="@Context.Request.Path">Edit</a> |
+                        <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                        <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                    </td>
+                }
+            </tr>
+        }
+    </tbody>
+</table>

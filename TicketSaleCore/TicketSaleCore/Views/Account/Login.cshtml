@@ -1,12 +1,30 @@
 @model TicketSaleCore.ViewModels.LoginViewModel
 @{
     ViewData["Title"] = "Login";
+    Layout = null;
 }
+<script src="~/lib/jquery/dist/jquery.js"></script>
+<script src="~/lib/semantic/dist/semantic.js"></script>
+<link rel="stylesheet" href="~/lib/semantic/dist/semantic.min.css">
 
-<h2>Login</h2>
-<form method="post" asp-controller="Account" asp-action="Login"
-      asp-route-returnUrl="@Model.ReturnUrl">
-    <div asp-validation-summary="ModelOnly"></div>
+<style type="text/css" ></style>
+<style type="text/css">
+    body > .grid {
+        height: 100%;
+    }
+
+    .image {
+        margin-top: -100px;
+    }
+
+    .column {
+        max-width: 450px;
+    }
+</style>
+@*<h2>Login</h2>*@
+@*<form method="post" asp-controller="Account" asp-action="Login"
+    asp-route-returnUrl="@Model.ReturnUrl">*@
+@*<div asp-validation-summary="ModelOnly"></div>
     <div>
         <label asp-for="Email"></label><br />
         <input asp-for="Email" />
@@ -23,5 +41,83 @@
     </div>
     <div>
         <input type="submit" value="Войти" />
+    </div>*@
+@*</form>*@
+
+
+<div class="ui middle aligned center aligned grid">
+    <div class="column">
+        <h2 class="ui teal image header">
+            <div class="content"> Log-in to your account </div>
+        </h2>
+        <form method="post"
+              asp-controller="Account"
+              asp-action="Login"
+              asp-route-returnUrl="@Model.ReturnUrl"
+              class="ui large form">
+            <div class="ui stacked secondary segment">
+                <div class="field">
+                    <div class="ui left icon input">
+                        <i class="user icon"></i>
+                        <input asp-for="Email" type="text" name="email" placeholder="Login">
+                    </div>
+                </div>
+                <div class="field">
+                    <div class="ui left icon input">
+                        <i class="lock icon"></i>
+                        <input asp-for="Password" type="password" name="password" placeholder="Password">
+                    </div>
+                </div>
+                <div class="field">
+                    <label asp-for="RememberMe"></label><br />
+                    <input asp-for="RememberMe" />
+                </div>
+                <div class="ui fluid large teal submit button">Login</div>
+            </div>
+            <div class="ui error message"></div>
+        </form>
+        @Html.ActionLink("Home","Index","Home");
+
     </div>
-</form>
+</div>
+
+
+<script type="text/javascript">
+    $(document)
+            .ready(function() {
+                $('.ui.form')
+                        .form({
+                            fields: {
+                                email: {
+                                    identifier  : 'email',
+                                    rules: [
+                                        {
+                                            type   : 'empty',
+                                            prompt : 'Please enter your Login'
+                                        }//,
+                                        //{
+                                        //    type: 'email',
+                                        //    prompt : 'Please enter a valid e-mail'
+                                        //}
+                                    ]
+                                },
+                                password: {
+                                    identifier  : 'password',
+                                    rules: [
+                                        {
+                                            type   : 'empty',
+                                            prompt : 'Please enter your password'
+                                        },
+                                        {
+                                            type   : 'length[5]',
+                                            prompt : 'Your password must be at least 5 characters'
+                                        }
+                                    ]
+                                }
+                            }
+                        })
+                    ;
+            })
+        ;
+</script>
+

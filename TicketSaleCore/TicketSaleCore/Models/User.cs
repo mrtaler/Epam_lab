@@ -7,6 +7,11 @@ namespace TicketSaleCore.Models
 {
     public class User: IdentityUser
     {
+        public User()
+        {
+            Orders=new HashSet<Order>();
+            Tickets= new HashSet<Ticket>();
+        }
        // public int Id { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }

@@ -1,40 +1,39 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Localization;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Logging;
-using Microsoft.VisualStudio.Web.CodeGeneration.Utils;
 using TicketSaleCore.Models;
 
 namespace TicketSaleCore.Controllers
 {
-   [RequireHttps]
+    [RequireHttps]
     public class HomeController : Controller
     {
         private readonly ILogger logger;
         private readonly IStringLocalizer<HomeController> localizer;
-        private readonly ApplicationContext _context;
+        private readonly ApplicationContext context;
 
-        public HomeController(IStringLocalizer<HomeController> localizer, ILoggerFactory loggerFactory, ApplicationContext context)
+        public HomeController(
+            IStringLocalizer<HomeController> localizer,
+            ILoggerFactory loggerFactory, 
+            ApplicationContext context)
         {
-            _context = context;
+            this.context = context;
             this.localizer = localizer;
             logger = loggerFactory.CreateLogger<AccountController>();
         }
 
         public IActionResult Index()
         {
-            ViewData["MyTitle"] = localizer["Yourapplicationdescriptionpage"];
-            ViewData["MyTitle1"] = localizer["Yourcontactpage"];
-         //   ViewData["Event"] = _context.Event.First();
-            var qwe = _context.EventDbSet.First();
-            return View(_context.EventDbSet.First());
+            var events=context.EventDbSet
+                .Include(p=>p.Tickets)
+                .Include(p=>p.Venue);
+            return View(events);
         }
        // [Authorize(Policy = "AgeLimit")]
         public IActionResult About()

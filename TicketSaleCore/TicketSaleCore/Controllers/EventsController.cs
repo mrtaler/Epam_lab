@@ -30,7 +30,7 @@ namespace TicketSaleCore.Controllers
             this.loggerFactory = loggerFactory;
             this.context = context;    
         }
-
+        [AllowAnonymous]
         // GET: Events
         public async Task<IActionResult> Index()
         {
@@ -56,6 +56,7 @@ namespace TicketSaleCore.Controllers
         }
 
         // GET: Events/Create
+        [Authorize(Roles = "admin")]
         public IActionResult Create()
         {
             ViewData["VenueFk"] = new SelectList(context.VenueDbSet, "Id", "Address");
@@ -66,6 +67,7 @@ namespace TicketSaleCore.Controllers
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
+        [Authorize(Roles = "admin")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(
             [Bind("Id,Name,Date,Banner,Description,VenueId")] Event @event,
@@ -108,6 +110,7 @@ namespace TicketSaleCore.Controllers
         }
 
         // GET: Events/Edit/5
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -127,6 +130,7 @@ namespace TicketSaleCore.Controllers
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
+        [Authorize(Roles = "admin")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Date,Banner,Description")] Event @event, IFormFile uploadedFile)
         {
@@ -167,7 +171,7 @@ namespace TicketSaleCore.Controllers
             }
             return View(@event);
         }
-
+        [Authorize(Roles = "admin")]
         // GET: Events/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
@@ -188,6 +192,7 @@ namespace TicketSaleCore.Controllers
 
         // POST: Events/Delete/5
         [HttpPost, ActionName("Delete")]
+        [Authorize(Roles = "admin")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {

@@ -172,23 +172,11 @@ namespace TicketSaleCore
             context.StatusDbSet.Add(new Status { StatusName = "Rejected" });
             #endregion
 
-
-
-
-
-
-
-
-
-
-
-
-
             context.EventDbSet.Add(new Event
             {
                 Name = "Event1",
                 Date = DateTime.Now,
-                Banner = null,
+                Banner = "/images/EventImg/0cb43207294335ec2b6274a39a54aa72.jpg",
                 Description = 1,
                 Venue = new Venue
                 {
@@ -201,7 +189,7 @@ namespace TicketSaleCore
             {
                 Name = "Event2",
                 Date = DateTime.Now,
-                Banner = null,
+                Banner = "/images/EventImg/1cbdc2f1aecb4b433cf6c1bb70d80fac.jpg",
                 Description = 1,
                 Venue = new Venue
                 {
@@ -214,7 +202,7 @@ namespace TicketSaleCore
             {
                 Name = "Event3",
                 Date = DateTime.Now,
-                Banner = null,
+                Banner = "/images/EventImg/3086cc801a9e6f0ea6a49d5a53db325e.jpg",
                 Description = 1,
                 Venue = new Venue
                 {
@@ -223,6 +211,73 @@ namespace TicketSaleCore
                     City = context.CityDbSet.Local.First(p => p.Name.Equals("Grodno")),
                 }
             });
+
+            context.EventDbSet.Add(new Event
+            {
+                Name = "Event21",
+                Date = DateTime.Now,
+                Banner = null,
+                Description = 21,
+                Venue = new Venue
+                {
+                    Name = "Venue21",
+                    Address = "Address21",
+                    City = context.CityDbSet.Local.First(p => p.Name.Equals("Minsk")),
+                }
+            });
+            context.EventDbSet.Add(new Event
+            {
+                Name = "Event22",
+                Date = DateTime.Now,
+                Banner = null,
+                Description = 21,
+                Venue = new Venue
+                {
+                    Name = "Venue22",
+                    Address = "Address22",
+                    City = context.CityDbSet.Local.First(p => p.Name.Equals("Gomel")),
+                }
+            });
+            context.EventDbSet.Add(new Event
+            {
+                Name = "Event23",
+                Date = DateTime.Now,
+                Banner = null,
+                Description = 21,
+                Venue = new Venue
+                {
+                    Name = "Venue23",
+                    Address = "Address23",
+                    City = context.CityDbSet.Local.First(p => p.Name.Equals("Grodno")),
+                }
+            });
+
+
+            var qt2 = context.EventDbSet.Local.First(p => p.Name.Equals("Event1"));
+            context.TicketDbSet.Add(
+                new Ticket
+                {
+                    Event = context.EventDbSet.Local.First(p => p.Name.Equals("Event1")),
+                    Price = 130M,
+                    Seller = context.Users.Local.First(p => p.Email.Equals("User1"))
+                });
+            context.TicketDbSet.Add(
+                new Ticket
+                {
+                    Event = context.EventDbSet.Local.First(p => p.Name.Equals("Event2")),
+                    Price = 130M,
+                    Seller = context.Users.Local.First(p => p.Email.Equals("User1"))
+                });
+            context.TicketDbSet.Add(
+                new Ticket
+                {
+                    Event = context.EventDbSet.Local.First(p => p.Name.Equals("Event1")),
+                    Price = 130M,
+                    Seller = context.Users.Local.First(p => p.Email.Equals("User3"))
+                });
+
+
+
             context.SaveChanges();
         }
 

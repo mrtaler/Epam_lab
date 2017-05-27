@@ -35,17 +35,17 @@
             @*<span asp-validation-for="Date" class="text-danger"></span>*@
         </div>
 
-       
+
         <div class="item">
             <label asp-for="Banner" class="ui label"></label>
             <div class="col-md-10">
-                <input type="hidden" asp-for="Banner"/>
+                <input type="hidden" asp-for="Banner" />
                 @*<span asp-validation-for="Banner" class="text-danger"></span>*@
                 <img id="BanerImage" src="" />
-                <input type="file" name="uploadedFile" id="i_file"/><br>
+                <input type="file" name="uploadedFile" id="i_file" /><br>
             </div>
         </div>
-        
+
 
         <div class="item">
             <label asp-for="Description" class="col-md-2 control-label"></label>
@@ -57,27 +57,27 @@
 
         <div class="item">
             <label asp-for="Venue"></label>
-            <select class="ui search dropdown" asp-for="VenueId" asp-items="ViewBag.VenueFk" >
+            <select class="ui search dropdown" asp-for="VenueId" asp-items="ViewBag.VenueFk">
                 <option value="">Select Venue</option>
                 @*asp-items="ViewBag.VenueFk"*@
 
                 @*@foreach (var item in ViewBag.VenueFk)
-                {
-                    <div class="item" data-value="@item.Value">@item.Text</div>
+                    {
+                        <div class="item" data-value="@item.Value">@item.Text</div>
 
-                    <option value="@item.Value">@item.Text</option>
-                }
+                        <option value="@item.Value">@item.Text</option>
+                    }
 
-                @*<option value="" class="item">Select Venue</option>*@
+                    @*<option value="" class="item">Select Venue</option>*@
             </select>
-    </div>
+        </div>
 
-    <div class="item">
-        <div class="col-md-offset-2 col-md-10">
-            <input type="submit" value="Create" class="btn btn-default" />
+        <div class="item">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Create" class="btn btn-default" />
+            </div>
         </div>
     </div>
-</div>
 </form>
 
 <div>
@@ -100,11 +100,11 @@
         });
 
    //     document.getElementById('BanerImage').setAttribute('src', file.value);
-        $(document).ready(function() {
-            var qwe = '@Model.Banner';
-          
-                alert('@Model.Banner');
-        });
+      //  $(document).ready(function() {
+        //    var qwe = '@Model.Banner';
+          //
+            //    alert('@Model.Banner');
+        //});
 
        // document.getElementById('BanerImage').setAttribute('src', @Model.Banner);
 

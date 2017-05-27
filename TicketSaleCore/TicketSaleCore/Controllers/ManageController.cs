@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -10,8 +8,7 @@ using Microsoft.Extensions.Options;
 using TicketSaleCore.Models;
 using TicketSaleCore.ViewModels.ManageViewModels;
 
-
-namespace WebApplication1.Controllers
+namespace TicketSaleCore.Controllers
 {
     [Authorize]
     public class ManageController : Controller
