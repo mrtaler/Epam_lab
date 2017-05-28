@@ -38,6 +38,7 @@ namespace TicketSaleCore.Controllers
             {
                  applicationContext = context.TicketDbSet
                     .Where(p => p.EventId == id)
+                    .Where(p=>p.Order==null)
                     .Include(t=>t.Event)
                     .Include(t => t.Seller);
                 ViewData["CurentEvent"] = context.EventDbSet.Find(id);

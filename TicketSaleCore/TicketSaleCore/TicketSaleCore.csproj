@@ -55,6 +55,7 @@
   <ItemGroup>
     <Folder Include="Properties\PublishProfiles\" />
     <Folder Include="SSL\" />
+    <Folder Include="Views\UserTickets\" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Update="Resources\Controllers.HomeController.ru.resx">

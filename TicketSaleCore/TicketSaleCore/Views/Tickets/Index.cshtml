@@ -21,8 +21,6 @@
     {
         <div class="header">All  ticket</div>
     }
-
-
 </div>
 
 
@@ -34,10 +32,10 @@
                 @Html.DisplayNameFor(model => model.Price)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Event)
+                @Html.DisplayNameFor(model => model.Seller)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Seller)
+         @Html.DisplayNameFor(model=>model.SellerNotes)
             </th>
             @if (User.IsInRole("admin"))
             {
@@ -53,10 +51,10 @@
                     @Html.DisplayFor(modelItem => item.Price)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Event.Name)
+                    @Html.DisplayFor(modelItem => item.Seller.FirstName)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Seller.FirstName)
+                    @Html.DisplayFor(modelItem => item.SellerNotes)
                 </td>
                 @if (User.IsInRole("admin"))
                 {

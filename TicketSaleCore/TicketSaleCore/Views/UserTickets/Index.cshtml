@@ -1,0 +1,105 @@
+﻿@model IEnumerable<TicketSaleCore.Models.Ticket>
+@{
+    ViewBag.Title = "title";
+}
+
+
+<h2>Index</h2>
+
+
+<div class="ui top attached tabular menu">
+    <a class="active item" data-tab="first">First</a>
+    <a class="item" data-tab="second">Second</a>
+    <a class="item" data-tab="third">Third</a>
+</div>
+
+<div class="ui bottom attached active tab segment" data-tab="first">
+    <table class="ui celled padded table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Price)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Event)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.SellerNotes)
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Price)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Event.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.SellerNotes)
+                </td>
+            </tr>
+            }
+        </tbody>
+    </table>
+</div>
+<div class="ui bottom attached tab segment" data-tab="second">
+       <table class="ui celled padded table">
+           <thead>
+           <tr>
+               <th>
+                   @Html.DisplayNameFor(model => model.Price)
+               </th>
+               <th>
+                   @Html.DisplayNameFor(model => model.Event)
+               </th>
+           </tr>
+           </thead>
+           <tbody>
+           @foreach (var item in ViewBag.WaitConf)
+           {
+               <tr>
+                   <td>
+                      @item.Seller
+                   </td>
+                   <td>
+                     @item.Event.Name
+                   </td>
+               </tr>
+           }
+           </tbody>
+       </table>
+</div>
+<div class="ui bottom attached tab segment" data-tab="third">
+    <table class="ui celled padded table">
+        <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Price)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Event)
+            </th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var item in ViewBag.Confirmed)
+        {
+            <tr>
+                <td>
+                    @item.Seller
+                </td>
+                <td>
+                    @item.Event.Name
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+</div>
+<script type="application/javascript">
+    $('.menu .item').tab();
+</script>

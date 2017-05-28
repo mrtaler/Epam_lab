@@ -5,7 +5,7 @@
         public int Id { get; set; }
 
         public decimal Price { get; set; }
-
+        public string SellerNotes { get; set; }
         public virtual Order Order { get; set; }
 
         public string SellerId { get; set; }

@@ -253,30 +253,77 @@ namespace TicketSaleCore
             });
 
 
-            var qt2 = context.EventDbSet.Local.First(p => p.Name.Equals("Event1"));
+         
             context.TicketDbSet.Add(
                 new Ticket
                 {
                     Event = context.EventDbSet.Local.First(p => p.Name.Equals("Event1")),
                     Price = 130M,
+                    SellerNotes = "orderded",
                     Seller = context.Users.Local.First(p => p.Email.Equals("User1"))
                 });
+
+            var ti = new Ticket
+            {
+                Event = context.EventDbSet.Local.First(p => p.Name.Equals("Event2")),
+                Price = 130M,
+                SellerNotes = "asdasdasdasd2",
+                Seller = context.Users.Local.First(p => p.Email.Equals("User1"))
+            };
+
+            context.TicketDbSet.Add(ti);
+
+            context.TicketDbSet.Add(
+                new Ticket
+                {
+                    Event = context.EventDbSet.Local.First(p => p.Name.Equals("Event1")),
+                    Price = 130M,
+                    SellerNotes = "asdasdasdasd3",
+                    Seller = context.Users.Local.First(p => p.Email.Equals("User3"))
+                });
+
             context.TicketDbSet.Add(
                 new Ticket
                 {
                     Event = context.EventDbSet.Local.First(p => p.Name.Equals("Event2")),
                     Price = 130M,
+                    SellerNotes = "asdasdasdasd1",
                     Seller = context.Users.Local.First(p => p.Email.Equals("User1"))
                 });
             context.TicketDbSet.Add(
                 new Ticket
                 {
-                    Event = context.EventDbSet.Local.First(p => p.Name.Equals("Event1")),
+                    Event = context.EventDbSet.Local.First(p => p.Name.Equals("Event3")),
                     Price = 130M,
+                    SellerNotes = "asdasdasdasd2",
+                    Seller = context.Users.Local.First(p => p.Email.Equals("User1"))
+                });
+            context.TicketDbSet.Add(
+                new Ticket
+                {
+                    Event = context.EventDbSet.Local.First(p => p.Name.Equals("Event3")),
+                    Price = 130M,
+                    SellerNotes = "asdasdasdasd3",
                     Seller = context.Users.Local.First(p => p.Email.Equals("User3"))
                 });
 
+            context.OrderDbSet.Add(
+                new Order
+                {
+                    Buyer = context.Users.Local.First(p => p.Email.Equals("User3")),
+                    Status = context.StatusDbSet.Local.First(p=>p.StatusName.Equals("Waiting for conformation")),
+                    Ticket = context.TicketDbSet.Local.First(p=>p.Seller.Email.Equals("User1")),
+                    TrackNo = "BY3123123123123C"
+                });
 
+            context.OrderDbSet.Add(
+                new Order
+                {
+                    Buyer = context.Users.Local.First(p => p.Email.Equals("User2")),
+                    Status = context.StatusDbSet.Local.First(p => p.StatusName.Equals("Confirmed")),
+                    Ticket = ti,
+                    TrackNo = "BY3123123123123C"
+                });
 
             context.SaveChanges();
         }

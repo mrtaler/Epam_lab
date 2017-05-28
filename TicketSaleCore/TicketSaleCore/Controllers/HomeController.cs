@@ -32,6 +32,7 @@ namespace TicketSaleCore.Controllers
         {
             var events=context.EventDbSet
                 .Include(p=>p.Tickets)
+                .ThenInclude(e=>e.Order)
                 .Include(p=>p.Venue);
             return View(events);
         }
