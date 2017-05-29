@@ -1,4 +1,6 @@
-﻿namespace TicketSaleCore.Models
+﻿using System.Collections.Generic;
+
+namespace TicketSaleCore.Models
 {
     public class Order
     {
@@ -11,8 +13,7 @@
         public string BuyerId { get; set; }
         public virtual User Buyer { get; set; }
 
-        public int TicketFk { get; set; }
-        public virtual Ticket Ticket { get; set; }
+        public virtual ICollection<Ticket> OrderTickets { get; set; }
     }
 
     //public class OrderConfiguration : EntityTypeConfiguration<Order>

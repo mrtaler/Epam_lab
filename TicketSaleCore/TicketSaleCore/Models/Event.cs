@@ -8,23 +8,36 @@ namespace TicketSaleCore.Models
     {
         public Event()
         {
-            Tickets=new HashSet<Ticket>();
+            Tickets = new HashSet<Ticket>();
         }
+        public Event(Event eEvent)
+        {
+            Tickets = eEvent.Tickets;
+            Id = eEvent.Id;
+            Name = eEvent.Name;
+            Date = eEvent.Date;
+            Banner = eEvent.Banner;
+            Description = eEvent.Description;
+            VenueId = eEvent.VenueId;
+            Venue = eEvent.Venue;
+
+        }
+
 
         public int Id { get; set; }
         public string Name { get; set; }
         public DateTime Date { get; set; }
 
+        public  int EventsTypeId { get; set; }
+        public virtual EventsType EventsType { get; set; }
 
         public string Banner { get; set; }
-        public int Description { get; set; }
+        public string Description { get; set; }
 
         public int VenueId { get; set; }
         public virtual Venue Venue { get; set; }
 
         public virtual ICollection<Ticket> Tickets { get; set; }
-        [NotMapped]
-        public string ReturnUrl { get; set; }
     }
     //public class EventConfiguration : EntityTypeConfiguration<Event>
     //{

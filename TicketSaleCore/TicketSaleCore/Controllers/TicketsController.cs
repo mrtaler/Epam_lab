@@ -36,6 +36,18 @@ namespace TicketSaleCore.Controllers
 
             if (id!=null)
             {
+                var q1 = context.TicketDbSet
+                    .Where(p => p.EventId == id).Include(i=>i.Order).ToList();
+
+                var q2 = q1.Where(p => p.Order== null).ToList();
+
+
+
+
+
+
+
+
                  applicationContext = context.TicketDbSet
                     .Where(p => p.EventId == id)
                     .Where(p=>p.Order==null)

@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Logging;
 using TicketSaleCore.Models;
+using TicketSaleCore.ViewModels.HomeViewModels;
 
 namespace TicketSaleCore.Controllers
 {
@@ -30,11 +31,24 @@ namespace TicketSaleCore.Controllers
 
         public IActionResult Index()
         {
+            //show all Events (need to add data.now check)
             var events=context.EventDbSet
                 .Include(p=>p.Tickets)
                 .ThenInclude(e=>e.Order)
-                .Include(p=>p.Venue);
-            return View(events);
+                .Include(p=>p.Venue)
+                .ThenInclude(c=>c.City);
+            List<EventsHomeViewModel> evHvEventsHomeViewModels=new List<EventsHomeViewModel>();
+
+            foreach (var item in events)
+            {
+                evHvEventsHomeViewModels.Add(new EventsHomeViewModel(item));
+            }
+
+
+
+            //ViewData["AveailableTickets"] = events.Tickets.Count(p => p.Order == null) +
+            //                                  item.Tickets.Count(p => p.Order.Status?.StatusName == "Rejected");
+            return View(evHvEventsHomeViewModels);
         }
        // [Authorize(Policy = "AgeLimit")]
         public IActionResult About()

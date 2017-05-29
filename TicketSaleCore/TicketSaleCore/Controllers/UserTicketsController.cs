@@ -41,23 +41,24 @@ namespace TicketSaleCore.Controllers
             {
                 var qm = userManager.GetUserName(User);
 
-                var applicationContext =context.TicketDbSet
+                var applicationContext = context.TicketDbSet
 
                     .Where(p => p.Seller.UserName == qm)
-                    .Where(z=>z.Order == null)
-                    .Include(p=>p.Event)
-                    .Include(p=>p.Order)
-                    .Include(p=>p.Seller).ToList();
-                var waitConf= context.TicketDbSet.
-                    Where(p => p.Seller.UserName == qm)
-                    .Where(p => p.Order.Status.StatusName.Equals("Waiting for conformation")).Include(p => p.Event)
+                    .Where(z => z.Order == null)
+                    .Include(p => p.Event)
                     .Include(p => p.Order)
                     .Include(p => p.Seller).ToList();
-                ViewData["WaitConf"] = waitConf;
-                var Confirmed= context.TicketDbSet.
+                var waitConf = context.TicketDbSet.
                     Where(p => p.Seller.UserName == qm)
-                    .Where(p => p.Order.Status.StatusName.Equals("Confirmed")).Include(p => p.Event)
                     .Include(p => p.Order)
+                     .Where(p => p.Order.Status.StatusName.Equals("Waiting for conformation")).Include(p => p.Event)
+                    .Include(p => p.Seller).ToList();
+                ViewData["WaitConf"] = waitConf;
+                var Confirmed = context.TicketDbSet.
+                    Where(p => p.Seller.UserName == qm)
+                    .Include(p => p.Order)
+                     .Where(p => p.Order.Status.StatusName.Equals("Confirmed")).Include(p => p.Event)
+                   
                     .Include(p => p.Seller).ToList();
                 ViewData["Confirmed"] = Confirmed;
                 return View(applicationContext);
@@ -67,8 +68,8 @@ namespace TicketSaleCore.Controllers
                 return View();
             }
 
-           // 
-            
+            // 
+
         }
     }
 }

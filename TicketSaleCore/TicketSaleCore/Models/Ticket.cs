@@ -1,4 +1,6 @@
-﻿namespace TicketSaleCore.Models
+﻿using System.Collections.Generic;
+
+namespace TicketSaleCore.Models
 {
     public class Ticket
     {
@@ -6,6 +8,8 @@
 
         public decimal Price { get; set; }
         public string SellerNotes { get; set; }
+
+        public int OrderId { get; set; }
         public virtual Order Order { get; set; }
 
         public string SellerId { get; set; }
