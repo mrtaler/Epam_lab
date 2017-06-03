@@ -1,6 +1,16 @@
+@using System.Collections.Generic
+@using Microsoft.AspNetCore.Http
+@using Microsoft.AspNetCore.Authentication
+@using Microsoft.AspNetCore.Mvc.Localization
+
+
+
 @model TicketSaleCore.ViewModels.LoginViewModel
+
+@inject IViewLocalizer Localizer
+
 @{
-    ViewData["Title"] = "Login";
+    ViewData["Title"] = Localizer["Log in"];
     Layout = null;
 }
 <header>
@@ -8,6 +18,14 @@
     <script src="~/lib/semantic/dist/semantic.js"></script>
     <link rel="stylesheet" href="~/lib/semantic/dist/semantic.min.css">
     <style type="text/css">
+        .remember-me {
+            text-align: left;
+        }
+
+        .ui.checkbox label {
+            color: #ddd;
+        }
+
         body > .grid {
             height: 100%;
         }
@@ -25,7 +43,7 @@
     <div class="ui middle aligned center aligned grid">
         <div class="column">
             <h2 class="ui teal image header">
-                <div class="content"> Log-in to your account </div>
+                <div class="content">@Localizer["Log-in to your account"] </div>
             </h2>
             <form method="post"
                   asp-controller="Account"
@@ -36,69 +54,43 @@
                     <div class="field">
                         <div class="ui left icon input">
                             <i class="user icon"></i>
-                            <input asp-for="Email" type="text" name="email" placeholder="Login">
+                            <input asp-for="Email" type="text" name="email" placeholder="@Localizer["Login"]">
                         </div>
                     </div>
                     <div class="field">
                         <div class="ui left icon input">
                             <i class="lock icon"></i>
-                            <input asp-for="Password" type="password" name="password" placeholder="Password">
+                            <input asp-for="Password" type="password" name="password" placeholder="@Localizer["Password"]">
                         </div>
                     </div>
-                    <div class="field">
-                        <label asp-for="RememberMe"></label><br />
-                        <input asp-for="RememberMe" />
+                    <div class="inline field">
+                        <div class="ui checkbox">
+                            <label>@Localizer["Remember Me"]</label><br />
+                            <input asp-for="RememberMe" type="checkbox" />
+                        </div>
+
                     </div>
-                    <div class="ui fluid large teal submit button">Login</div>
-                </div>
-                <div class="ui error message"></div>
+
+                    <div class="field">
+                        <input type="submit" class="ui fluid large teal button" value="@Localizer["Login"]"/>
+                    </div>
+                </div><div class="ui error message"></div>
             </form>
             @Html.ActionLink("Home", "Index", "Home")
 
         </div>
     </div>
+
+
+
     <footer>
         @await Html.PartialAsync("_SelectLanguagePartial")
     </footer>
 
 
     <script type="text/javascript">
-        $(document)
-            .ready(function () {
-                $('.ui.form')
-                    .form({
-                        fields: {
-                            email: {
-                                identifier: 'email',
-                                rules: [
-                                    {
-                                        type: 'empty',
-                                        prompt: 'Please enter your Login'
-                                    }//,
-                                    //{
-                                    //    type: 'email',
-                                    //    prompt : 'Please enter a valid e-mail'
-                                    //}
-                                ]
-                            },
-                            password: {
-                                identifier: 'password',
-                                rules: [
-                                    {
-                                        type: 'empty',
-                                        prompt: 'Please enter your password'
-                                    },
-                                    {
-                                        type: 'length[5]',
-                                        prompt: 'Your password must be at least 5 characters'
-                                    }
-                                ]
-                            }
-                        }
-                    })
-                    ;
-            })
-            ;
+        $('.ui.checkbox')
+            .checkbox();
     </script>
 
 </body>
