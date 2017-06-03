@@ -100,7 +100,10 @@ namespace TicketSaleCore
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
+        public void Configure(IApplicationBuilder app, 
+            IHostingEnvironment env,
+            ILoggerFactory loggerFactory,
+            ApplicationContext applicationContext)
         {
             //Logger settings
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
@@ -151,12 +154,13 @@ namespace TicketSaleCore
             //User&role Init 
             DatabaseInitialize(app.ApplicationServices).Wait();
             //Db content init
-            AddTestData(app.ApplicationServices.GetService<ApplicationContext>());
+            AddTestData(applicationContext).Wait();
             #endregion
         }
 
-        private static void AddTestData(ApplicationContext context)
+        public async Task AddTestData(ApplicationContext context)
         {
+
             #region EventsType
 
             var eventCinema = new EventsType
@@ -480,42 +484,49 @@ namespace TicketSaleCore
                 Event = cinemaEventMinsk1,
                 Price = Convert.ToDecimal(ticketPriceRandom.Next(13) + ticketPriceRandom.NextDouble()),
                 Seller = user1,
-                SellerNotes = "ticket1CinemaEventMinsk1 seller User 1"
+                SellerNotes = "ticket1CinemaEventMinsk1 seller User 1",
+                Order = null
+                
             };
             var ticket2CinemaEventMinsk1 = new Ticket
             {
                 Event = cinemaEventMinsk1,
                 Price = Convert.ToDecimal(ticketPriceRandom.Next(13) + ticketPriceRandom.NextDouble()),
                 Seller = user2,
-                SellerNotes = "ticket2CinemaEventMinsk1 seller User 2"
+                SellerNotes = "ticket2CinemaEventMinsk1 seller User 2",
+                Order = null
             };
             var ticket3CinemaEventMinsk1 = new Ticket
             {
                 Event = cinemaEventMinsk1,
                 Price = Convert.ToDecimal(ticketPriceRandom.Next(13) + ticketPriceRandom.NextDouble()),
                 Seller = user3,
-                SellerNotes = "ticket3CinemaEventMinsk1 seller User 3"
+                SellerNotes = "ticket3CinemaEventMinsk1 seller User 3",
+                Order = null
             };
             var ticket4CinemaEventMinsk1 = new Ticket
             {
                 Event = cinemaEventMinsk1,
                 Price = Convert.ToDecimal(ticketPriceRandom.Next(13) + ticketPriceRandom.NextDouble()),
                 Seller = user1,
-                SellerNotes = "ticket4CinemaEventMinsk1 seller User 1"
+                SellerNotes = "ticket4CinemaEventMinsk1 seller User 1",
+                Order = null
             };
             var ticket5CinemaEventMinsk1 = new Ticket
             {
                 Event = cinemaEventMinsk1,
                 Price = Convert.ToDecimal(ticketPriceRandom.Next(13) + ticketPriceRandom.NextDouble()),
                 Seller = user2,
-                SellerNotes = "ticket5CinemaEventMinsk1 seller User 2"
+                SellerNotes = "ticket5CinemaEventMinsk1 seller User 2",
+                Order = null
             };
             var ticket6CinemaEventMinsk1 = new Ticket
             {
                 Event = cinemaEventMinsk1,
                 Price = Convert.ToDecimal(ticketPriceRandom.Next(13) + ticketPriceRandom.NextDouble()),
                 Seller = user3,
-                SellerNotes = "ticket6CinemaEventMinsk1 seller User 3"
+                SellerNotes = "ticket6CinemaEventMinsk1 seller User 3",
+                Order = null
             };
             context.TicketDbSet.Add(ticket1CinemaEventMinsk1);
             context.TicketDbSet.Add(ticket2CinemaEventMinsk1);
@@ -1324,8 +1335,9 @@ namespace TicketSaleCore
             };
 
             context.OrderDbSet.Add(order1);
+
             #endregion
-            context.SaveChanges();
+             context.SaveChangesAsync();
         }
 
         public async Task DatabaseInitialize(IServiceProvider serviceProvider)

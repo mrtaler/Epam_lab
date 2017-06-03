@@ -52,6 +52,11 @@ namespace TicketSaleCore.Models
                 .HasOne(t => t.Buyer)
                 .WithMany(t => t.Orders)
                 .HasForeignKey(t => t.BuyerId);
+
+            modelBuilder.Entity<Order>()
+                .HasMany(t => t.OrderTickets)
+                .WithOne(t => t.Order)
+                .HasForeignKey(еt => еt.OrderId);
             #endregion
 
             #region Status
@@ -72,9 +77,7 @@ namespace TicketSaleCore.Models
                 .WithMany(t => t.Tickets)
                 .HasForeignKey(t => t.SellerId);
 
-            modelBuilder.Entity<Ticket>().HasOne(t => t.Order)
-                .WithMany(t => t.OrderTickets)
-                .HasForeignKey(t => t.OrderId);
+          
 
             #endregion
 

@@ -48,6 +48,7 @@ namespace TicketSaleCore.Controllers
                     .Include(p => p.Event)
                     .Include(p => p.Order)
                     .Include(p => p.Seller).ToList();
+
                 var waitConf = context.TicketDbSet.
                     Where(p => p.Seller.UserName == qm)
                     .Include(p => p.Order)

@@ -9,14 +9,14 @@ namespace TicketSaleCore.Models
         public decimal Price { get; set; }
         public string SellerNotes { get; set; }
 
-        public int OrderId { get; set; }
-        public virtual Order Order { get; set; }
+        public int? OrderId { get; set; }
+        public Order Order { get; set; }
 
         public string SellerId { get; set; }
-        public virtual User Seller { get; set; }
+        public User Seller { get; set; }
 
         public int EventId { get; set; }
-        public virtual Event Event { get; set; }
+        public Event Event { get; set; }
 
     }
     //public class TicketConfiguration : EntityTypeConfiguration<Ticket>

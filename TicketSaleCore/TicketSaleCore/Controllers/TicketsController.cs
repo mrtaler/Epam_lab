@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Data;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -16,17 +17,17 @@ namespace TicketSaleCore.Controllers
     public class TicketsController : Controller
     {
         private readonly ILogger logger;
-        private readonly IStringLocalizer<HomeController> localizer;
+        private readonly IStringLocalizer<TicketsController> localizer;
         private readonly ApplicationContext context;
 
         public TicketsController(
-            IStringLocalizer<HomeController> localizer,
+            IStringLocalizer<TicketsController> localizer,
             ILoggerFactory loggerFactory,
             ApplicationContext context)
         {
             this.context = context;
             this.localizer = localizer;
-            logger = loggerFactory.CreateLogger<AccountController>();
+            logger = loggerFactory.CreateLogger<TicketsController>();
         }
         [AllowAnonymous]
         // GET: Tickets
@@ -36,29 +37,18 @@ namespace TicketSaleCore.Controllers
 
             if (id!=null)
             {
-                var q1 = context.TicketDbSet
-                    .Where(p => p.EventId == id).Include(i=>i.Order).ToList();
-
-                var q2 = q1.Where(p => p.Order== null).ToList();
-
-
-
-
-
-
-
-
-                 applicationContext = context.TicketDbSet
+                applicationContext = context.TicketDbSet
                     .Where(p => p.EventId == id)
-                    .Where(p=>p.Order==null)
-                    .Include(t=>t.Event)
+                    .Where(p => p.Order == null)
+                    .Include(t => t.Event)
                     .Include(t => t.Seller);
+
                 ViewData["CurentEvent"] = context.EventDbSet.Find(id);
 
             }
             else
             {
-                applicationContext = context.TicketDbSet.Include(t => t.Event).Include(t => t.Seller);
+               applicationContext = context.TicketDbSet.Include(t => t.Event).Include(t => t.Seller);
             }
           
 

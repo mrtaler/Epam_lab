@@ -4,6 +4,11 @@ namespace TicketSaleCore.Models
 {
     public class Order
     {
+        public Order()
+        {
+            OrderTickets=new List<Ticket>();
+        }
+
         public int Id { get; set; }
 
         public virtual Status Status { get; set; }
@@ -13,7 +18,7 @@ namespace TicketSaleCore.Models
         public string BuyerId { get; set; }
         public virtual User Buyer { get; set; }
 
-        public virtual ICollection<Ticket> OrderTickets { get; set; }
+        public  List<Ticket> OrderTickets { get; set; }
     }
 
     //public class OrderConfiguration : EntityTypeConfiguration<Order>
