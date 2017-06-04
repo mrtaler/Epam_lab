@@ -8,7 +8,9 @@ namespace TicketSaleCore.ViewModels
 {
     public class LoginViewModel
     {
-        [Required]
+       
+        [Display(Name = "Email")]
+        [Required(ErrorMessage = "The Email field is required.")]
         public string Email { get; set; }
 
         [Required]

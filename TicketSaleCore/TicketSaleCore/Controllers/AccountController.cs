@@ -80,6 +80,8 @@ namespace TicketSaleCore.Controllers
                 var user = await userManager.FindByNameAsync(model.Email);
 
                 var result = await signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, lockoutOnFailure: false);
+                
+
                 if (result.Succeeded)
                 {
                     logger.LogError(1, $"User {user?.Email} logged");
@@ -88,11 +90,11 @@ namespace TicketSaleCore.Controllers
                 if (result.IsLockedOut)
                 {
                     logger.LogError(2, $"User {user?.Email}  account locked out.");
-                    return View("Lockout");
+                  //  return View("Lockout");
                 }
                 else
                 {
-                    ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+                    ModelState.AddModelError("LoginError", "Invalid login attempt.");
                     logger.LogError(2, $"User {user?.Email}  account eroe .");
                     return View(model);
                 }
