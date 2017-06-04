@@ -117,37 +117,22 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Enter your login" xml:space="preserve">
-    <value>Введите свой логин.</value>
+  <data name="Hello" xml:space="preserve">
+    <value>Hello</value>
   </data>
-  <data name="Enter your Password" xml:space="preserve">
-    <value>Введите свой пароль.</value>
-  </data>
-  <data name="Forgot your password?" xml:space="preserve">
-    <value>Забыли пароль?</value>
-  </data>
-  <data name="Log in" xml:space="preserve">
-    <value>Авторизоваться.</value>
-  </data>
-  <data name="Log-in to your account" xml:space="preserve">
-    <value>Войдите в свой аккаунт.</value>
+  <data name="Log out" xml:space="preserve">
+    <value>Log out</value>
   </data>
   <data name="Login" xml:space="preserve">
-    <value>Логин.</value>
+    <value>Login</value>
   </data>
-  <data name="Password" xml:space="preserve">
-    <value>Пароль.</value>
+  <data name="or" xml:space="preserve">
+    <value>or</value>
   </data>
-  <data name="Register as a new user?" xml:space="preserve">
-    <value>Зарегистрируйтесь как новый пользователь?</value>
+  <data name="Register" xml:space="preserve">
+    <value>Register</value>
   </data>
-  <data name="Remember Me" xml:space="preserve">
-    <value>Запомнить меня.</value>
-  </data>
-  <data name="PasswordError" xml:space="preserve">
-    <value>Ошибка пароль</value>
-  </data>
-  <data name="UserNotFound" xml:space="preserve">
-    <value>Пользователь не зарегистрирован</value>
+  <data name="Tikets" xml:space="preserve">
+    <value>Tikets</value>
   </data>
 </root>

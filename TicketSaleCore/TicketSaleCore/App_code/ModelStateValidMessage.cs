@@ -14,12 +14,11 @@ namespace TicketSaleCore.App_code
     {
         public static HtmlString ModelStateValidMsge(this IHtmlHelper html, ModelStateDictionary modelStateDictionary, IViewLocalizer errorLocalizer)
         {
-            string result = string.Empty;
+            StringBuilder strRes = new StringBuilder();
             if (modelStateDictionary.ErrorCount > 0)
             {
-                StringBuilder strRes = new StringBuilder();
+                strRes.Append("<div class='ui error message'>");
 
-                var error = string.Empty;
                 foreach (var item in modelStateDictionary)
                 {
                     if (item.Value.ValidationState == ModelValidationState.Invalid)
@@ -27,19 +26,18 @@ namespace TicketSaleCore.App_code
                         strRes.Append("<li>");
                         var qq = item.Key.ToString();
                         var q1 = errorLocalizer[qq].Value;
-                        var q2 = errorLocalizer[qq].Name;
 
                         strRes.Append(q1);
                         strRes.Append("</li>");
                     }
 
                 }
-                result = "<div class='ui error message'>"
-                    + strRes.ToString()
-                    + "</div>";
+                strRes.Append("</div>");
             }
 
-            return new HtmlString(result);
+            return new HtmlString(
+                strRes.ToString()
+                );
         }
     }
 }

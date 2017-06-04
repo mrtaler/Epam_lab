@@ -94,7 +94,11 @@ namespace TicketSaleCore.Controllers
                 }
                 else
                 {
-                    ModelState.AddModelError("LoginError", "Invalid login attempt.");
+                    if (user==null)
+                    {
+                        ModelState.AddModelError("UserNotFound", "UserNotFound");
+                    }
+                    ModelState.AddModelError("PasswordError", "Invalid login attempt.");
                     logger.LogError(2, $"User {user?.Email}  account eroe .");
                     return View(model);
                 }

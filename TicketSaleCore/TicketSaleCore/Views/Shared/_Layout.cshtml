@@ -1,4 +1,6 @@
-﻿@inject Microsoft.ApplicationInsights.AspNetCore.JavaScriptSnippet JavaScriptSnippet
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@inject Microsoft.ApplicationInsights.AspNetCore.JavaScriptSnippet JavaScriptSnippet
+@inject IViewLocalizer Localizer
 <!DOCTYPE html>
 <html>
 
@@ -26,15 +28,15 @@
 
 <body>
 <div class="ui fixed  menu" style="height: 30px">
-    <a class="item" asp-controller="Home" asp-action="Index">Home</a>
-    <a class="item" asp-controller="Home" asp-action="About">About</a>
-    <a class="item" asp-controller="Home" asp-action="Contact">Contact</a>
+    <a class="item" asp-controller="Home" asp-action="Index">@Localizer["Home"]</a>
+    <a class="item" asp-controller="Home" asp-action="About">@Localizer["About"]</a>
+    <a class="item" asp-controller="Home" asp-action="Contact">@Localizer["Contact"]</a>
     <div class="right menu">
         @await Html.PartialAsync("_LoginPartial")
     </div>
 </div>
 
-<div class="ui main text container">
+<div class="ui main text container" style="margin-top: 55px">
     @RenderBody()
 </div>
 

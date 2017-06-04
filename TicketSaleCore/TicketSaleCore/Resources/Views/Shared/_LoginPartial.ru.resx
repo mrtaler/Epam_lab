@@ -117,10 +117,22 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Yourapplicationdescriptionpage" xml:space="preserve">
-    <value>私の</value>
+  <data name="Hello" xml:space="preserve">
+    <value>Здравствуйте</value>
   </data>
-  <data name="Yourcontactpage" xml:space="preserve">
-    <value>ぱがるでりお</value>
+  <data name="Log out" xml:space="preserve">
+    <value>Выйти</value>
+  </data>
+  <data name="Login" xml:space="preserve">
+    <value>Войти</value>
+  </data>
+  <data name="or" xml:space="preserve">
+    <value>или</value>
+  </data>
+  <data name="Register" xml:space="preserve">
+    <value>Регистрация</value>
+  </data>
+  <data name="Tikets" xml:space="preserve">
+    <value>Билеты</value>
   </data>
 </root>

@@ -51,7 +51,6 @@ namespace TicketSaleCore
                 {
                     new CultureInfo("en"),
                     new CultureInfo("ru"),
-                    new CultureInfo("ja"),
                     new CultureInfo("be")
                 };
 
@@ -114,7 +113,6 @@ namespace TicketSaleCore
             {
                 new CultureInfo("en"),
                 new CultureInfo("ru"),
-                new CultureInfo("ja"),
                 new CultureInfo("be")
             };
             //Add Localization (default is en-US)
@@ -1410,7 +1408,7 @@ namespace TicketSaleCore
                     IdentityResult result1 = await userManager.CreateAsync(item, item.Email);
                     if (result1.Succeeded)
                     {
-                        await userManager.AddToRoleAsync(item, "User");
+                        await userManager.AddToRoleAsync(item, "user");
                     }
                 }
             }
