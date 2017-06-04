@@ -49,19 +49,32 @@ namespace TicketSaleCore.Controllers
                     .Include(p => p.Order)
                     .Include(p => p.Seller).ToList();
 
-                var waitConf = context.TicketDbSet.
-                    Where(p => p.Seller.UserName == qm)
+                var waitConf = context.TicketDbSet
                     .Include(p => p.Order)
-                     .Where(p => p.Order.Status.StatusName.Equals("Waiting for conformation")).Include(p => p.Event)
-                    .Include(p => p.Seller).ToList();
+                        .ThenInclude(p => p.Status)
+                        .Include(z => z.Order.Buyer)
+                    .Include(p => p.Seller)
+                    .Include(p => p.Event)
+
+                    .Where(p => p.Seller.UserName == qm)
+                    .Where(p => p.Order.Status.StatusName=="Waiting for conformation")
+                    .ToList();
+
+
                 ViewData["WaitConf"] = waitConf;
-                var Confirmed = context.TicketDbSet.
-                    Where(p => p.Seller.UserName == qm)
+
+                var confirmed = context.TicketDbSet
                     .Include(p => p.Order)
-                     .Where(p => p.Order.Status.StatusName.Equals("Confirmed")).Include(p => p.Event)
-                   
-                    .Include(p => p.Seller).ToList();
-                ViewData["Confirmed"] = Confirmed;
+                        .ThenInclude(p => p.Status)
+                        .Include(z=>z.Order.Buyer)
+                    .Include(p => p.Seller)
+                    .Include(p => p.Event)
+                    
+                    .Where(p => p.Seller.UserName == qm)
+                    .Where(p => p.Order.Status.StatusName=="Confirmed")
+                   .ToList();
+                ViewData["Confirmed"] = confirmed;
+
                 return View(applicationContext);
             }
             else
