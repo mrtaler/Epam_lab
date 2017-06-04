@@ -8,9 +8,9 @@
 
 
 <div class="ui top attached tabular menu">
-    <a class="active item" data-tab="first">First</a>
-    <a class="item" data-tab="second">Second</a>
-    <a class="item" data-tab="third">Third</a>
+    <a class="active item" data-tab="first">Selling Tickets</a>
+    <a class="item" data-tab="second">Waiting Confomition</a>
+    <a class="item" data-tab="third">Sold</a>
 </div>
 
 <div class="ui bottom attached active tab segment" data-tab="first">
@@ -51,10 +51,16 @@
            <thead>
            <tr>
                <th>
-                   @Html.DisplayNameFor(model => model.Price)
+                   @Html.DisplayNameFor(model => model.Seller)
                </th>
                <th>
                    @Html.DisplayNameFor(model => model.Event)
+               </th>
+               <th>
+                   @Html.DisplayNameFor(model => model.Price)
+               </th>
+               <th>
+                   @Html.DisplayNameFor(model => model.Order.Buyer)
                </th>
            </tr>
            </thead>
@@ -63,11 +69,17 @@
            {
                <tr>
                    <td>
-                      @item.Seller
+                       @item.Seller
                    </td>
                    <td>
-                     @item.Event.Name
+                       @item.Event.Name
                    </td>
+                   <td>
+                       @item.Price
+                   </td>
+                   <td>
+                       @item.Order.Buyer
+                   </td> 
                </tr>
            }
            </tbody>
@@ -78,10 +90,16 @@
         <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Price)
+                @Html.DisplayNameFor(model => model.Seller)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Event)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Price)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Order.Buyer)
             </th>
         </tr>
         </thead>
@@ -95,6 +113,12 @@
                 <td>
                     @item.Event.Name
                 </td>
+                <td>
+                    @item.Price
+                </td>
+                <td>
+                    @item.Order.Buyer
+                </td> 
             </tr>
         }
         </tbody>

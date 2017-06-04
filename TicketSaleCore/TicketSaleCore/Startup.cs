@@ -1327,15 +1327,29 @@ namespace TicketSaleCore
                 OrderTickets = new List<Ticket>
                 {
                     ticket2CinemaEventMinsk1,
-                    ticket3CinemaEventMinsk1
+                    ticket3CinemaEventMinsk1,
+                    ticket6CinemaEventGomel3
                 },
-                TrackNo = "byTT"
+                TrackNo = "byTT0"
+            };
+            var order2 = new Order
+            {
+                Buyer = user1,
+                Status = statusConfirmed,
+                OrderTickets = new List<Ticket>
+                {
+                    ticket3CinemaEventBrest1,
+                    ticket5TheaterEventMinsk1,
+                    ticket5TheaterEventGomel2
+                },
+                TrackNo = "byTT1"
             };
 
-            context.OrderDbSet.Add(order1);
 
+            context.OrderDbSet.Add(order1);
+            context.OrderDbSet.Add(order2);
             #endregion
-             context.SaveChangesAsync();
+            context.SaveChangesAsync();
         }
 
         public async Task DatabaseInitialize(IServiceProvider serviceProvider)
