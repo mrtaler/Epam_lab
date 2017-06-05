@@ -150,7 +150,7 @@ namespace TicketSaleCore
 
             #region DbInit
             //User&role Init 
-            DatabaseInitialize(app.ApplicationServices).Wait();
+            UserInit(app.ApplicationServices).Wait();
             //Db content init
             AddTestData(applicationContext).Wait();
             #endregion
@@ -1352,7 +1352,7 @@ namespace TicketSaleCore
             context.SaveChangesAsync();
         }
 
-        public async Task DatabaseInitialize(IServiceProvider serviceProvider)
+        public async Task UserInit(IServiceProvider serviceProvider)
         {
 
 
