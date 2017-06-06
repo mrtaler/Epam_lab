@@ -1,0 +1,19 @@
+@model TicketSaleCore.Models.User
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h2>Details</h2>
+
+<div class="form-group">
+   @Html.DisplayFor(model => model.Email)
+</div>
+<div class="form-group">
+    @Html.DisplayFor(model => model.FirstName)
+</div>
+<div class="form-group">
+    @Html.DisplayFor(model => model.LastName)
+</div>
+<div>
+    @Html.ActionLink("AllAvailableUserTicket", "Index", "UserTickets", new {id= @Model.Id })
+</div>

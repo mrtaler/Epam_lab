@@ -52,6 +52,16 @@ namespace TicketSaleCore.Controllers
             return View(model);
         }
 
+        [AllowAnonymous]
+       public async Task<IActionResult> Details(string id)
+        {
+            User user = await userManager.FindByIdAsync(id);
+            if (user == null)
+            {
+                return NotFound();
+            }
+            return View(user);
+        }
         public async Task<IActionResult> Edit(string id)
         {
             User user = await userManager.FindByIdAsync(id);

@@ -35,16 +35,17 @@ namespace TicketSaleCore.Controllers
             logger = loggerFactory.CreateLogger<AccountController>();
         }
 
-        public IActionResult Index()
+        public IActionResult Index(string id=null)
         {
             if (signInManager.IsSignedIn(User))
             {
-                var qm = userManager.GetUserName(User);
+                string userId = null;
+                userId = id ?? userManager.GetUserId(User);
 
                 //Find All User Selling Ticket
                 var applicationContext = context.TicketDbSet
 
-                    .Where(p => p.Seller.UserName == qm)
+                    .Where(p => p.Seller.Id == userId)
                     .Where(z => z.Order == null)
                     .Include(p => p.Event)
                     .Include(p => p.Order)
@@ -58,7 +59,7 @@ namespace TicketSaleCore.Controllers
                     .Include(p => p.Seller)
                     .Include(p => p.Event)
 
-                    .Where(p => p.Seller.UserName == qm)
+                    .Where(p => p.Seller.Id == userId)
                     .Where(p => p.Order.Status.StatusName=="Waiting for conformation")
                     .ToList();
 
@@ -73,7 +74,7 @@ namespace TicketSaleCore.Controllers
                     .Include(p => p.Seller)
                     .Include(p => p.Event)
                     
-                    .Where(p => p.Seller.UserName == qm)
+                    .Where(p => p.Seller.Id == userId)
                     .Where(p => p.Order.Status.StatusName=="Confirmed")
                    .ToList();
                 ViewData["Confirmed"] = confirmed;
