@@ -14,7 +14,7 @@ namespace TicketSaleCore.Controllers
     [Authorize(Roles = "admin")]
     public class UsersController : Controller
     {
-        UserManager<User> userManager;
+        readonly UserManager<User> userManager;
 
         public UsersController(
             UserManager<User> userManager)

@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Logging;
@@ -35,11 +36,24 @@ namespace TicketSaleCore.Controllers
             logger = loggerFactory.CreateLogger<AccountController>();
         }
 
-        public IActionResult Index(string id=null)
+        public async Task<IActionResult> Index(string id=null)
         {
             if (signInManager.IsSignedIn(User))
             {
                 string userId = null;
+             //   var users = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+             //var LoggedInUser = User.Identity;
+
+             //   var claimsIdentity = (ClaimsIdentity)this.User.Identity;
+             //   var claim = claimsIdentity.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier);
+             //   var userIdsss = claim.Value;
+
+
+             //   //  var currentUserID = currentUser.FindFirst(ClaimTypes.NameIdentifier).Value;
+
+             //   var qwe=User.Claims.First(p=>p.Type.Contains("id")).Value;
+             //   var qq = userManager.GetUserName(User);
+                
                 userId = id ?? userManager.GetUserId(User);
 
                 //Find All User Selling Ticket

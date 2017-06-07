@@ -43,7 +43,8 @@ namespace TicketSaleCore.Controllers
                     .Include(t => t.Event)
                     .Include(t => t.Seller);
 
-                ViewData["CurentEvent"] = context.EventDbSet.Find(id);
+                ViewData["CurentEvent"] = context.EventDbSet
+                    .Include(p => p.Venue).ThenInclude(z=>z.City).First(p=>p.Id==id);
 
             }
             else
