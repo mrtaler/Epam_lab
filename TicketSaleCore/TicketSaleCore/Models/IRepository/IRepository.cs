@@ -9,15 +9,18 @@ using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace TicketSaleCore.Models.IRepository
 {
-    public interface IRepository<T> : IDisposable
-          where T : class
+  public  interface IRepository<TEntity> 
+        where TEntity : class
     {
-        IEnumerable<T> GetBookList(); // получение всех объектов
-        T GetBook(int id); // получение одного объекта по id
-        void Create(T item); // создание объекта
-        void Update(T item); // обновление объекта
-        void Delete(int id); // удаление объекта по id
-        void Save();  // сохранение изменений
+        IEnumerable<TEntity> GetAll();
+        IEnumerable<TEntity> Find(Expression<Func<TEntity, bool>> predicate);
+        TEntity Get(int id);
+        void Add(TEntity entity);
+        void Create(TEntity item);
+        void Update(TEntity item);
+        void Delete(int id);
+        void Delete(TEntity entity);
+
     }
     /*
     public interface IDbEntity
