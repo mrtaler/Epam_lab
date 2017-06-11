@@ -1,8 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Logging;
@@ -10,6 +7,7 @@ using Microsoft.Extensions.Localization;
 using TicketSaleCore.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using TicketSaleCore.Models.IdentityWithoutEF;
 
 namespace TicketSaleCore.Controllers
 {
@@ -17,17 +15,17 @@ namespace TicketSaleCore.Controllers
     public class UserTicketsController : Controller
     {
         private readonly ILogger logger;
-        private readonly IStringLocalizer<HomeController> localizer;
+        private readonly IStringLocalizer<UserTicketsController> localizer;
         private readonly ApplicationContext context;
-        private readonly UserManager<User> userManager;
-        private readonly SignInManager<User> signInManager;
+        private readonly UserManager<AppUser> userManager;
+        private readonly SignInManager<AppUser> signInManager;
 
         public UserTicketsController(
-            SignInManager<User> signInManager,
-            IStringLocalizer<HomeController> localizer,
+            SignInManager<AppUser> signInManager,
+            IStringLocalizer<UserTicketsController> localizer,
             ILoggerFactory loggerFactory,
             ApplicationContext context,
-            UserManager<User> userManager)
+            UserManager<AppUser> userManager)
         {
             this.userManager = userManager;
             this.context = context;

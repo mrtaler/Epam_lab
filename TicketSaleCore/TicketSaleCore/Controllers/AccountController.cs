@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using TicketSaleCore.Models;
+using TicketSaleCore.Models.IdentityWithoutEF;
 using TicketSaleCore.ViewModels;
 
 namespace TicketSaleCore.Controllers
@@ -12,11 +13,11 @@ namespace TicketSaleCore.Controllers
     [Authorize]
     public class AccountController : Controller
     {
-        private readonly UserManager<User> userManager;
-        private readonly SignInManager<User> signInManager;
+        private readonly UserManager<AppUser> userManager;
+        private readonly SignInManager<AppUser> signInManager;
         private readonly ILogger logger;
 
-        public AccountController(UserManager<User> userManager, SignInManager<User> signInManager, ILoggerFactory loggerFactory)
+        public AccountController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, ILoggerFactory loggerFactory)
         {
             this.userManager = userManager;
             this.signInManager = signInManager;
@@ -40,7 +41,7 @@ namespace TicketSaleCore.Controllers
             ViewData["ReturnUrl"] = returnUrl;
             if (ModelState.IsValid)
             {
-                var user = new User { UserName = model.Email, Email = model.Email };
+                var user = new AppUser { UserName = model.Email, Email = model.Email };
                 var result = await userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {

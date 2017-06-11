@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using TicketSaleCore.Models.IdentityWithoutEF;
 
 namespace TicketSaleCore.Models
 {
@@ -13,7 +14,7 @@ namespace TicketSaleCore.Models
         public Order Order { get; set; }
 
         public string SellerId { get; set; }
-        public User Seller { get; set; }
+        public AppUser Seller { get; set; }
 
         public int EventId { get; set; }
         public Event Event { get; set; }

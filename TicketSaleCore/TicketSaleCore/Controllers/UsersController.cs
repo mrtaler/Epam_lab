@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Identity;
 using TicketSaleCore.Models;
 using TicketSaleCore.ViewModels;
 using Microsoft.AspNetCore.Authorization;
+using TicketSaleCore.Models.IdentityWithoutEF;
 
 namespace TicketSaleCore.Controllers
 {
@@ -14,10 +15,10 @@ namespace TicketSaleCore.Controllers
     [Authorize(Roles = "admin")]
     public class UsersController : Controller
     {
-        readonly UserManager<User> userManager;
+        readonly UserManager<AppUser> userManager;
 
         public UsersController(
-            UserManager<User> userManager)
+            UserManager<AppUser> userManager)
         {
             this.userManager = userManager;
         }
@@ -35,7 +36,7 @@ namespace TicketSaleCore.Controllers
         {
             if (ModelState.IsValid)
             {
-                User user = new User { Email = model.Email, UserName = model.Email, Year = model.Year };
+                AppUser user = new AppUser { Email = model.Email, UserName = model.Email, Year = model.Year };
                 var result = await userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
@@ -55,7 +56,7 @@ namespace TicketSaleCore.Controllers
         [AllowAnonymous]
        public async Task<IActionResult> Details(string id)
         {
-            User user = await userManager.FindByIdAsync(id);
+            AppUser user = await userManager.FindByIdAsync(id);
             if (user == null)
             {
                 return NotFound();
@@ -64,7 +65,7 @@ namespace TicketSaleCore.Controllers
         }
         public async Task<IActionResult> Edit(string id)
         {
-            User user = await userManager.FindByIdAsync(id);
+            AppUser user = await userManager.FindByIdAsync(id);
             if (user == null)
             {
                 return NotFound();
@@ -78,7 +79,7 @@ namespace TicketSaleCore.Controllers
         {
             if (ModelState.IsValid)
             {
-                User user = await userManager.FindByIdAsync(model.Id);
+                AppUser user = await userManager.FindByIdAsync(model.Id);
                 if (user != null)
                 {
                     user.Email = model.Email;
@@ -105,7 +106,7 @@ namespace TicketSaleCore.Controllers
         [HttpPost]
         public async Task<ActionResult> Delete(string id)
         {
-            User user = await userManager.FindByIdAsync(id);
+            AppUser user = await userManager.FindByIdAsync(id);
             if (user != null)
             {
                 IdentityResult result = await userManager.DeleteAsync(user);
@@ -114,7 +115,7 @@ namespace TicketSaleCore.Controllers
         }
         public async Task<IActionResult> ChangePassword(string id)
         {
-            User user = await userManager.FindByIdAsync(id);
+            AppUser user = await userManager.FindByIdAsync(id);
             if (user == null)
             {
                 return NotFound();
@@ -128,7 +129,7 @@ namespace TicketSaleCore.Controllers
         {
             if (ModelState.IsValid)
             {
-                User user = await userManager.FindByIdAsync(model.Id);
+                AppUser user = await userManager.FindByIdAsync(model.Id);
                 if (user != null)
                 {
                     IdentityResult result =

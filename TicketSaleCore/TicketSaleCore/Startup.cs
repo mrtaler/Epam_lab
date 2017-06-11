@@ -19,6 +19,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using TicketSaleCore.Models;
 using TicketSaleCore.AuthorizationPolit.Password;
+using TicketSaleCore.Models.IdentityWithoutEF;
 
 namespace TicketSaleCore
 {
@@ -68,23 +69,43 @@ namespace TicketSaleCore
 
 
             //Add Pasword validator
-            services.AddTransient<IPasswordValidator<User>,
+            services.AddTransient<IPasswordValidator<AppUser>,
                 CustomPasswordValidator>(serv => new CustomPasswordValidator(5));
 
             //Add localizaion based on Resx files
             services.AddLocalization(options => options.ResourcesPath = "Resources");
 
             //use EF in memory
-            services.AddDbContext<ApplicationContext>(opt => opt.UseInMemoryDatabase());
+            //services.AddDbContext<ApplicationContext>(opt => opt.UseInMemoryDatabase());
             //Use existing DB
             /*
-             services.AddDbContext<ApplicationContext>(options =>
-               options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
-         */
+             *services.AddDbContext<ApplicationContext>(options =>
+             * options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+             */
+
+            var userStore = new UserStoreWef();
+            var roleStore = new RoleStoreWef();
+
+          
+
+            services.AddSingleton<IUserStore<AppUser>>(userStore);
+            services.AddSingleton<IUserPasswordStore<AppUser>>(userStore);
+            services.AddSingleton<IRoleStore<AppRole>>(roleStore);
+
+            services.AddAuthentication();
+            services.AddAuthorization();
+
+
             //Add Identity to services
-            services.AddIdentity<User, IdentityRole>()
-                .AddEntityFrameworkStores<ApplicationContext>()
+            services.AddIdentity<AppUser,       AppRole>()
+                //  .AddEntityFrameworkStores<ApplicationContext>()
                 .AddDefaultTokenProviders();
+
+
+            ////Add Identity to services
+            //services.AddIdentity<User, IdentityRole>()
+            //    //  .AddEntityFrameworkStores<ApplicationContext>()
+            //    .AddDefaultTokenProviders();
 
 
             services.AddMvc()
@@ -94,12 +115,14 @@ namespace TicketSaleCore
                 // Add support for localizing strings in data annotations (e.g. validation messages)
                 .AddDataAnnotationsLocalization();
 
+            services.AddSingleton<ApplicationContext>();
+
 
 
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, 
+        public void Configure(IApplicationBuilder app,
             IHostingEnvironment env,
             ILoggerFactory loggerFactory,
             ApplicationContext applicationContext)
@@ -148,9 +171,11 @@ namespace TicketSaleCore
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
 
+            var context = app.ApplicationServices.GetService<ApplicationContext>();
+
             #region DbInit
             //User&role Init 
-            UserInit(app.ApplicationServices).Wait();
+              UserInit(app.ApplicationServices).Wait();
             //Db content init
             AddTestData(applicationContext).Wait();
             #endregion
@@ -197,9 +222,9 @@ namespace TicketSaleCore
             #endregion
             #region Order Status Table Init
 
-            var statusWaiting = new Status {StatusName = "Waiting for conformation"};
-            var statusConfirmed = new Status {StatusName = "Confirmed"};
-            var statusRejected = new Status {StatusName = "Rejected"};
+            var statusWaiting = new Status { StatusName = "Waiting for conformation" };
+            var statusConfirmed = new Status { StatusName = "Confirmed" };
+            var statusRejected = new Status { StatusName = "Rejected" };
 
             context.StatusDbSet.Add(statusWaiting);
             context.StatusDbSet.Add(statusConfirmed);
@@ -468,9 +493,26 @@ namespace TicketSaleCore
             #endregion
             #endregion
 
-            User user1 = context.Users.First(p => p.Email.Equals("User1"));
-            User user2 = context.Users.First(p => p.Email.Equals("User2"));
-            User user3 = context.Users.First(p => p.Email.Equals("User3"));
+            //User user1 = new User
+            //{
+            //    Email = "",
+            //};
+            //User user2 = new User
+            //{
+            //    Email = "",
+            //};
+            //User user3 = new User
+            //{
+            //    Email = "",
+            //};
+
+            //context.Users.Add(user1);
+            //context.Users.Add(user2);
+            //context.Users.Add(user3);
+
+            AppUser user1 = context.Users.First(p => p.Email.Equals("User1"));
+            AppUser user2 = context.Users.First(p => p.Email.Equals("User2"));
+            AppUser user3 = context.Users.First(p => p.Email.Equals("User3"));
 
             #region Tikets Table Init
 
@@ -484,7 +526,7 @@ namespace TicketSaleCore
                 Seller = user1,
                 SellerNotes = "ticket1CinemaEventMinsk1 seller User 1",
                 Order = null
-                
+
             };
             var ticket2CinemaEventMinsk1 = new Ticket
             {
@@ -1322,7 +1364,7 @@ namespace TicketSaleCore
             #region Order Table Init
             var order1 = new Order
             {
-                Buyer = user1,  
+                Buyer = user1,
                 Status = statusWaiting,
                 OrderTickets = new List<Ticket>
                 {
@@ -1349,39 +1391,39 @@ namespace TicketSaleCore
             context.OrderDbSet.Add(order1);
             context.OrderDbSet.Add(order2);
             #endregion
-            context.SaveChangesAsync();
+          //  context.SaveChanges();
         }
 
         public async Task UserInit(IServiceProvider serviceProvider)
         {
 
 
-            UserManager<User> userManager =
-                serviceProvider.GetRequiredService<UserManager<User>>();
-            RoleManager<IdentityRole> roleManager =
-                serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+            UserManager<AppUser> userManager =
+                serviceProvider.GetRequiredService<UserManager<AppUser>>();
+            RoleManager<AppRole> roleManager =
+                serviceProvider.GetRequiredService<RoleManager<AppRole>>();
 
             string adminEmail = "Admin";
             string password = "Admin";
             if (await roleManager.FindByNameAsync("admin") == null)
             {
-                await roleManager.CreateAsync(new IdentityRole("admin"));
+                await roleManager.CreateAsync(new AppRole("admin"));
             }
             if (await roleManager.FindByNameAsync("user") == null)
             {
-                await roleManager.CreateAsync(new IdentityRole("user"));
+                await roleManager.CreateAsync(new AppRole("user"));
             }
             if (await userManager.FindByNameAsync(adminEmail) == null)
             {
-                User admin = new User { Email = adminEmail, UserName = adminEmail, EmailConfirmed = true };
+                AppUser admin = new AppUser { Email = adminEmail, UserName = adminEmail, EmailConfirmed = true };
                 IdentityResult result = await userManager.CreateAsync(admin, password);
                 if (result.Succeeded)
                 {
-                    await userManager.AddToRoleAsync(admin, "admin");
+                //    await userManager.AddToRoleAsync(admin, "admin");
                 }
-                var users = new List<User>
+                var users = new List<AppUser>
                 {
-                    new User
+                    new AppUser
                     {
                         Email = "User1",
                         UserName = "User1",
@@ -1392,7 +1434,7 @@ namespace TicketSaleCore
                         Address = "adress1",
                         PhoneNumber = "5-53-53-56"
                     },
-                    new User
+                    new AppUser
                     {
                         Email = "User2",
                         UserName = "User2",
@@ -1403,7 +1445,7 @@ namespace TicketSaleCore
                         Address = "adress2",
                         PhoneNumber = "5-53-53-56"
                     },
-                    new User
+                    new AppUser
                     {
                         Email = "User3",
                         UserName = "User3",
@@ -1422,7 +1464,7 @@ namespace TicketSaleCore
                     IdentityResult result1 = await userManager.CreateAsync(item, item.Email);
                     if (result1.Succeeded)
                     {
-                        await userManager.AddToRoleAsync(item, "user");
+                      //  await userManager.AddToRoleAsync(item, "user");
                     }
                 }
             }

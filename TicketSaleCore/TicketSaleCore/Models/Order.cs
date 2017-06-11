@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using TicketSaleCore.Models.IdentityWithoutEF;
 
 namespace TicketSaleCore.Models
 {
@@ -16,7 +17,7 @@ namespace TicketSaleCore.Models
         public string TrackNo { get; set; }
 
         public string BuyerId { get; set; }
-        public virtual User Buyer { get; set; }
+        public virtual AppUser Buyer { get; set; }
 
         public  List<Ticket> OrderTickets { get; set; }
     }

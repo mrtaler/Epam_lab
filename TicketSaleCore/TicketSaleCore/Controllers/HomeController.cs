@@ -21,7 +21,7 @@ namespace TicketSaleCore.Controllers
 
         public HomeController(
             IStringLocalizer<HomeController> localizer,
-            ILoggerFactory loggerFactory, 
+            ILoggerFactory loggerFactory,
             ApplicationContext context)
         {
             this.context = context;
