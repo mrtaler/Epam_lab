@@ -6,23 +6,23 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using TicketSaleCore.Models.DBConfig;
 using TicketSaleCore.Models.IdentityWithoutEF;
+using TicketSaleCore.Models.IRepository;
 
 namespace TicketSaleCore.Models
 {
-    public class ApplicationContext : IdentityDbContext<AppUser>
+    public class ApplicationContext : IdentityDbContext<AppUser>, IStorageContext
     {
-
-        //public ApplicationContext(DbContextOptions<ApplicationContext> options)
-        //    : base(options)
-        //{
-        //}
+        public ApplicationContext(DbContextOptions<ApplicationContext> options)
+            : base(options)
+        {
+        }
 
         public virtual DbSet<City> CityDbSet { get; set; }
         public virtual DbSet<Event> EventDbSet { get; set; }
         public virtual DbSet<Order> OrderDbSet { get; set; }
         public virtual DbSet<Ticket> TicketDbSet { get; set; }
         public virtual DbSet<Venue> VenueDbSet { get; set; }
-        public virtual DbSet<Status> StatusDbSet { get; set; }
+        public virtual DbSet<OrderStatus> StatusDbSet { get; set; }
         public virtual DbSet<EventsType> EventsTypeDbSet { get; set; }
         // public virtual DbSet<User> UserDbSet { get; set; }
         //  public virtual DbSet<TicketsOrder> TicketsOrderDbSet { get; set; }
@@ -69,9 +69,9 @@ namespace TicketSaleCore.Models
             #endregion
 
             #region Status
-            modelBuilder.Entity<Status>().HasKey(t => t.Id);
+            modelBuilder.Entity<OrderStatus>().HasKey(t => t.Id);
 
-            modelBuilder.Entity<Status>().HasMany(t => t.Orders)
+            modelBuilder.Entity<OrderStatus>().HasMany(t => t.Orders)
                 .WithOne(t => t.Status);
             #endregion
 

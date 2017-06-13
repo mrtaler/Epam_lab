@@ -2,9 +2,9 @@
 
 namespace TicketSaleCore.Models
 {
-    public class Status
+    public class OrderStatus
     {
-        public Status()
+        public OrderStatus()
         {
             Orders=new HashSet<Order>();
         }

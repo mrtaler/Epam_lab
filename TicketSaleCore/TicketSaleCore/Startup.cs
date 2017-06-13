@@ -20,6 +20,8 @@ using Microsoft.Extensions.Logging;
 using TicketSaleCore.Models;
 using TicketSaleCore.AuthorizationPolit.Password;
 using TicketSaleCore.Models.IdentityWithoutEF;
+using TicketSaleCore.Models.IRepository;
+using TicketSaleCore.Models._Memory;
 
 namespace TicketSaleCore
 {
@@ -87,9 +89,9 @@ namespace TicketSaleCore
             var roleStore = new RoleStoreWef();
 
           
-
             services.AddSingleton<IUserStore<AppUser>>(userStore);
             services.AddSingleton<IUserPasswordStore<AppUser>>(userStore);
+            services.AddSingleton<IUserRoleStore<AppUser>>(userStore);
             services.AddSingleton<IRoleStore<AppRole>>(roleStore);
 
             services.AddAuthentication();
@@ -115,17 +117,15 @@ namespace TicketSaleCore
                 // Add support for localizing strings in data annotations (e.g. validation messages)
                 .AddDataAnnotationsLocalization();
 
-            services.AddSingleton<ApplicationContext>();
-
-
-
+            services.AddScoped(typeof(IStorage), typeof(StorageMemory));
+           // services.AddScoped(typeof(IStorage), typeof(StorageMemory));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app,
             IHostingEnvironment env,
             ILoggerFactory loggerFactory,
-            ApplicationContext applicationContext)
+            IStorage applicationContext)
         {
             //Logger settings
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
@@ -171,13 +171,13 @@ namespace TicketSaleCore
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
 
-            var context = app.ApplicationServices.GetService<ApplicationContext>();
+            var context = applicationContext.GetRepository<ICityRepository>().All();
 
             #region DbInit
             //User&role Init 
               UserInit(app.ApplicationServices).Wait();
             //Db content init
-            AddTestData(applicationContext).Wait();
+           // AddTestData(applicationContext).Wait();
             #endregion
         }
 
@@ -220,11 +220,12 @@ namespace TicketSaleCore
             context.CityDbSet.Add(cityBrest);
             context.CityDbSet.Add(cityMogilev);
             #endregion
+           
             #region Order Status Table Init
 
-            var statusWaiting = new Status { StatusName = "Waiting for conformation" };
-            var statusConfirmed = new Status { StatusName = "Confirmed" };
-            var statusRejected = new Status { StatusName = "Rejected" };
+            var statusWaiting = new OrderStatus { StatusName = "Waiting for conformation" };
+            var statusConfirmed = new OrderStatus { StatusName = "Confirmed" };
+            var statusRejected = new OrderStatus { StatusName = "Rejected" };
 
             context.StatusDbSet.Add(statusWaiting);
             context.StatusDbSet.Add(statusConfirmed);
@@ -1419,7 +1420,7 @@ namespace TicketSaleCore
                 IdentityResult result = await userManager.CreateAsync(admin, password);
                 if (result.Succeeded)
                 {
-                //    await userManager.AddToRoleAsync(admin, "admin");
+                    await userManager.AddToRoleAsync(admin, "admin");
                 }
                 var users = new List<AppUser>
                 {

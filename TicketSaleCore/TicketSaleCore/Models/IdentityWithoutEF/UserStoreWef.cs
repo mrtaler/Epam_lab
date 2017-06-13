@@ -14,6 +14,7 @@ namespace TicketSaleCore.Models.IdentityWithoutEF
         IUserLoginStore<AppUser>,
         IUserRoleStore<AppUser>
         {
+        
         private static readonly List<AppUser> _users = new List<AppUser>();
 
         public Task<IdentityResult> CreateAsync(AppUser user, CancellationToken cancellationToken)
@@ -160,6 +161,7 @@ namespace TicketSaleCore.Models.IdentityWithoutEF
 
         public Task<IList<string>> GetRolesAsync(AppUser user, CancellationToken cancellationToken)
         {
+            //List<string> roles = userRolesTable.FindByUserId(user.Id);
 
             //if (user.Email.Equals("Admin"))
             //{
@@ -190,13 +192,34 @@ namespace TicketSaleCore.Models.IdentityWithoutEF
             if (String.IsNullOrEmpty(roleName))
                 throw new ArgumentNullException("roleName");
 
-            var result = await GetRolesAsync(user, cancellationToken);
+            if (user == null)
+            {
+                throw new ArgumentNullException("user");
+            }
 
-            if (result == null || result.Count == 0)
-                return false;
-
-            return result.Contains<string>(roleName);
-
+            if (user.UserName.Contains("Admin"))
+            {
+                if (String.Equals(roleName, "admin", StringComparison.CurrentCultureIgnoreCase))
+                {
+                    return await Task.FromResult<bool>(true);
+                }
+                else
+                {
+                    return await Task.FromResult<bool>(false);
+                }
+            }
+            if (user.UserName.Contains("User") )
+            {
+                if (String.Equals(roleName, "user", StringComparison.CurrentCultureIgnoreCase))
+                {
+                    return await Task.FromResult<bool>(true);
+                }
+                else
+                {
+                    return await Task.FromResult<bool>(false);
+                }
+            }
+            return await Task.FromResult<bool>(false);
         }
 
         public Task<IList<AppUser>> GetUsersInRoleAsync(string roleName, CancellationToken cancellationToken)

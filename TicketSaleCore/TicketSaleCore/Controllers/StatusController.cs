@@ -55,7 +55,7 @@ namespace TicketSaleCore.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,StatusName")] Status status)
+        public async Task<IActionResult> Create([Bind("Id,StatusName")] OrderStatus status)
         {
             if (ModelState.IsValid)
             {
@@ -87,7 +87,7 @@ namespace TicketSaleCore.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,StatusName")] Status status)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,StatusName")] OrderStatus status)
         {
             if (id != status.Id)
             {

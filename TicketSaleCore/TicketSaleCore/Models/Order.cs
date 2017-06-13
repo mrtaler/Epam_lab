@@ -12,7 +12,7 @@ namespace TicketSaleCore.Models
 
         public int Id { get; set; }
 
-        public virtual Status Status { get; set; }
+        public virtual OrderStatus Status { get; set; }
 
         public string TrackNo { get; set; }
 
