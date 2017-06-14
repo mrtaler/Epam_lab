@@ -10,20 +10,47 @@ using TicketSaleCore.Models.IRepository;
 
 namespace TicketSaleCore.Models
 {
-    public class ApplicationContext : IdentityDbContext<AppUser>, IStorageContext
+    public class ApplicationContext : IdentityDbContext<AppUser>, IUnitOfWork
     {
         public ApplicationContext(DbContextOptions<ApplicationContext> options)
             : base(options)
         {
         }
+        
+        public virtual DbSet<City> Citys { get; set; }
+        public virtual DbSet<Event> Events { get; set; }
+        public virtual DbSet<EventsType> EventsTypes { get; set; }
+        public virtual DbSet<Order> Orders { get; set; }
+        public virtual DbSet<OrderStatus> OrderStatuses { get; set; }
+        public virtual DbSet<Ticket> Tickets { get; set; }
+        public virtual DbSet<TicketsOrder> TicketsOrders { get; set; }
+        public virtual DbSet<Venue> Venues { get; set; }
 
-        public virtual DbSet<City> CityDbSet { get; set; }
-        public virtual DbSet<Event> EventDbSet { get; set; }
-        public virtual DbSet<Order> OrderDbSet { get; set; }
-        public virtual DbSet<Ticket> TicketDbSet { get; set; }
-        public virtual DbSet<Venue> VenueDbSet { get; set; }
-        public virtual DbSet<OrderStatus> StatusDbSet { get; set; }
-        public virtual DbSet<EventsType> EventsTypeDbSet { get; set; }
+        public virtual DbSet<AppRole> AppRoles { get; set; }
+
+        public virtual DbSet<AppUser> AppUsers { get; set; }
+        
+        //public IRepository<City> Citys { get; set; }
+
+        //public IRepository<Event> Events { get; set; }
+
+        //public IRepository<EventsType> EventsTypes { get; set; }
+
+        //public IRepository<Order> Orders { get; set; }
+
+        //public IRepository<OrderStatus> OrderStatuses { get; set; }
+
+        //public IRepository<Ticket> Tickets { get; set; }
+
+        //public IRepository<TicketsOrder> TicketsOrders { get; set; }
+
+        //public IRepository<Venue> Venues { get; set; }
+
+        //public IRepository<AppRole> AppRoles { get; set; }
+
+        //public IRepository<AppUser> AppUsers { get; set; }
+
+
         // public virtual DbSet<User> UserDbSet { get; set; }
         //  public virtual DbSet<TicketsOrder> TicketsOrderDbSet { get; set; }
         //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

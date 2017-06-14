@@ -12,18 +12,19 @@ using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.Http;
 using System.IO;
 using Microsoft.AspNetCore.Authorization;
+using TicketSaleCore.Models.IRepository;
 
 namespace TicketSaleCore.Controllers
 {
     [Authorize]
     public class EventsController : Controller
     {
-        private readonly ApplicationContext context;
+        private readonly IUnitOfWork context;
         private IHostingEnvironment appEnvironment;
         private IStringLocalizer<EventsController> localizer;
         private ILoggerFactory loggerFactory;
 
-        public EventsController(ApplicationContext context, IHostingEnvironment appEnvironment, IStringLocalizer<EventsController> localizer, ILoggerFactory loggerFactory)
+        public EventsController(IUnitOfWork context, IHostingEnvironment appEnvironment, IStringLocalizer<EventsController> localizer, ILoggerFactory loggerFactory)
         {
          this.appEnvironment = appEnvironment;
             this.localizer = localizer;
@@ -34,7 +35,7 @@ namespace TicketSaleCore.Controllers
         // GET: Events
         public async Task<IActionResult> Index()
         {
-            return View(await context.EventDbSet.ToListAsync());
+            return View(/*await*/ context.Events.GetAll());
         }
 
         // GET: Events/Details/5
@@ -45,8 +46,8 @@ namespace TicketSaleCore.Controllers
                 return NotFound();
             }
 
-            var @event = await context.EventDbSet
-                .SingleOrDefaultAsync(m => m.Id == id);
+            var @event = /*await*/ context.Events.GetAll()
+                .SingleOrDefault(m => m.Id == id);
             if (@event == null)
             {
                 return NotFound();
@@ -59,7 +60,7 @@ namespace TicketSaleCore.Controllers
         [Authorize(Roles = "admin")]
         public IActionResult Create()
         {
-            ViewData["VenueFk"] = new SelectList(context.VenueDbSet, "Id", "Address");
+            ViewData["VenueFk"] = new SelectList(context.Venues.GetAll(), "Id", "Address");
             return View();
         }
 
@@ -87,8 +88,8 @@ namespace TicketSaleCore.Controllers
                         @event.Banner = path;
                     }
 
-                    context.Add(@event);
-                    await context.SaveChangesAsync();
+                    context.Events.Add(@event);
+                    /*await*/ context.SaveChanged();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -105,7 +106,7 @@ namespace TicketSaleCore.Controllers
                 return RedirectToAction("Index");
             }
     
-            ViewData["VenueFk"] = new SelectList(context.VenueDbSet, "Id", "Address",@event.VenueId);
+            ViewData["VenueFk"] = new SelectList(context.Venues.GetAll(), "Id", "Address",@event.VenueId);
             return View(@event);
         }
 
@@ -118,7 +119,7 @@ namespace TicketSaleCore.Controllers
                 return NotFound();
             }
 
-            var @event = await context.EventDbSet.SingleOrDefaultAsync(m => m.Id == id);
+            var @event = /*await*/ context.Events.GetAll().SingleOrDefault(m => m.Id == id);
             if (@event == null)
             {
                 return NotFound();
@@ -153,8 +154,8 @@ namespace TicketSaleCore.Controllers
                         @event.Banner = path;
                     }
 
-                    context.Update(@event);
-                    await context.SaveChangesAsync();
+                    context.Events.Update(@event);
+                    /*await*/ context.SaveChanged();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -180,8 +181,8 @@ namespace TicketSaleCore.Controllers
                 return NotFound();
             }
 
-            var @event = await context.EventDbSet
-                .SingleOrDefaultAsync(m => m.Id == id);
+            var @event = /*await*/ context.Events.GetAll()
+                .SingleOrDefault(m => m.Id == id);
             if (@event == null)
             {
                 return NotFound();
@@ -196,15 +197,15 @@ namespace TicketSaleCore.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var @event = await context.EventDbSet.SingleOrDefaultAsync(m => m.Id == id);
-            context.EventDbSet.Remove(@event);
-            await context.SaveChangesAsync();
+            var @event = /*await*/ context.Events.GetAll().SingleOrDefault(m => m.Id == id);
+            context.Events.Remove(@event);
+            /*await*/ context.SaveChanged();
             return RedirectToAction("Index");
         }
 
         private bool EventExists(int id)
         {
-            return context.EventDbSet.Any(e => e.Id == id);
+            return context.Events.GetAll().Any(e => e.Id == id);
         }
     }
 }

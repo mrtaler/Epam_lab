@@ -8,6 +8,7 @@ using TicketSaleCore.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using TicketSaleCore.Models.IdentityWithoutEF;
+using TicketSaleCore.Models.IRepository;
 
 namespace TicketSaleCore.Controllers
 {
@@ -16,7 +17,7 @@ namespace TicketSaleCore.Controllers
     {
         private readonly ILogger logger;
         private readonly IStringLocalizer<UserTicketsController> localizer;
-        private readonly ApplicationContext context;
+        private readonly IUnitOfWork context;
         private readonly UserManager<AppUser> userManager;
         private readonly SignInManager<AppUser> signInManager;
 
@@ -24,7 +25,7 @@ namespace TicketSaleCore.Controllers
             SignInManager<AppUser> signInManager,
             IStringLocalizer<UserTicketsController> localizer,
             ILoggerFactory loggerFactory,
-            ApplicationContext context,
+            IUnitOfWork context,
             UserManager<AppUser> userManager)
         {
             this.userManager = userManager;
@@ -55,36 +56,35 @@ namespace TicketSaleCore.Controllers
                 userId = id ?? userManager.GetUserId(User);
 
                 //Find All User Selling Ticket
-                var applicationContext = context.TicketDbSet
+                var applicationContext = context.Tickets.GetAll()
 
                     .Where(p => p.Seller.Id == userId)
-                    .Where(z => z.Order == null)
-                    .Include(p => p.Event)
-                    .Include(p => p.Order)
-                    .Include(p => p.Seller).ToList();
+                    .Where(z => z.Order == null);
+                    //.Include(p => p.Event)
+                    //.Include(p => p.Order)
+                    //.Include(p => p.Seller).ToList();
 
                 //Find All User Selling Ticket Waiting for conformation
-                var waitConf = context.TicketDbSet
-                    .Include(p => p.Order)
-                        .ThenInclude(p => p.Status)
-                        .Include(z => z.Order.Buyer)
-                    .Include(p => p.Seller)
-                    .Include(p => p.Event)
+                var waitConf = context.Tickets.GetAll()
+                    //.Include(p => p.Order)
+                    //    .ThenInclude(p => p.Status)
+                    //    .Include(z => z.Order.Buyer)
+                    //.Include(p => p.Seller)
+                    //.Include(p => p.Event)
 
                     .Where(p => p.Seller.Id == userId)
                     .Where(p => p.Order.Status.StatusName=="Waiting for conformation")
                     .ToList();
-
-
+                
                 ViewData["WaitConf"] = waitConf;
 
                 //Find All User Selling Ticket Sold
-                var confirmed = context.TicketDbSet
-                    .Include(p => p.Order)
-                        .ThenInclude(p => p.Status)
-                        .Include(z=>z.Order.Buyer)
-                    .Include(p => p.Seller)
-                    .Include(p => p.Event)
+                var confirmed = context.Tickets.GetAll()
+                 //   .Include(p => p.Order)
+                 //      .ThenInclude(p => p.Status)
+                 //       .Include(z=>z.Order.Buyer)
+                 //   .Include(p => p.Seller)
+                 //   .Include(p => p.Event)
                     
                     .Where(p => p.Seller.Id == userId)
                     .Where(p => p.Order.Status.StatusName=="Confirmed")

@@ -10,6 +10,7 @@ using Microsoft.EntityFrameworkCore;
 using TicketSaleCore.Models;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Localization;
+using TicketSaleCore.Models.IRepository;
 
 namespace TicketSaleCore.Controllers
 {
@@ -18,12 +19,12 @@ namespace TicketSaleCore.Controllers
     {
         private readonly ILogger logger;
         private readonly IStringLocalizer<TicketsController> localizer;
-        private readonly ApplicationContext context;
+        private readonly IUnitOfWork context;
 
         public TicketsController(
             IStringLocalizer<TicketsController> localizer,
             ILoggerFactory loggerFactory,
-            ApplicationContext context)
+            IUnitOfWork context)
         {
             this.context = context;
             this.localizer = localizer;
@@ -37,19 +38,19 @@ namespace TicketSaleCore.Controllers
 
             if (id!=null)
             {
-                applicationContext = context.TicketDbSet
+                applicationContext = context.Tickets.GetAll()
                     .Where(p => p.EventId == id)
-                    .Where(p => p.Order == null)
-                    .Include(t => t.Event)
-                    .Include(t => t.Seller);
+                    .Where(p => p.Order == null);
+                    //.Include(t => t.Event)
+                    //.Include(t => t.Seller);
 
-                ViewData["CurentEvent"] = context.EventDbSet
-                    .Include(p => p.Venue).ThenInclude(z=>z.City).First(p=>p.Id==id);
+                ViewData["CurentEvent"] = context.Events.GetAll();
+                    //.Include(p => p.Venue).ThenInclude(z=>z.City).First(p=>p.Id==id);
 
             }
             else
             {
-               applicationContext = context.TicketDbSet.Include(t => t.Event).Include(t => t.Seller);
+               applicationContext = context.Tickets.GetAll();//.Include(t => t.Event).Include(t => t.Seller);
             }
           
 
@@ -69,10 +70,10 @@ namespace TicketSaleCore.Controllers
                 return NotFound();
             }
 
-            var ticket = await context.TicketDbSet
-                .Include(t => t.Event)
-                .Include(t => t.Seller)
-                .SingleOrDefaultAsync(m => m.Id == id);
+            var ticket = /*await*/ context.Tickets.GetAll().SingleOrDefault(m => m.Id == id);
+                //.Include(t => t.Event)
+                //.Include(t => t.Seller)
+                //.SingleOrDefaultAsync(m => m.Id == id);
             if (ticket == null)
             {
                 return NotFound();
@@ -86,8 +87,8 @@ namespace TicketSaleCore.Controllers
         public IActionResult Create(string returnUrl = null)
         {
             ViewData["ReturnUrl"] = @returnUrl;
-            ViewData["EventId"] = new SelectList(context.EventDbSet, "Id", "Id");
-            ViewData["SellerId"] = new SelectList(context.Users, "Id", "Id");
+            ViewData["EventId"] = new SelectList(context.Events.GetAll(), "Id", "Id");
+            ViewData["SellerId"] = new SelectList(context.AppUsers.GetAll(), "Id", "Id");
             return View();
         }
 
@@ -101,13 +102,13 @@ namespace TicketSaleCore.Controllers
         {
             if (ModelState.IsValid)
             {
-                context.Add(ticket);
-                await context.SaveChangesAsync();
+                context.Tickets.Add(ticket);
+                /*await*/ context.SaveChanged();
                 return RedirectToLocal(returnUrl);
             }
             ViewData["ReturnUrl"] = @returnUrl;
-            ViewData["EventId"] = new SelectList(context.EventDbSet, "Id", "Id", ticket.EventId);
-            ViewData["SellerId"] = new SelectList(context.Users, "Id", "Id", ticket.SellerId);
+            ViewData["EventId"] = new SelectList(context.Events.GetAll(), "Id", "Id", ticket.EventId);
+            ViewData["SellerId"] = new SelectList(context.AppUsers.GetAll(), "Id", "Id", ticket.SellerId);
             return View(ticket);
         }
 
@@ -122,14 +123,15 @@ namespace TicketSaleCore.Controllers
                 return NotFound();
             }
 
-            var ticket = await context.TicketDbSet.SingleOrDefaultAsync(m => m.Id == id);
+        //    var ticket = await context.TicketDbSet.SingleOrDefaultAsync(m => m.Id == id);
+            var ticket = /*await*/ context.Tickets.GetAll().SingleOrDefault(m => m.Id == id);
             if (ticket == null)
             {
                 return NotFound();
             }
             ViewData["ReturnUrl"] =@returnUrl;
-            ViewData["EventId"] = new SelectList(context.EventDbSet, "Id", "Id", ticket.EventId);
-            ViewData["SellerId"] = new SelectList(context.Users, "Id", "Id", ticket.SellerId);
+            ViewData["EventId"] = new SelectList(context.Events.GetAll(), "Id", "Id", ticket.EventId);
+            ViewData["SellerId"] = new SelectList(context.AppUsers.GetAll(), "Id", "Id", ticket.SellerId);
             return View(ticket);
         }
 
@@ -151,8 +153,8 @@ namespace TicketSaleCore.Controllers
             {
                 try
                 {
-                    context.Update(ticket);
-                    await context.SaveChangesAsync();
+                    context.Tickets.Update(ticket);
+                    /*await*/ context.SaveChanged();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -168,8 +170,8 @@ namespace TicketSaleCore.Controllers
                 //return RedirectToAction("Index");
                 return RedirectToLocal(returnUrl);
             }
-            ViewData["EventId"] = new SelectList(context.EventDbSet, "Id", "Id", ticket.EventId);
-            ViewData["SellerId"] = new SelectList(context.Users, "Id", "Id", ticket.SellerId);
+            ViewData["EventId"] = new SelectList(context.Events.GetAll(), "Id", "Id", ticket.EventId);
+            ViewData["SellerId"] = new SelectList(context.AppUsers.GetAll(), "Id", "Id", ticket.SellerId);
             return View(ticket);
         }
 
@@ -182,10 +184,10 @@ namespace TicketSaleCore.Controllers
                 return NotFound();
             }
 
-            var ticket = await context.TicketDbSet
-                .Include(t => t.Event)
-                .Include(t => t.Seller)
-                .SingleOrDefaultAsync(m => m.Id == id);
+            var ticket = /*await*/ context.Tickets.GetAll()
+              //  .Include(t => t.Event)
+              //  .Include(t => t.Seller)
+                .SingleOrDefault(m => m.Id == id);
             if (ticket == null)
             {
                 return NotFound();
@@ -200,15 +202,15 @@ namespace TicketSaleCore.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var ticket = await context.TicketDbSet.SingleOrDefaultAsync(m => m.Id == id);
-            context.TicketDbSet.Remove(ticket);
-            await context.SaveChangesAsync();
+            var ticket = /*await*/ context.Tickets.GetAll().SingleOrDefault(m => m.Id == id);
+            context.Tickets.Remove(ticket);
+            /*await*/ context.SaveChanged();
             return RedirectToAction("Index");
         }
 
         private bool TicketExists(int id)
         {
-            return context.TicketDbSet.Any(e => e.Id == id);
+            return context.Tickets.GetAll().Any(e => e.Id == id);
         }
         private IActionResult RedirectToLocal(string returnUrl)
         {
