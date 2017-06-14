@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using TicketSaleCore.Models.IdentityWithoutEF;
 
 namespace TicketSaleCore.Models
 {
@@ -11,12 +12,12 @@ namespace TicketSaleCore.Models
 
         public int Id { get; set; }
 
-        public virtual Status Status { get; set; }
+        public virtual OrderStatus Status { get; set; }
 
         public string TrackNo { get; set; }
 
         public string BuyerId { get; set; }
-        public virtual User Buyer { get; set; }
+        public virtual AppUser Buyer { get; set; }
 
         public  List<Ticket> OrderTickets { get; set; }
     }

@@ -17,7 +17,7 @@ namespace TicketSaleCore
                 (o) =>
                {
                    o.UseHttps(new X509Certificate2(@"Taler-WST.crt"));
-                  // o.UseHttps(new X509Certificate2(@"Tn.cer"));
+                 //  o.UseHttps(new X509Certificate2(@"Tn.cer"));
                })
                 .UseUrls("https://*:443")
                 .UseContentRoot(Directory.GetCurrentDirectory())

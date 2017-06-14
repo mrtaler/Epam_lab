@@ -7,15 +7,16 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using TicketSaleCore.Models;
+using TicketSaleCore.Models.IRepository;
 
 namespace TicketSaleCore.Controllers
 {
     [Authorize]
     public class CitiesController : Controller
     {
-        private readonly ApplicationContext context;
+        private readonly IUnitOfWork context;
 
-        public CitiesController(ApplicationContext context)
+        public CitiesController(IUnitOfWork context)
         {
             this.context = context;    
         }
@@ -23,7 +24,7 @@ namespace TicketSaleCore.Controllers
         // GET: Cities
         public async Task<IActionResult> Index()
         {
-            return View(await context.CityDbSet.ToListAsync());
+            return View(/*await*/ context.Citys);
         }
         [AllowAnonymous]
         // GET: Cities/Details/5
@@ -34,8 +35,8 @@ namespace TicketSaleCore.Controllers
                 return NotFound();
             }
 
-            var city = await context.CityDbSet
-                .SingleOrDefaultAsync(m => m.Id == id);
+            var city = /*await*/ context.Citys
+                .SingleOrDefault(m => m.Id == id);
             if (city == null)
             {
                 return NotFound();
@@ -60,8 +61,8 @@ namespace TicketSaleCore.Controllers
         {
             if (ModelState.IsValid)
             {
-                context.Add(city);
-                await context.SaveChangesAsync();
+                context.Citys.Add(city);
+                /*await*/ context.SaveChanges();
                 return RedirectToAction("Index");
             }
             return View(city);
@@ -75,7 +76,7 @@ namespace TicketSaleCore.Controllers
                 return NotFound();
             }
 
-            var city = await context.CityDbSet.SingleOrDefaultAsync(m => m.Id == id);
+            var city = /*await*/ context.Citys.SingleOrDefault(m => m.Id == id);
             if (city == null)
             {
                 return NotFound();
@@ -100,8 +101,8 @@ namespace TicketSaleCore.Controllers
             {
                 try
                 {
-                    context.Update(city);
-                    await context.SaveChangesAsync();
+                    context.Citys.Update(city);
+                    /*await*/ context.SaveChanges();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -127,8 +128,8 @@ namespace TicketSaleCore.Controllers
                 return NotFound();
             }
 
-            var city = await context.CityDbSet
-                .SingleOrDefaultAsync(m => m.Id == id);
+            var city = /*await*/ context.Citys
+                .SingleOrDefault(m => m.Id == id);
             if (city == null)
             {
                 return NotFound();
@@ -143,15 +144,16 @@ namespace TicketSaleCore.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var city = await context.CityDbSet.SingleOrDefaultAsync(m => m.Id == id);
-            context.CityDbSet.Remove(city);
-            await context.SaveChangesAsync();
+            var city = /*await*/ context.Citys
+                .SingleOrDefault(m => m.Id == id);
+            context.Citys.Remove(city);
+            /*await*/ context.SaveChanges();
             return RedirectToAction("Index");
         }
 
         private bool CityExists(int id)
         {
-            return context.CityDbSet.Any(e => e.Id == id);
+            return context.Citys.Any(e => e.Id == id);
         }
     }
 }

@@ -5,10 +5,11 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using TicketSaleCore.Models;
+using TicketSaleCore.Models.IdentityWithoutEF;
 
 namespace TicketSaleCore.AuthorizationPolit.Password
 {
-    public class CustomPasswordValidator : IPasswordValidator<User>
+    public class CustomPasswordValidator : IPasswordValidator<AppUser>
     {
         public int RequiredLength { get; set; } // минимальная длина
 
@@ -18,7 +19,7 @@ namespace TicketSaleCore.AuthorizationPolit.Password
         }
 
         public Task<IdentityResult> ValidateAsync
-            (UserManager<User> manager, User user, string password)
+            (UserManager<AppUser> manager, AppUser user, string password)
         {
             List<IdentityError> errors = new List<IdentityError>();
 

@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using TicketSaleCore.Models;
+using TicketSaleCore.Models.IdentityWithoutEF;
 using TicketSaleCore.ViewModels.ManageViewModels;
 
 namespace TicketSaleCore.Controllers
@@ -13,14 +14,14 @@ namespace TicketSaleCore.Controllers
     [Authorize]
     public class ManageController : Controller
     {
-        private readonly UserManager<User> userManager;
-        private readonly SignInManager<User> signInManager;
+        private readonly UserManager<AppUser> userManager;
+        private readonly SignInManager<AppUser> signInManager;
         private readonly string externalCookieScheme;
         private readonly ILogger logger;
 
         public ManageController(
-          UserManager<User> userManager,
-          SignInManager<User> signInManager,
+          UserManager<AppUser> userManager,
+          SignInManager<AppUser> signInManager,
           IOptions<IdentityCookieOptions> identityCookieOptions,
           ILoggerFactory loggerFactory)
         {
@@ -354,7 +355,7 @@ namespace TicketSaleCore.Controllers
             Error
         }
 
-        private Task<User> GetCurrentUserAsync()
+        private Task<AppUser> GetCurrentUserAsync()
         {
             return userManager.GetUserAsync(HttpContext.User);
         }

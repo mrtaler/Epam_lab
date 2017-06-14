@@ -19,6 +19,10 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using TicketSaleCore.Models;
 using TicketSaleCore.AuthorizationPolit.Password;
+using TicketSaleCore.Models.IdentityWithoutEF;
+using TicketSaleCore.Models.IRepository;
+using TicketSaleCore.Models._Ef;
+using TicketSaleCore.Models._Memory;
 
 namespace TicketSaleCore
 {
@@ -68,7 +72,7 @@ namespace TicketSaleCore
 
 
             //Add Pasword validator
-            services.AddTransient<IPasswordValidator<User>,
+            services.AddTransient<IPasswordValidator<AppUser>,
                 CustomPasswordValidator>(serv => new CustomPasswordValidator(5));
 
             //Add localizaion based on Resx files
@@ -78,13 +82,39 @@ namespace TicketSaleCore
             services.AddDbContext<ApplicationContext>(opt => opt.UseInMemoryDatabase());
             //Use existing DB
             /*
-             services.AddDbContext<ApplicationContext>(options =>
-               options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
-         */
+             *services.AddDbContext<ApplicationContext>(options =>
+             * options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+             */
+
+            //var userStore = new UserStoreWef();
+            //var roleStore = new RoleStoreWef();
+
+
+            // services.AddSingleton<IUserStore<AppUser>>(userStore);
+            // services.AddSingleton<IUserPasswordStore<AppUser>>(userStore);
+            // services.AddSingleton<IUserRoleStore<AppUser>>(userStore);
+            // services.AddSingleton<IRoleStore<IdentityRole>>(roleStore);
+
+            //  services.AddAuthentication();
+            //  services.AddAuthorization();
+
+            //https://github.com/timschreiber/Mvc5IdentityExample/tree/master/Mvc5IdentityExample
+            //http://techbrij.com/generic-repository-unit-of-work-entity-framework-unit-testing-asp-net-mvc
+            //https://aspnetboilerplate.com/Pages/Documents/Unit-Of-Work
+
+
             //Add Identity to services
-            services.AddIdentity<User, IdentityRole>()
-                .AddEntityFrameworkStores<ApplicationContext>()
+            services.AddIdentity<AppUser, IdentityRole>()
+               // .AddUserStore<UserStoreWef>()
+               // .AddRoleStore<RoleStoreWef>()
+                  .AddEntityFrameworkStores<ApplicationContext>()
                 .AddDefaultTokenProviders();
+
+
+            ////Add Identity to services
+            //services.AddIdentity<User, IdentityRole>()
+            //    //  .AddEntityFrameworkStores<ApplicationContext>()
+            //    .AddDefaultTokenProviders();
 
 
             services.AddMvc()
@@ -94,15 +124,17 @@ namespace TicketSaleCore
                 // Add support for localizing strings in data annotations (e.g. validation messages)
                 .AddDataAnnotationsLocalization();
 
+            services.AddSingleton<IUnitOfWork, ApplicationContext>(); 
+       // services.AddSingleton<IUnitOfWork, MemoryUnitOfWork>(); 
+           //  services.AddScoped(typeof(IStorage), typeof(StorageMemory));
+           // services.AddScoped(typeof(IStorage), typeof(StorageMemory));
+    }
 
-
-        }
-
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, 
+    // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+    public void Configure(IApplicationBuilder app,
             IHostingEnvironment env,
             ILoggerFactory loggerFactory,
-            ApplicationContext applicationContext)
+            IUnitOfWork applicationContext)
         {
             //Logger settings
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
@@ -148,6 +180,8 @@ namespace TicketSaleCore
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
 
+            var context = applicationContext;
+
             #region DbInit
             //User&role Init 
             UserInit(app.ApplicationServices).Wait();
@@ -156,7 +190,7 @@ namespace TicketSaleCore
             #endregion
         }
 
-        public async Task AddTestData(ApplicationContext context)
+        public async Task AddTestData(IUnitOfWork context)
         {
 
             #region EventsType
@@ -174,9 +208,9 @@ namespace TicketSaleCore
                 NameEventsType = "Sport"
             };
 
-            context.EventsTypeDbSet.Add(eventCinema);
-            context.EventsTypeDbSet.Add(eventTheater);
-            context.EventsTypeDbSet.Add(eventSport);
+            context.EventsTypes.Add(eventCinema);
+            context.EventsTypes.Add(eventTheater);
+            context.EventsTypes.Add(eventSport);
 
             #endregion
             #region City Table Init
@@ -188,22 +222,23 @@ namespace TicketSaleCore
             var cityBrest = new City { Name = "Brest" };
             var cityMogilev = new City { Name = "Mogilev" };
 
-            context.CityDbSet.Add(cityMinsk);
-            context.CityDbSet.Add(cityGomel);
-            context.CityDbSet.Add(cityGrodno);
-            context.CityDbSet.Add(cityVitebsk);
-            context.CityDbSet.Add(cityBrest);
-            context.CityDbSet.Add(cityMogilev);
+            context.Citys.Add(cityMinsk);
+            context.Citys.Add(cityGomel);
+            context.Citys.Add(cityGrodno);
+            context.Citys.Add(cityVitebsk);
+            context.Citys.Add(cityBrest);
+            context.Citys.Add(cityMogilev);
             #endregion
+
             #region Order Status Table Init
 
-            var statusWaiting = new Status {StatusName = "Waiting for conformation"};
-            var statusConfirmed = new Status {StatusName = "Confirmed"};
-            var statusRejected = new Status {StatusName = "Rejected"};
+            var statusWaiting = new OrderStatus { StatusName = "Waiting for conformation" };
+            var statusConfirmed = new OrderStatus { StatusName = "Confirmed" };
+            var statusRejected = new OrderStatus { StatusName = "Rejected" };
 
-            context.StatusDbSet.Add(statusWaiting);
-            context.StatusDbSet.Add(statusConfirmed);
-            context.StatusDbSet.Add(statusRejected);
+            context.OrderStatuses.Add(statusWaiting);
+            context.OrderStatuses.Add(statusConfirmed);
+            context.OrderStatuses.Add(statusRejected);
             #endregion
 
             var eventRandomDays = new Random(DateTime.Now.Millisecond);
@@ -357,16 +392,16 @@ namespace TicketSaleCore
                     City = cityMogilev
                 }
             };
-            context.EventDbSet.Add(cinemaEventMinsk1);
-            context.EventDbSet.Add(cinemaEventMinsk2);
-            context.EventDbSet.Add(cinemaEventGomel1);
-            context.EventDbSet.Add(cinemaEventGrodno1);
-            context.EventDbSet.Add(cinemaEventVitebsk1);
-            context.EventDbSet.Add(cinemaEventBrest1);
-            context.EventDbSet.Add(cinemaEventMogilev1);
-            context.EventDbSet.Add(cinemaEventGomel2);
-            context.EventDbSet.Add(cinemaEventGomel3);
-            context.EventDbSet.Add(cinemaEventGrodno2);
+            context.Events.Add(cinemaEventMinsk1);
+            context.Events.Add(cinemaEventMinsk2);
+            context.Events.Add(cinemaEventGomel1);
+            context.Events.Add(cinemaEventGrodno1);
+            context.Events.Add(cinemaEventVitebsk1);
+            context.Events.Add(cinemaEventBrest1);
+            context.Events.Add(cinemaEventMogilev1);
+            context.Events.Add(cinemaEventGomel2);
+            context.Events.Add(cinemaEventGomel3);
+            context.Events.Add(cinemaEventGrodno2);
             #endregion
             #region TheaterEvent
             //minsk
@@ -459,18 +494,56 @@ namespace TicketSaleCore
             };
 
 
-            context.EventDbSet.Add(theaterEventMinsk1);
-            context.EventDbSet.Add(theaterEventMinsk2);
-            context.EventDbSet.Add(theaterEventGomel1);
-            context.EventDbSet.Add(theaterEventGomel2);
-            context.EventDbSet.Add(theaterEventGrodno1);
-            context.EventDbSet.Add(theaterEventVitebsk1);
+            context.Events.Add(theaterEventMinsk1);
+            context.Events.Add(theaterEventMinsk2);
+            context.Events.Add(theaterEventGomel1);
+            context.Events.Add(theaterEventGomel2);
+            context.Events.Add(theaterEventGrodno1);
+            context.Events.Add(theaterEventVitebsk1);
             #endregion
             #endregion
 
-            User user1 = context.Users.First(p => p.Email.Equals("User1"));
-            User user2 = context.Users.First(p => p.Email.Equals("User2"));
-            User user3 = context.Users.First(p => p.Email.Equals("User3"));
+            //AppUser user1 = new AppUser
+            //{
+            //    Email = "User1",
+            //    UserName = "User1",
+            //    EmailConfirmed = true,
+            //    FirstName = "Firstname1",
+            //    LastName = "LastName1",
+            //    Localization = "ru-RU",
+            //    Address = "adress1",
+            //    PhoneNumber = "5-53-53-56"
+            //};
+            //AppUser user2 = new AppUser
+            //{
+            //    Email = "User2",
+            //    UserName = "User2",
+            //    EmailConfirmed = true,
+            //    FirstName = "Firstname2",
+            //    LastName = "LastName2",
+            //    Localization = "ru-RU",
+            //    Address = "adress2",
+            //    PhoneNumber = "5-53-53-56"
+            //};
+            //AppUser user3 = new AppUser
+            //{
+            //    Email = "User3",
+            //    UserName = "User3",
+            //    EmailConfirmed = true,
+            //    FirstName = "Firstname3",
+            //    LastName = "LastName3",
+            //    Localization = "ru-RU",
+            //    Address = "adress3",
+            //    PhoneNumber = "5-53-53-56"
+            //};
+
+            //context.AppUsers.Add(user1);
+            //context.AppUsers.Add(user2);
+            //context.AppUsers.Add(user3);
+
+            AppUser user1 = context.AppUsers.ToList().First(p => p.Email.Equals("User1"));
+            AppUser user2 = context.AppUsers.ToList().First(p => p.Email.Equals("User2"));
+            AppUser user3 = context.AppUsers.ToList().First(p => p.Email.Equals("User3"));
 
             #region Tikets Table Init
 
@@ -484,7 +557,7 @@ namespace TicketSaleCore
                 Seller = user1,
                 SellerNotes = "ticket1CinemaEventMinsk1 seller User 1",
                 Order = null
-                
+
             };
             var ticket2CinemaEventMinsk1 = new Ticket
             {
@@ -526,12 +599,12 @@ namespace TicketSaleCore
                 SellerNotes = "ticket6CinemaEventMinsk1 seller User 3",
                 Order = null
             };
-            context.TicketDbSet.Add(ticket1CinemaEventMinsk1);
-            context.TicketDbSet.Add(ticket2CinemaEventMinsk1);
-            context.TicketDbSet.Add(ticket3CinemaEventMinsk1);
-            context.TicketDbSet.Add(ticket4CinemaEventMinsk1);
-            context.TicketDbSet.Add(ticket5CinemaEventMinsk1);
-            context.TicketDbSet.Add(ticket6CinemaEventMinsk1);
+            context.Tickets.Add(ticket1CinemaEventMinsk1);
+            context.Tickets.Add(ticket2CinemaEventMinsk1);
+            context.Tickets.Add(ticket3CinemaEventMinsk1);
+            context.Tickets.Add(ticket4CinemaEventMinsk1);
+            context.Tickets.Add(ticket5CinemaEventMinsk1);
+            context.Tickets.Add(ticket6CinemaEventMinsk1);
             #endregion
             #region ticket for cinemaEventMinsk2
             var ticket1CinemaEventMinsk2 = new Ticket
@@ -577,12 +650,12 @@ namespace TicketSaleCore
                 SellerNotes = "ticket6CinemaEventMinsk2 seller User 3"
             };
 
-            context.TicketDbSet.Add(ticket1CinemaEventMinsk2);
-            context.TicketDbSet.Add(ticket2CinemaEventMinsk2);
-            context.TicketDbSet.Add(ticket3CinemaEventMinsk2);
-            context.TicketDbSet.Add(ticket4CinemaEventMinsk2);
-            context.TicketDbSet.Add(ticket5CinemaEventMinsk2);
-            context.TicketDbSet.Add(ticket6CinemaEventMinsk2);
+            context.Tickets.Add(ticket1CinemaEventMinsk2);
+            context.Tickets.Add(ticket2CinemaEventMinsk2);
+            context.Tickets.Add(ticket3CinemaEventMinsk2);
+            context.Tickets.Add(ticket4CinemaEventMinsk2);
+            context.Tickets.Add(ticket5CinemaEventMinsk2);
+            context.Tickets.Add(ticket6CinemaEventMinsk2);
             #endregion
 
             #region ticket for cinemaEventGomel1
@@ -629,12 +702,12 @@ namespace TicketSaleCore
                 SellerNotes = "ticket6CinemaEventGomel1 seller User 3"
             };
 
-            context.TicketDbSet.Add(ticket1CinemaEventGomel1);
-            context.TicketDbSet.Add(ticket2CinemaEventGomel1);
-            context.TicketDbSet.Add(ticket3CinemaEventGomel1);
-            context.TicketDbSet.Add(ticket4CinemaEventGomel1);
-            context.TicketDbSet.Add(ticket5CinemaEventGomel1);
-            context.TicketDbSet.Add(ticket6CinemaEventGomel1);
+            context.Tickets.Add(ticket1CinemaEventGomel1);
+            context.Tickets.Add(ticket2CinemaEventGomel1);
+            context.Tickets.Add(ticket3CinemaEventGomel1);
+            context.Tickets.Add(ticket4CinemaEventGomel1);
+            context.Tickets.Add(ticket5CinemaEventGomel1);
+            context.Tickets.Add(ticket6CinemaEventGomel1);
 
             #endregion
             #region ticket for cinemaEventGomel2
@@ -681,12 +754,12 @@ namespace TicketSaleCore
                 SellerNotes = "ticket6CinemaEventGomel2 seller User 3"
             };
 
-            context.TicketDbSet.Add(ticket1CinemaEventGomel2);
-            context.TicketDbSet.Add(ticket2CinemaEventGomel2);
-            context.TicketDbSet.Add(ticket3CinemaEventGomel2);
-            context.TicketDbSet.Add(ticket4CinemaEventGomel2);
-            context.TicketDbSet.Add(ticket5CinemaEventGomel2);
-            context.TicketDbSet.Add(ticket6CinemaEventGomel2);
+            context.Tickets.Add(ticket1CinemaEventGomel2);
+            context.Tickets.Add(ticket2CinemaEventGomel2);
+            context.Tickets.Add(ticket3CinemaEventGomel2);
+            context.Tickets.Add(ticket4CinemaEventGomel2);
+            context.Tickets.Add(ticket5CinemaEventGomel2);
+            context.Tickets.Add(ticket6CinemaEventGomel2);
 
             #endregion
             #region ticket for cinemaEventGomel3
@@ -732,12 +805,12 @@ namespace TicketSaleCore
                 Seller = user3,
                 SellerNotes = "ticket6CinemaEventGomel3 seller User 3"
             };
-            context.TicketDbSet.Add(ticket1CinemaEventGomel3);
-            context.TicketDbSet.Add(ticket2CinemaEventGomel3);
-            context.TicketDbSet.Add(ticket3CinemaEventGomel3);
-            context.TicketDbSet.Add(ticket4CinemaEventGomel3);
-            context.TicketDbSet.Add(ticket5CinemaEventGomel3);
-            context.TicketDbSet.Add(ticket6CinemaEventGomel3);
+            context.Tickets.Add(ticket1CinemaEventGomel3);
+            context.Tickets.Add(ticket2CinemaEventGomel3);
+            context.Tickets.Add(ticket3CinemaEventGomel3);
+            context.Tickets.Add(ticket4CinemaEventGomel3);
+            context.Tickets.Add(ticket5CinemaEventGomel3);
+            context.Tickets.Add(ticket6CinemaEventGomel3);
 
             #endregion
 
@@ -785,12 +858,12 @@ namespace TicketSaleCore
                 SellerNotes = "ticket6CinemaEventGrodno1 seller User 3"
             };
 
-            context.TicketDbSet.Add(ticket1CinemaEventGrodno1);
-            context.TicketDbSet.Add(ticket2CinemaEventGrodno1);
-            context.TicketDbSet.Add(ticket3CinemaEventGrodno1);
-            context.TicketDbSet.Add(ticket4CinemaEventGrodno1);
-            context.TicketDbSet.Add(ticket5CinemaEventGrodno1);
-            context.TicketDbSet.Add(ticket6CinemaEventGrodno1);
+            context.Tickets.Add(ticket1CinemaEventGrodno1);
+            context.Tickets.Add(ticket2CinemaEventGrodno1);
+            context.Tickets.Add(ticket3CinemaEventGrodno1);
+            context.Tickets.Add(ticket4CinemaEventGrodno1);
+            context.Tickets.Add(ticket5CinemaEventGrodno1);
+            context.Tickets.Add(ticket6CinemaEventGrodno1);
 
             #endregion
             #region ticket for cinemaEventGrodno2
@@ -837,12 +910,12 @@ namespace TicketSaleCore
                 SellerNotes = "ticket6CinemaEventGrodno2 seller User 3"
             };
 
-            context.TicketDbSet.Add(ticket1CinemaEventGrodno2);
-            context.TicketDbSet.Add(ticket2CinemaEventGrodno2);
-            context.TicketDbSet.Add(ticket3CinemaEventGrodno2);
-            context.TicketDbSet.Add(ticket4CinemaEventGrodno2);
-            context.TicketDbSet.Add(ticket5CinemaEventGrodno2);
-            context.TicketDbSet.Add(ticket6CinemaEventGrodno2);
+            context.Tickets.Add(ticket1CinemaEventGrodno2);
+            context.Tickets.Add(ticket2CinemaEventGrodno2);
+            context.Tickets.Add(ticket3CinemaEventGrodno2);
+            context.Tickets.Add(ticket4CinemaEventGrodno2);
+            context.Tickets.Add(ticket5CinemaEventGrodno2);
+            context.Tickets.Add(ticket6CinemaEventGrodno2);
             #endregion
 
             #region ticket for cinemaEventVitebsk1
@@ -889,12 +962,12 @@ namespace TicketSaleCore
                 SellerNotes = "ticket6CinemaEventVitebsk1 seller User 3"
             };
 
-            context.TicketDbSet.Add(ticket1CinemaEventVitebsk1);
-            context.TicketDbSet.Add(ticket2CinemaEventVitebsk1);
-            context.TicketDbSet.Add(ticket3CinemaEventVitebsk1);
-            context.TicketDbSet.Add(ticket4CinemaEventVitebsk1);
-            context.TicketDbSet.Add(ticket5CinemaEventVitebsk1);
-            context.TicketDbSet.Add(ticket6CinemaEventVitebsk1);
+            context.Tickets.Add(ticket1CinemaEventVitebsk1);
+            context.Tickets.Add(ticket2CinemaEventVitebsk1);
+            context.Tickets.Add(ticket3CinemaEventVitebsk1);
+            context.Tickets.Add(ticket4CinemaEventVitebsk1);
+            context.Tickets.Add(ticket5CinemaEventVitebsk1);
+            context.Tickets.Add(ticket6CinemaEventVitebsk1);
             #endregion
 
             #region ticket for cinemaEventBrest1
@@ -942,12 +1015,12 @@ namespace TicketSaleCore
                 SellerNotes = "ticket6CinemaEventBrest1 seller User 3"
             };
 
-            context.TicketDbSet.Add(ticket1CinemaEventBrest1);
-            context.TicketDbSet.Add(ticket2CinemaEventBrest1);
-            context.TicketDbSet.Add(ticket3CinemaEventBrest1);
-            context.TicketDbSet.Add(ticket4CinemaEventBrest1);
-            context.TicketDbSet.Add(ticket5CinemaEventBrest1);
-            context.TicketDbSet.Add(ticket6CinemaEventBrest1);
+            context.Tickets.Add(ticket1CinemaEventBrest1);
+            context.Tickets.Add(ticket2CinemaEventBrest1);
+            context.Tickets.Add(ticket3CinemaEventBrest1);
+            context.Tickets.Add(ticket4CinemaEventBrest1);
+            context.Tickets.Add(ticket5CinemaEventBrest1);
+            context.Tickets.Add(ticket6CinemaEventBrest1);
             #endregion
 
             #region ticket for cinemaEventMogilev1
@@ -995,12 +1068,12 @@ namespace TicketSaleCore
                 SellerNotes = "ticket6CinemaEventMogilev1 seller User 3"
             };
 
-            context.TicketDbSet.Add(ticket1CinemaEventMogilev1);
-            context.TicketDbSet.Add(ticket2CinemaEventMogilev1);
-            context.TicketDbSet.Add(ticket3CinemaEventMogilev1);
-            context.TicketDbSet.Add(ticket4CinemaEventMogilev1);
-            context.TicketDbSet.Add(ticket5CinemaEventMogilev1);
-            context.TicketDbSet.Add(ticket6CinemaEventMogilev1);
+            context.Tickets.Add(ticket1CinemaEventMogilev1);
+            context.Tickets.Add(ticket2CinemaEventMogilev1);
+            context.Tickets.Add(ticket3CinemaEventMogilev1);
+            context.Tickets.Add(ticket4CinemaEventMogilev1);
+            context.Tickets.Add(ticket5CinemaEventMogilev1);
+            context.Tickets.Add(ticket6CinemaEventMogilev1);
 
             #endregion
 
@@ -1048,12 +1121,12 @@ namespace TicketSaleCore
                 SellerNotes = "ticket6TheaterEventMinsk1 seller User 3"
             };
 
-            context.TicketDbSet.Add(ticket1TheaterEventMinsk1);
-            context.TicketDbSet.Add(ticket2TheaterEventMinsk1);
-            context.TicketDbSet.Add(ticket3TheaterEventMinsk1);
-            context.TicketDbSet.Add(ticket4TheaterEventMinsk1);
-            context.TicketDbSet.Add(ticket5TheaterEventMinsk1);
-            context.TicketDbSet.Add(ticket6TheaterEventMinsk1);
+            context.Tickets.Add(ticket1TheaterEventMinsk1);
+            context.Tickets.Add(ticket2TheaterEventMinsk1);
+            context.Tickets.Add(ticket3TheaterEventMinsk1);
+            context.Tickets.Add(ticket4TheaterEventMinsk1);
+            context.Tickets.Add(ticket5TheaterEventMinsk1);
+            context.Tickets.Add(ticket6TheaterEventMinsk1);
 
             #endregion
             #region ticket for theaterEventMinsk2
@@ -1100,12 +1173,12 @@ namespace TicketSaleCore
                 SellerNotes = "ticket6TheaterEventMinsk2 seller User 3"
             };
 
-            context.TicketDbSet.Add(ticket1TheaterEventMinsk2);
-            context.TicketDbSet.Add(ticket2TheaterEventMinsk2);
-            context.TicketDbSet.Add(ticket3TheaterEventMinsk2);
-            context.TicketDbSet.Add(ticket4TheaterEventMinsk2);
-            context.TicketDbSet.Add(ticket5TheaterEventMinsk2);
-            context.TicketDbSet.Add(ticket6TheaterEventMinsk2);
+            context.Tickets.Add(ticket1TheaterEventMinsk2);
+            context.Tickets.Add(ticket2TheaterEventMinsk2);
+            context.Tickets.Add(ticket3TheaterEventMinsk2);
+            context.Tickets.Add(ticket4TheaterEventMinsk2);
+            context.Tickets.Add(ticket5TheaterEventMinsk2);
+            context.Tickets.Add(ticket6TheaterEventMinsk2);
 
             #endregion
 
@@ -1153,12 +1226,12 @@ namespace TicketSaleCore
                 SellerNotes = "ticket6TheaterEventGomel1 seller User 3"
             };
 
-            context.TicketDbSet.Add(ticket1TheaterEventGomel1);
-            context.TicketDbSet.Add(ticket2TheaterEventGomel1);
-            context.TicketDbSet.Add(ticket3TheaterEventGomel1);
-            context.TicketDbSet.Add(ticket4TheaterEventGomel1);
-            context.TicketDbSet.Add(ticket5TheaterEventGomel1);
-            context.TicketDbSet.Add(ticket6TheaterEventGomel1);
+            context.Tickets.Add(ticket1TheaterEventGomel1);
+            context.Tickets.Add(ticket2TheaterEventGomel1);
+            context.Tickets.Add(ticket3TheaterEventGomel1);
+            context.Tickets.Add(ticket4TheaterEventGomel1);
+            context.Tickets.Add(ticket5TheaterEventGomel1);
+            context.Tickets.Add(ticket6TheaterEventGomel1);
             #endregion
             #region ticket for theaterEventGomel2
             var ticket1TheaterEventGomel2 = new Ticket
@@ -1204,12 +1277,12 @@ namespace TicketSaleCore
                 SellerNotes = "ticket6TheaterEventGomel2 seller User 3"
             };
 
-            context.TicketDbSet.Add(ticket1TheaterEventGomel2);
-            context.TicketDbSet.Add(ticket2TheaterEventGomel2);
-            context.TicketDbSet.Add(ticket3TheaterEventGomel2);
-            context.TicketDbSet.Add(ticket4TheaterEventGomel2);
-            context.TicketDbSet.Add(ticket5TheaterEventGomel2);
-            context.TicketDbSet.Add(ticket6TheaterEventGomel2);
+            context.Tickets.Add(ticket1TheaterEventGomel2);
+            context.Tickets.Add(ticket2TheaterEventGomel2);
+            context.Tickets.Add(ticket3TheaterEventGomel2);
+            context.Tickets.Add(ticket4TheaterEventGomel2);
+            context.Tickets.Add(ticket5TheaterEventGomel2);
+            context.Tickets.Add(ticket6TheaterEventGomel2);
             #endregion
 
             #region ticket for theaterEventGrodno1
@@ -1256,12 +1329,12 @@ namespace TicketSaleCore
                 SellerNotes = "ticket6TheaterEventGrodno1 seller User 3"
             };
 
-            context.TicketDbSet.Add(ticket1TheaterEventGrodno1);
-            context.TicketDbSet.Add(ticket2TheaterEventGrodno1);
-            context.TicketDbSet.Add(ticket3TheaterEventGrodno1);
-            context.TicketDbSet.Add(ticket4TheaterEventGrodno1);
-            context.TicketDbSet.Add(ticket5TheaterEventGrodno1);
-            context.TicketDbSet.Add(ticket6TheaterEventGrodno1);
+            context.Tickets.Add(ticket1TheaterEventGrodno1);
+            context.Tickets.Add(ticket2TheaterEventGrodno1);
+            context.Tickets.Add(ticket3TheaterEventGrodno1);
+            context.Tickets.Add(ticket4TheaterEventGrodno1);
+            context.Tickets.Add(ticket5TheaterEventGrodno1);
+            context.Tickets.Add(ticket6TheaterEventGrodno1);
             #endregion
 
             #region ticket for theaterEventVitebsk1
@@ -1308,12 +1381,12 @@ namespace TicketSaleCore
                 SellerNotes = "ticket6TheaterEventVitebsk1 seller User 3"
             };
 
-            context.TicketDbSet.Add(ticket1TheaterEventVitebsk1);
-            context.TicketDbSet.Add(ticket2TheaterEventVitebsk1);
-            context.TicketDbSet.Add(ticket3TheaterEventVitebsk1);
-            context.TicketDbSet.Add(ticket4TheaterEventVitebsk1);
-            context.TicketDbSet.Add(ticket5TheaterEventVitebsk1);
-            context.TicketDbSet.Add(ticket6TheaterEventVitebsk1);
+            context.Tickets.Add(ticket1TheaterEventVitebsk1);
+            context.Tickets.Add(ticket2TheaterEventVitebsk1);
+            context.Tickets.Add(ticket3TheaterEventVitebsk1);
+            context.Tickets.Add(ticket4TheaterEventVitebsk1);
+            context.Tickets.Add(ticket5TheaterEventVitebsk1);
+            context.Tickets.Add(ticket6TheaterEventVitebsk1);
             #endregion
 
 
@@ -1322,7 +1395,7 @@ namespace TicketSaleCore
             #region Order Table Init
             var order1 = new Order
             {
-                Buyer = user1,  
+                Buyer = user1,
                 Status = statusWaiting,
                 OrderTickets = new List<Ticket>
                 {
@@ -1346,18 +1419,18 @@ namespace TicketSaleCore
             };
 
 
-            context.OrderDbSet.Add(order1);
-            context.OrderDbSet.Add(order2);
+            context.Orders.Add(order1);
+            context.Orders.Add(order2);
             #endregion
-            context.SaveChangesAsync();
+              context.SaveChanges();
         }
 
         public async Task UserInit(IServiceProvider serviceProvider)
         {
 
 
-            UserManager<User> userManager =
-                serviceProvider.GetRequiredService<UserManager<User>>();
+            UserManager<AppUser> userManager =
+                serviceProvider.GetRequiredService<UserManager<AppUser>>();
             RoleManager<IdentityRole> roleManager =
                 serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
 
@@ -1373,15 +1446,15 @@ namespace TicketSaleCore
             }
             if (await userManager.FindByNameAsync(adminEmail) == null)
             {
-                User admin = new User { Email = adminEmail, UserName = adminEmail, EmailConfirmed = true };
+                AppUser admin = new AppUser { Email = adminEmail, UserName = adminEmail, EmailConfirmed = true };
                 IdentityResult result = await userManager.CreateAsync(admin, password);
                 if (result.Succeeded)
                 {
                     await userManager.AddToRoleAsync(admin, "admin");
                 }
-                var users = new List<User>
+                var users = new List<AppUser>
                 {
-                    new User
+                    new AppUser
                     {
                         Email = "User1",
                         UserName = "User1",
@@ -1392,7 +1465,7 @@ namespace TicketSaleCore
                         Address = "adress1",
                         PhoneNumber = "5-53-53-56"
                     },
-                    new User
+                    new AppUser
                     {
                         Email = "User2",
                         UserName = "User2",
@@ -1403,7 +1476,7 @@ namespace TicketSaleCore
                         Address = "adress2",
                         PhoneNumber = "5-53-53-56"
                     },
-                    new User
+                    new AppUser
                     {
                         Email = "User3",
                         UserName = "User3",
@@ -1422,7 +1495,7 @@ namespace TicketSaleCore
                     IdentityResult result1 = await userManager.CreateAsync(item, item.Email);
                     if (result1.Succeeded)
                     {
-                        await userManager.AddToRoleAsync(item, "user");
+                          await userManager.AddToRoleAsync(item, "user");
                     }
                 }
             }
