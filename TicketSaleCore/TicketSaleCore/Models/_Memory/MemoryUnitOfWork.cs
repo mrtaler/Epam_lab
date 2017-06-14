@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using TicketSaleCore.Models.IdentityWithoutEF;
 using TicketSaleCore.Models.IRepository;
@@ -16,9 +17,9 @@ namespace TicketSaleCore.Models._Memory
         DbSet<EventsType> eventsTypes;
         DbSet<OrderStatus> orderStatuses;
         DbSet<Ticket> tickets;
-        DbSet<TicketsOrder> ticketsOrders;
+        //DbSet<TicketsOrder> ticketsOrders;
         DbSet<Venue> venues;
-        DbSet<AppRole> appRoles;
+        DbSet<IdentityRole> appRoles;
         DbSet<AppUser> appUsers;
 
 
@@ -31,9 +32,9 @@ namespace TicketSaleCore.Models._Memory
             eventsTypes = new MemoryGenericRepository<EventsType>();
             orderStatuses = new MemoryGenericRepository<OrderStatus>();
             tickets = new MemoryGenericRepository<Ticket>();
-            ticketsOrders = new MemoryGenericRepository<TicketsOrder>();
+            //ticketsOrders = new MemoryGenericRepository<TicketsOrder>();
             venues = new MemoryGenericRepository<Venue>();
-            appRoles = new MemoryGenericRepository<AppRole>();
+            appRoles = new MemoryGenericRepository<IdentityRole>();
             appUsers = new MemoryGenericRepository<AppUser>();
 
 
@@ -53,16 +54,17 @@ namespace TicketSaleCore.Models._Memory
 
         public DbSet<Ticket> Tickets => tickets ?? (tickets = new MemoryGenericRepository<Ticket>());
 
-        public DbSet<TicketsOrder> TicketsOrders => ticketsOrders ?? (ticketsOrders = new MemoryGenericRepository<TicketsOrder>());
+        //public DbSet<TicketsOrder> TicketsOrders => ticketsOrders ?? (ticketsOrders = new MemoryGenericRepository<TicketsOrder>());
 
         public DbSet<Venue> Venues => venues ?? (venues = new MemoryGenericRepository<Venue>());
 
-        public DbSet<AppRole> AppRoles => appRoles ?? (appRoles = new MemoryGenericRepository<AppRole>());
+        public DbSet<IdentityRole> AppRoles => appRoles ?? (appRoles = new MemoryGenericRepository<IdentityRole>());
 
         public DbSet<AppUser> AppUsers => appUsers ?? (appUsers = new MemoryGenericRepository<AppUser>());
 
-        public void SaveChanges()
+        public int SaveChanges()
         {
+            return 1;
         }
 
     }

@@ -23,11 +23,9 @@ namespace TicketSaleCore.Models
         public virtual DbSet<Order> Orders { get; set; }
         public virtual DbSet<OrderStatus> OrderStatuses { get; set; }
         public virtual DbSet<Ticket> Tickets { get; set; }
-        public virtual DbSet<TicketsOrder> TicketsOrders { get; set; }
+        //public virtual DbSet<TicketsOrder> TicketsOrders { get; set; }
         public virtual DbSet<Venue> Venues { get; set; }
-
-        public virtual DbSet<AppRole> AppRoles { get; set; }
-
+       // public virtual DbSet<AppRole> AppRoles { get; set; }
         public virtual DbSet<AppUser> AppUsers { get; set; }
         
         //public IRepository<City> Citys { get; set; }

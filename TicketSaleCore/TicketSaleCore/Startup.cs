@@ -86,14 +86,14 @@ namespace TicketSaleCore
              * options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
              */
 
-            var userStore = new UserStoreWef();
-            var roleStore = new RoleStoreWef();
+            //var userStore = new UserStoreWef();
+            //var roleStore = new RoleStoreWef();
 
 
             // services.AddSingleton<IUserStore<AppUser>>(userStore);
             // services.AddSingleton<IUserPasswordStore<AppUser>>(userStore);
             // services.AddSingleton<IUserRoleStore<AppUser>>(userStore);
-            // services.AddSingleton<IRoleStore<AppRole>>(roleStore);
+            // services.AddSingleton<IRoleStore<IdentityRole>>(roleStore);
 
             //  services.AddAuthentication();
             //  services.AddAuthorization();
@@ -104,10 +104,10 @@ namespace TicketSaleCore
 
 
             //Add Identity to services
-            services.AddIdentity<AppUser, AppRole>()
-                .AddUserStore<UserStoreWef>()
-                .AddRoleStore<RoleStoreWef>()
-             //     .AddEntityFrameworkStores<EFUnitOfWork>()
+            services.AddIdentity<AppUser, IdentityRole>()
+               // .AddUserStore<UserStoreWef>()
+               // .AddRoleStore<RoleStoreWef>()
+                  .AddEntityFrameworkStores<ApplicationContext>()
                 .AddDefaultTokenProviders();
 
 
@@ -123,16 +123,15 @@ namespace TicketSaleCore
                     opts => { opts.ResourcesPath = "Resources"; })
                 // Add support for localizing strings in data annotations (e.g. validation messages)
                 .AddDataAnnotationsLocalization();
-            //services.AddSingleton<IUnitOfWork, MemoryUnitOfWork>();
 
-            services.AddSingleton<IUnitOfWork,ApplicationContext>();
-            
-            //  services.AddScoped(typeof(IStorage), typeof(StorageMemory));
-            // services.AddScoped(typeof(IStorage), typeof(StorageMemory));
-        }
+            services.AddSingleton<IUnitOfWork, ApplicationContext>(); 
+       // services.AddSingleton<IUnitOfWork, MemoryUnitOfWork>(); 
+           //  services.AddScoped(typeof(IStorage), typeof(StorageMemory));
+           // services.AddScoped(typeof(IStorage), typeof(StorageMemory));
+    }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app,
+    // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+    public void Configure(IApplicationBuilder app,
             IHostingEnvironment env,
             ILoggerFactory loggerFactory,
             IUnitOfWork applicationContext)
@@ -181,7 +180,7 @@ namespace TicketSaleCore
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
 
-            var context = applicationContext.AppRoles;
+            var context = applicationContext;
 
             #region DbInit
             //User&role Init 
@@ -504,47 +503,47 @@ namespace TicketSaleCore
             #endregion
             #endregion
 
-            AppUser user1 = new AppUser
-            {
-                Email = "User1",
-                UserName = "User1",
-                EmailConfirmed = true,
-                FirstName = "Firstname1",
-                LastName = "LastName1",
-                Localization = "ru-RU",
-                Address = "adress1",
-                PhoneNumber = "5-53-53-56"
-            };
-            AppUser user2 = new AppUser
-            {
-                Email = "User2",
-                UserName = "User2",
-                EmailConfirmed = true,
-                FirstName = "Firstname2",
-                LastName = "LastName2",
-                Localization = "ru-RU",
-                Address = "adress2",
-                PhoneNumber = "5-53-53-56"
-            };
-            AppUser user3 = new AppUser
-            {
-                Email = "User3",
-                UserName = "User3",
-                EmailConfirmed = true,
-                FirstName = "Firstname3",
-                LastName = "LastName3",
-                Localization = "ru-RU",
-                Address = "adress3",
-                PhoneNumber = "5-53-53-56"
-            };
+            //AppUser user1 = new AppUser
+            //{
+            //    Email = "User1",
+            //    UserName = "User1",
+            //    EmailConfirmed = true,
+            //    FirstName = "Firstname1",
+            //    LastName = "LastName1",
+            //    Localization = "ru-RU",
+            //    Address = "adress1",
+            //    PhoneNumber = "5-53-53-56"
+            //};
+            //AppUser user2 = new AppUser
+            //{
+            //    Email = "User2",
+            //    UserName = "User2",
+            //    EmailConfirmed = true,
+            //    FirstName = "Firstname2",
+            //    LastName = "LastName2",
+            //    Localization = "ru-RU",
+            //    Address = "adress2",
+            //    PhoneNumber = "5-53-53-56"
+            //};
+            //AppUser user3 = new AppUser
+            //{
+            //    Email = "User3",
+            //    UserName = "User3",
+            //    EmailConfirmed = true,
+            //    FirstName = "Firstname3",
+            //    LastName = "LastName3",
+            //    Localization = "ru-RU",
+            //    Address = "adress3",
+            //    PhoneNumber = "5-53-53-56"
+            //};
 
-            context.AppUsers.Add(user1);
-            context.AppUsers.Add(user2);
-            context.AppUsers.Add(user3);
+            //context.AppUsers.Add(user1);
+            //context.AppUsers.Add(user2);
+            //context.AppUsers.Add(user3);
 
-            //AppUser user1 = context.AppUsers.Find(p => p.Email.Equals("User1")).First();
-            //AppUser user2 = context.AppUsers.Find(p => p.Email.Equals("User2")).First();
-            //AppUser user3 = context.AppUsers.Find(p => p.Email.Equals("User3")).First();
+            AppUser user1 = context.AppUsers.ToList().First(p => p.Email.Equals("User1"));
+            AppUser user2 = context.AppUsers.ToList().First(p => p.Email.Equals("User2"));
+            AppUser user3 = context.AppUsers.ToList().First(p => p.Email.Equals("User3"));
 
             #region Tikets Table Init
 
@@ -1423,7 +1422,7 @@ namespace TicketSaleCore
             context.Orders.Add(order1);
             context.Orders.Add(order2);
             #endregion
-              context.SaveChanged();
+              context.SaveChanges();
         }
 
         public async Task UserInit(IServiceProvider serviceProvider)
@@ -1432,18 +1431,18 @@ namespace TicketSaleCore
 
             UserManager<AppUser> userManager =
                 serviceProvider.GetRequiredService<UserManager<AppUser>>();
-            RoleManager<AppRole> roleManager =
-                serviceProvider.GetRequiredService<RoleManager<AppRole>>();
+            RoleManager<IdentityRole> roleManager =
+                serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
 
             string adminEmail = "Admin";
             string password = "Admin";
             if (await roleManager.FindByNameAsync("admin") == null)
             {
-                await roleManager.CreateAsync(new AppRole("admin"));
+                await roleManager.CreateAsync(new IdentityRole("admin"));
             }
             if (await roleManager.FindByNameAsync("user") == null)
             {
-                await roleManager.CreateAsync(new AppRole("user"));
+                await roleManager.CreateAsync(new IdentityRole("user"));
             }
             if (await userManager.FindByNameAsync(adminEmail) == null)
             {
