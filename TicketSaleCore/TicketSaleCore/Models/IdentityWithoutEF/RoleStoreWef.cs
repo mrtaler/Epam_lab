@@ -4,26 +4,27 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace TicketSaleCore.Models.IdentityWithoutEF
 {
-    public class RoleStoreWef : IRoleStore<AppRole>
+    public class RoleStoreWef : IRoleStore<IdentityRole>
     {
-        private readonly List<AppRole> _roles;
+        private readonly List<IdentityRole> _roles;
 
         public RoleStoreWef()
         {
-            _roles = new List<AppRole>();
+            _roles = new List<IdentityRole>();
         }
 
-        public Task<IdentityResult> CreateAsync(AppRole role, CancellationToken cancellationToken)
+        public Task<IdentityResult> CreateAsync(IdentityRole role, CancellationToken cancellationToken)
         {
             _roles.Add(role);
 
             return Task.FromResult(IdentityResult.Success);
         }
 
-        public Task<IdentityResult> UpdateAsync(AppRole role, CancellationToken cancellationToken)
+        public Task<IdentityResult> UpdateAsync(IdentityRole role, CancellationToken cancellationToken)
         {
             var match = _roles.FirstOrDefault(r => r.Id == role.Id);
             if (match != null)
@@ -38,7 +39,7 @@ namespace TicketSaleCore.Models.IdentityWithoutEF
             }
         }
 
-        public Task<IdentityResult> DeleteAsync(AppRole role, CancellationToken cancellationToken)
+        public Task<IdentityResult> DeleteAsync(IdentityRole role, CancellationToken cancellationToken)
         {
             var match = _roles.FirstOrDefault(r => r.Id == role.Id);
             if (match != null)
@@ -53,43 +54,43 @@ namespace TicketSaleCore.Models.IdentityWithoutEF
             }
         }
 
-        public Task<AppRole> FindByIdAsync(string roleId, CancellationToken cancellationToken)
+        public Task<IdentityRole> FindByIdAsync(string roleId, CancellationToken cancellationToken)
         {
             var role = _roles.FirstOrDefault(r => r.Id == roleId);
 
             return Task.FromResult(role);
         }
 
-        public Task<AppRole> FindByNameAsync(string normalizedRoleName, CancellationToken cancellationToken)
+        public Task<IdentityRole> FindByNameAsync(string normalizedRoleName, CancellationToken cancellationToken)
         {
             var role = _roles.FirstOrDefault(r => String.Equals(r.NormalizedName, normalizedRoleName, StringComparison.OrdinalIgnoreCase));
 
             return Task.FromResult(role);
         }
 
-        public Task<string> GetRoleIdAsync(AppRole role, CancellationToken cancellationToken)
+        public Task<string> GetRoleIdAsync(IdentityRole role, CancellationToken cancellationToken)
         {
             return Task.FromResult(role.Id);
         }
 
-        public Task<string> GetRoleNameAsync(AppRole role, CancellationToken cancellationToken)
+        public Task<string> GetRoleNameAsync(IdentityRole role, CancellationToken cancellationToken)
         {
             return Task.FromResult(role.Name);
         }
 
-        public Task<string> GetNormalizedRoleNameAsync(AppRole role, CancellationToken cancellationToken)
+        public Task<string> GetNormalizedRoleNameAsync(IdentityRole role, CancellationToken cancellationToken)
         {
             return Task.FromResult(role.NormalizedName);
         }
 
-        public Task SetRoleNameAsync(AppRole role, string roleName, CancellationToken cancellationToken)
+        public Task SetRoleNameAsync(IdentityRole role, string roleName, CancellationToken cancellationToken)
         {
             role.Name = roleName;
 
             return Task.FromResult(true);
         }
 
-        public Task SetNormalizedRoleNameAsync(AppRole role, string normalizedName, CancellationToken cancellationToken)
+        public Task SetNormalizedRoleNameAsync(IdentityRole role, string normalizedName, CancellationToken cancellationToken)
         {
             // Do nothing. In this simple example, the normalized name is generated from the role name.
 

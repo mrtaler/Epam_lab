@@ -16,9 +16,9 @@ namespace TicketSaleCore.Models.IRepository
         DbSet<Order> Orders { get;  }//4
         DbSet<OrderStatus> OrderStatuses { get; }//5
         DbSet<Ticket> Tickets { get; }//6
-        DbSet<TicketsOrder> TicketsOrders { get;  }//7
+        //DbSet<TicketsOrder> TicketsOrders { get;  }//7
         DbSet<Venue> Venues { get;  }//8
-        DbSet<AppRole> AppRoles { get; }//9
+        //DbSet<AppRole> AppRoles { get; }//9
         DbSet<AppUser> AppUsers { get;  }//10
 
         int SaveChanges();

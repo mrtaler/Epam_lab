@@ -33,7 +33,7 @@ namespace TicketSaleCore.Controllers
         public IActionResult Index()
         {
             //show all Events (need to add data.now check)
-            var events=context.Events.GetAll();
+            var events=context.Events;
                // .Include(p=>p.Tickets)
                 //.ThenInclude(e=>e.Order)
                 //.Include(p=>p.Venue)

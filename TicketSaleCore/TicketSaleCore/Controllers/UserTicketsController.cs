@@ -56,7 +56,7 @@ namespace TicketSaleCore.Controllers
                 userId = id ?? userManager.GetUserId(User);
 
                 //Find All User Selling Ticket
-                var applicationContext = context.Tickets.GetAll()
+                var applicationContext = context.Tickets
 
                     .Where(p => p.Seller.Id == userId)
                     .Where(z => z.Order == null);
@@ -65,7 +65,7 @@ namespace TicketSaleCore.Controllers
                     //.Include(p => p.Seller).ToList();
 
                 //Find All User Selling Ticket Waiting for conformation
-                var waitConf = context.Tickets.GetAll()
+                var waitConf = context.Tickets
                     //.Include(p => p.Order)
                     //    .ThenInclude(p => p.Status)
                     //    .Include(z => z.Order.Buyer)
@@ -79,7 +79,7 @@ namespace TicketSaleCore.Controllers
                 ViewData["WaitConf"] = waitConf;
 
                 //Find All User Selling Ticket Sold
-                var confirmed = context.Tickets.GetAll()
+                var confirmed = context.Tickets
                  //   .Include(p => p.Order)
                  //      .ThenInclude(p => p.Status)
                  //       .Include(z=>z.Order.Buyer)
