@@ -20,9 +20,14 @@
           class="ui form"
           asp-route-returnUrl="@Context.Request.Path">
         @*<div class="negative ui submit button ">Log out</div>*@
-        <button type="submit" class="negative ui button">@Localizer["Log out"]</button>
+        <button  class=" ui submit button negative ">@Localizer["Log out"]</button>
     </form>
-    <a class="item" asp-controller="UserTickets" asp-action="Index">@UserManager.GetUserName(User) @Localizer["Tikets"]</a>
+    <a class="item" 
+       asp-controller="UserTickets" 
+       asp-action="Index">@UserManager.GetUserName(User) @Localizer["Tikets"]</a>
+    <a class="item" 
+       asp-controller="Orders" 
+       asp-action="Index" asp-route-id="@UserManager.GetUserId(User)">@UserManager.GetUserName(User) @Localizer["Order"]</a>
     if (User.IsInRole("admin"))
     {
         <div class="item">
@@ -54,5 +59,8 @@ else
     </div>
 }
 <script type="text/javascript">
-    $('.ui.form').form(submit);
+    $(document)
+        .ready(function() {
+            $('.ui.form').form(submit);
+        });
 </script>

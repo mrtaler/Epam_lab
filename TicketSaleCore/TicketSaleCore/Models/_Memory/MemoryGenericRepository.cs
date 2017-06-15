@@ -23,11 +23,11 @@ namespace TicketSaleCore.Models._Memory
         {
             return list.Where(predicate).ToList();
         }
-        public T FindById(int id)
-        {
-            return null;
-                //list.Find();
-        }
+        //public T FindById(int id)
+        //{
+        //    return list.Find(p=>p T);
+        //        //list.Find();
+        //}
 
         public void Create(T item)
         {

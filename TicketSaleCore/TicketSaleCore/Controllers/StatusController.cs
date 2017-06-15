@@ -11,7 +11,8 @@ using TicketSaleCore.Models.IRepository;
 
 namespace TicketSaleCore.Controllers
 {
-    [Authorize(Roles = "admin")]
+    //[Authorize(Roles = "admin")]
+    [Authorize(Roles = "NotTask01")]
     public class StatusController : Controller
     {
         private readonly IUnitOfWork _context;

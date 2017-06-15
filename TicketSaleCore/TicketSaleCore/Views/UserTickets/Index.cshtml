@@ -1,4 +1,4 @@
-﻿@model IEnumerable<TicketSaleCore.Models.Ticket>
+﻿@model TicketSaleCore.ViewModels.UserTicketsViewModel
 @{
     ViewBag.Title = "title";
 }
@@ -18,18 +18,18 @@
         <thead>
             <tr>
                 <th>
-                    @Html.DisplayNameFor(model => model.Price)
+                    @Html.DisplayNameFor(model => model.SellingTickets.First().Price)
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.Event)
+                    @Html.DisplayNameFor(model => model.SellingTickets.First().Event)
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.SellerNotes)
+                    @Html.DisplayNameFor(model => model.SellingTickets.First().SellerNotes)
                 </th>
             </tr>
         </thead>
         <tbody>
-            @foreach (var item in Model)
+            @foreach (var item in Model.SellingTickets)
             {
             <tr>
                 <td>
@@ -51,21 +51,21 @@
            <thead>
            <tr>
                <th>
-                   @Html.DisplayNameFor(model => model.Seller)
+                   @Html.DisplayNameFor(model => model.WaitforConformationTickets.First().Seller)
                </th>
                <th>
-                   @Html.DisplayNameFor(model => model.Event)
+                   @Html.DisplayNameFor(model => model.WaitforConformationTickets.First().Event)
                </th>
                <th>
-                   @Html.DisplayNameFor(model => model.Price)
+                   @Html.DisplayNameFor(model => model.WaitforConformationTickets.First().Price)
                </th>
                <th>
-                   @Html.DisplayNameFor(model => model.Order.Buyer)
+                   @Html.DisplayNameFor(model => model.WaitforConformationTickets.First().Order.Buyer)
                </th>
            </tr>
            </thead>
            <tbody>
-           @foreach (var item in ViewBag.WaitConf)
+           @foreach (var item in Model.WaitforConformationTickets)
            {
                <tr>
                    <td>
@@ -75,7 +75,8 @@
                      <a asp-controller="Events" asp-action="Details" asp-route-id="@item.Event.Id">@item.Event.Name</a>
                    </td>
                    <td>
-                       @item.Price
+                       
+                       @Html.DisplayFor(modelItem => item.Price)
                    </td>
                    <td>
                        @item.Order.Buyer
@@ -90,21 +91,21 @@
         <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Seller)
+                @Html.DisplayNameFor(model => model.ConfirmedTickets.First().Seller)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Event)
+                @Html.DisplayNameFor(model => model.ConfirmedTickets.First().Event)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Price)
+                @Html.DisplayNameFor(model => model.ConfirmedTickets.First().Price)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Order.Buyer)
+                @Html.DisplayNameFor(model => model.ConfirmedTickets.First().Order.Buyer)
             </th>
         </tr>
         </thead>
         <tbody>
-        @foreach (var item in ViewBag.Confirmed)
+        @foreach (var item in Model.ConfirmedTickets)
         {
             <tr>
                 <td>
@@ -114,7 +115,7 @@
                     <a asp-controller="Events" asp-action="Details" asp-route-id="@item.Event.Id">@item.Event.Name</a>
                 </td>
                 <td>
-                    @item.Price
+                    @Html.DisplayFor(modelItem => item.Price)
                 </td>
                 <td>
                     @item.Order.Buyer

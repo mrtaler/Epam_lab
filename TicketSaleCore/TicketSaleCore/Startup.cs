@@ -22,7 +22,6 @@ using TicketSaleCore.Models;
 using TicketSaleCore.AuthorizationPolit.Password;
 using TicketSaleCore.Models.IdentityWithoutEF;
 using TicketSaleCore.Models.IRepository;
-using TicketSaleCore.Models._Ef;
 using TicketSaleCore.Models._Memory;
 
 namespace TicketSaleCore

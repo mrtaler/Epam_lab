@@ -73,7 +73,7 @@
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.SellerNotes)
-                    <div class="ui button negative">Add to Cart</div>
+                    <div style="visibility: hidden" class="ui button negative">Add to Cart</div>
                 </td>
                 @if (User.IsInRole("admin"))
                 {

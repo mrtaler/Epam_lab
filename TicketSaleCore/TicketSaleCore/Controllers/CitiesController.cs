@@ -20,14 +20,15 @@ namespace TicketSaleCore.Controllers
         {
             this.context = context;    
         }
+
         [AllowAnonymous]
         // GET: Cities
         public async Task<IActionResult> Index()
         {
-            return View(/*await*/ context.Citys);
+            return View(await context.Citys.ToListAsync());
         }
+
         [AllowAnonymous]
-        // GET: Cities/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -44,8 +45,15 @@ namespace TicketSaleCore.Controllers
 
             return View(city);
         }
-        [Authorize(Roles = "admin")]
-        // GET: Cities/Create
+       
+
+        #region Not for Task01
+
+        
+
+        
+       /* // GET: Cities/Create
+        * [Authorize(Roles = "admin")]
         public IActionResult Create()
         {
             return View();
@@ -62,7 +70,7 @@ namespace TicketSaleCore.Controllers
             if (ModelState.IsValid)
             {
                 context.Citys.Add(city);
-                /*await*/ context.SaveChanges();
+                await context.SaveChanges();
                 return RedirectToAction("Index");
             }
             return View(city);
@@ -76,7 +84,7 @@ namespace TicketSaleCore.Controllers
                 return NotFound();
             }
 
-            var city = /*await*/ context.Citys.SingleOrDefault(m => m.Id == id);
+            var city = await context.Citys.SingleOrDefault(m => m.Id == id);
             if (city == null)
             {
                 return NotFound();
@@ -102,7 +110,7 @@ namespace TicketSaleCore.Controllers
                 try
                 {
                     context.Citys.Update(city);
-                    /*await*/ context.SaveChanges();
+                    await context.SaveChanges();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -128,7 +136,7 @@ namespace TicketSaleCore.Controllers
                 return NotFound();
             }
 
-            var city = /*await*/ context.Citys
+            var city = await context.Citys
                 .SingleOrDefault(m => m.Id == id);
             if (city == null)
             {
@@ -144,13 +152,13 @@ namespace TicketSaleCore.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var city = /*await*/ context.Citys
+            var city = await context.Citys
                 .SingleOrDefault(m => m.Id == id);
             context.Citys.Remove(city);
-            /*await*/ context.SaveChanges();
+            await context.SaveChanges();
             return RedirectToAction("Index");
-        }
-
+        }*/
+        #endregion
         private bool CityExists(int id)
         {
             return context.Citys.Any(e => e.Id == id);

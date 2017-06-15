@@ -44,13 +44,13 @@ namespace TicketSaleCore.Controllers
                     .Include(t => t.Event)
                     .Include(t => t.Seller);
 
-                ViewData["CurentEvent"] = context.Events;
-                    //.Include(p => p.Venue).ThenInclude(z=>z.City).First(p=>p.Id==id);
+                ViewData["CurentEvent"] = context.Events
+                    .Include(p => p.Venue).ThenInclude(z=>z.City).First(p=>p.Id==id);
 
             }
             else
             {
-               applicationContext = context.Tickets;//.Include(t => t.Event).Include(t => t.Seller);
+               applicationContext = context.Tickets.Include(t => t.Event).Include(t => t.Seller);
             }
           
 
@@ -70,10 +70,10 @@ namespace TicketSaleCore.Controllers
                 return NotFound();
             }
 
-            var ticket = /*await*/ context.Tickets.SingleOrDefault(m => m.Id == id);
-                //.Include(t => t.Event)
-                //.Include(t => t.Seller)
-                //.SingleOrDefaultAsync(m => m.Id == id);
+            var ticket = await context.Tickets
+                .Include(t => t.Event)
+                .Include(t => t.Seller)
+                .SingleOrDefaultAsync(m => m.Id == id);
             if (ticket == null)
             {
                 return NotFound();
@@ -83,7 +83,8 @@ namespace TicketSaleCore.Controllers
         }
 
         // GET: Tickets/Create
-        [Authorize(Roles = "admin")]
+        //[Authorize(Roles = "admin")]
+        [Authorize(Roles = "NotTask01")]
         public IActionResult Create(string returnUrl = null)
         {
             ViewData["ReturnUrl"] = @returnUrl;
@@ -96,7 +97,8 @@ namespace TicketSaleCore.Controllers
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        [Authorize(Roles = "admin")]
+        //[Authorize(Roles = "admin")]
+        [Authorize(Roles = "NotTask01")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Price,SellerId,EventId")] Ticket ticket, string returnUrl = null)
         {
@@ -113,7 +115,8 @@ namespace TicketSaleCore.Controllers
         }
 
         // GET: Tickets/Edit/5
-        [Authorize(Roles = "admin")]
+        //[Authorize(Roles = "admin")]
+        [Authorize(Roles = "NotTask01")]
         public async Task<IActionResult> Edit(int? id, string returnUrl = null)
         {
            // var retUrl = returnUrl.Replace(@"/Tickets","");
@@ -123,8 +126,7 @@ namespace TicketSaleCore.Controllers
                 return NotFound();
             }
 
-        //    var ticket = await context.TicketDbSet.SingleOrDefaultAsync(m => m.Id == id);
-            var ticket = /*await*/ context.Tickets.SingleOrDefault(m => m.Id == id);
+            var ticket = await context.Tickets.SingleOrDefaultAsync(m => m.Id == id);
             if (ticket == null)
             {
                 return NotFound();
@@ -139,7 +141,8 @@ namespace TicketSaleCore.Controllers
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        [Authorize(Roles = "admin")]
+        //[Authorize(Roles = "admin")]
+        [Authorize(Roles = "NotTask01")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Price,SellerId,EventId")] Ticket ticket, string returnUrl = null)
         {
@@ -176,7 +179,8 @@ namespace TicketSaleCore.Controllers
         }
 
         // GET: Tickets/Delete/5
-        [Authorize(Roles = "admin")]
+        //[Authorize(Roles = "admin")]
+        [Authorize(Roles = "NotTask01")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -198,7 +202,8 @@ namespace TicketSaleCore.Controllers
 
         // POST: Tickets/Delete/5
         [HttpPost, ActionName("Delete")]
-        [Authorize(Roles = "admin")]
+        //[Authorize(Roles = "admin")]
+        [Authorize(Roles = "NotTask01")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {

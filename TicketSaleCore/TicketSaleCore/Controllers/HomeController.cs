@@ -33,31 +33,27 @@ namespace TicketSaleCore.Controllers
         public IActionResult Index()
         {
             //show all Events (need to add data.now check)
-            var events=context.Events;
-               // .Include(p=>p.Tickets)
-                //.ThenInclude(e=>e.Order)
-                //.Include(p=>p.Venue)
-                //.ThenInclude(c=>c.City);
+            var events=context.Events
+                .Include(p=>p.Tickets)
+                .ThenInclude(e=>e.Order)
+                .Include(p=>p.Venue)
+                .ThenInclude(c=>c.City);
             List<EventsHomeViewModel> evHvEventsHomeViewModels=new List<EventsHomeViewModel>();
 
             foreach (var item in events)
             {
                 evHvEventsHomeViewModels.Add(new EventsHomeViewModel(item));
             }
-
-
-
-            //ViewData["AveailableTickets"] = events.Tickets.Count(p => p.Order == null) +
-            //                                  item.Tickets.Count(p => p.Order.Status?.StatusName == "Rejected");
             return View(evHvEventsHomeViewModels);
         }
-       // [Authorize(Policy = "AgeLimit")]
+
         public IActionResult About()
         {
             ViewData["Message"] = localizer["Your application description page."];
 
             return View();
         }
+
         //[Authorize(Policy = "AgeLimit")]
         public IActionResult Contact()
         {

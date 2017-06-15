@@ -11,7 +11,8 @@ using TicketSaleCore.Models.IRepository;
 
 namespace TicketSaleCore.Controllers
 {
-    [Authorize]
+    //[Authorize]
+    [Authorize(Roles = "NotTask01")]
     public class VenuesController : Controller
     {
         private readonly IUnitOfWork _context;

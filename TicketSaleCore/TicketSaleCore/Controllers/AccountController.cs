@@ -63,7 +63,7 @@ namespace TicketSaleCore.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> Login(string returnUrl = null)
         {
-            await signInManager.SignOutAsync(); //remove all early logins
+            await signInManager.SignOutAsync(); //LogOut
             return View(new LoginViewModel { ReturnUrl = returnUrl });
         }
         #endregion
@@ -114,7 +114,7 @@ namespace TicketSaleCore.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> LogOff(string returnUrl = null)
         {
-            // удаляем аутентификационные куки
+            // remove coocies
             await signInManager.SignOutAsync();
             logger.LogError(4, "User logged out.");
             return RedirectToLocal(returnUrl);
@@ -124,7 +124,7 @@ namespace TicketSaleCore.Controllers
 
 
         #region AccessDenied HttpGet
-
+        [AllowAnonymous]
         [HttpGet]
         public IActionResult AccessDenied()
         {

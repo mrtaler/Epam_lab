@@ -11,8 +11,9 @@ using TicketSaleCore.Models.IdentityWithoutEF;
 
 namespace TicketSaleCore.Controllers
 {
-    
-    [Authorize(Roles = "admin")]
+
+    //[Authorize]
+    [Authorize]
     public class UsersController : Controller
     {
         readonly UserManager<AppUser> userManager;
@@ -23,14 +24,17 @@ namespace TicketSaleCore.Controllers
             this.userManager = userManager;
         }
 
+        [Authorize(Roles = "NotTask01")]
         public IActionResult Index(string returnUrl = null)
         {
 
             return View(userManager.Users.ToList());
         }
 
+        [Authorize(Roles = "NotTask01")]
         public IActionResult Create() => View();
 
+        [Authorize(Roles = "NotTask01")]
         [HttpPost]
         public async Task<IActionResult> Create(CreateUserViewModel model)
         {
@@ -53,7 +57,7 @@ namespace TicketSaleCore.Controllers
             return View(model);
         }
 
-        [AllowAnonymous]
+    
        public async Task<IActionResult> Details(string id)
         {
             AppUser user = await userManager.FindByIdAsync(id);
@@ -63,6 +67,8 @@ namespace TicketSaleCore.Controllers
             }
             return View(user);
         }
+
+        [Authorize(Roles = "NotTask01")]
         public async Task<IActionResult> Edit(string id)
         {
             AppUser user = await userManager.FindByIdAsync(id);
@@ -74,6 +80,7 @@ namespace TicketSaleCore.Controllers
             return View(model);
         }
 
+        [Authorize(Roles = "NotTask01")]
         [HttpPost]
         public async Task<IActionResult> Edit(EditUserViewModel model)
         {
@@ -103,6 +110,7 @@ namespace TicketSaleCore.Controllers
             return View(model);
         }
 
+        [Authorize(Roles = "NotTask01")]
         [HttpPost]
         public async Task<ActionResult> Delete(string id)
         {
@@ -113,6 +121,8 @@ namespace TicketSaleCore.Controllers
             }
             return RedirectToAction("Index");
         }
+
+        [Authorize(Roles = "NotTask01")]
         public async Task<IActionResult> ChangePassword(string id)
         {
             AppUser user = await userManager.FindByIdAsync(id);
@@ -124,6 +134,7 @@ namespace TicketSaleCore.Controllers
             return View(model);
         }
 
+        [Authorize(Roles = "NotTask01")]
         [HttpPost]
         public async Task<IActionResult> ChangePassword(ChangePasswordViewModel model)
         {
