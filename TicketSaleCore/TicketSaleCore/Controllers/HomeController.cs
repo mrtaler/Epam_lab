@@ -13,7 +13,7 @@ using TicketSaleCore.ViewModels.HomeViewModels;
 
 namespace TicketSaleCore.Controllers
 {
-    [RequireHttps]
+
     public class HomeController : Controller
     {
         private readonly ILogger logger;

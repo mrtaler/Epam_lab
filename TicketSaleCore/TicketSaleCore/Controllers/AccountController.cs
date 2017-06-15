@@ -9,7 +9,7 @@ using TicketSaleCore.ViewModels;
 
 namespace TicketSaleCore.Controllers
 {
-    [RequireHttps]
+    
     [Authorize]
     public class AccountController : Controller
     {

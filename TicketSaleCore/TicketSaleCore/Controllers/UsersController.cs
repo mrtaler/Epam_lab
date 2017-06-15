@@ -11,7 +11,7 @@ using TicketSaleCore.Models.IdentityWithoutEF;
 
 namespace TicketSaleCore.Controllers
 {
-    [RequireHttps]
+    
     [Authorize(Roles = "admin")]
     public class UsersController : Controller
     {

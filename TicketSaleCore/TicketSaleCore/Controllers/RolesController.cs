@@ -12,7 +12,7 @@ using TicketSaleCore.ViewModels;
 
 namespace TicketSaleCore.Controllers
 {
-    [RequireHttps]
+    
     [Authorize(Roles = "admin")]
     public class RolesController : Controller
     {
