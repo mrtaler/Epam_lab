@@ -1,129 +1,177 @@
-﻿@model IEnumerable<TicketSaleCore.Models.Ticket>
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@model TicketSaleCore.ViewModels.UserTicketsViewModel
+@inject IViewLocalizer Localizer
+
 @{
     ViewBag.Title = "title";
 }
 
 
-<h2>Index</h2>
 
+@if (@Model.UserCompareTag)
+{
+    <div class="ui top attached tabular menu">
+        <a class="active item" data-tab="first">@Localizer["Selling Tickets"]  </a>
+        <a class="item" data-tab="second">@Localizer["Waiting Confomition"]</a>
+        <a class="item" data-tab="third">@Localizer["Sold"]</a>
+    </div>
 
-<div class="ui top attached tabular menu">
-    <a class="active item" data-tab="first">Selling Tickets</a>
-    <a class="item" data-tab="second">Waiting Confomition</a>
-    <a class="item" data-tab="third">Sold</a>
-</div>
-
-<div class="ui bottom attached active tab segment" data-tab="first">
-    <table class="ui celled padded table">
-        <thead>
+    <div class="ui bottom attached active tab segment" data-tab="first">
+        <table class="ui celled padded table">
+            <thead>
             <tr>
                 <th>
-                    @Html.DisplayNameFor(model => model.Price)
+                    @Html.DisplayNameFor(model => model.SellingTickets.First().Price)
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.Event)
+                    @Html.DisplayNameFor(model => model.SellingTickets.First().Event)
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.SellerNotes)
+                    @Html.DisplayNameFor(model => model.SellingTickets.First().SellerNotes)
                 </th>
             </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Model)
+            </thead>
+            <tbody>
+            @foreach (var item in Model.SellingTickets)
             {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Price)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Event.Name)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.SellerNotes)
-                </td>
-            </tr>
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Price)
+                    </td>
+                    <td>
+                        @Html.ActionLink(@item.Event.Name, "Details", "Events",new {id=@item.Event.Id})
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.SellerNotes)
+                    </td>
+                </tr>
             }
-        </tbody>
-    </table>
-</div>
-<div class="ui bottom attached tab segment" data-tab="second">
-       <table class="ui celled padded table">
-           <thead>
-           <tr>
-               <th>
-                   @Html.DisplayNameFor(model => model.Seller)
-               </th>
-               <th>
-                   @Html.DisplayNameFor(model => model.Event)
-               </th>
-               <th>
-                   @Html.DisplayNameFor(model => model.Price)
-               </th>
-               <th>
-                   @Html.DisplayNameFor(model => model.Order.Buyer)
-               </th>
-           </tr>
-           </thead>
-           <tbody>
-           @foreach (var item in ViewBag.WaitConf)
-           {
-               <tr>
-                   <td>
-                       @item.Seller
-                   </td>
-                   <td>
-                       @item.Event.Name
-                   </td>
-                   <td>
-                       @item.Price
-                   </td>
-                   <td>
-                       @item.Order.Buyer
-                   </td> 
-               </tr>
-           }
-           </tbody>
-       </table>
-</div>
-<div class="ui bottom attached tab segment" data-tab="third">
-    <table class="ui celled padded table">
-        <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Seller)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Event)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Price)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Order.Buyer)
-            </th>
-        </tr>
-        </thead>
-        <tbody>
-        @foreach (var item in ViewBag.Confirmed)
-        {
+            </tbody>
+        </table>
+    </div>
+    <div class="ui bottom attached tab segment" data-tab="second">
+        <table class="ui celled padded table">
+            <thead>
             <tr>
-                <td>
-                    @item.Seller
-                </td>
-                <td>
-                    @item.Event.Name
-                </td>
-                <td>
-                    @item.Price
-                </td>
-                <td>
-                    @item.Order.Buyer
-                </td> 
+                <th>
+                    @Html.DisplayNameFor(model => model.WaitforConformationTickets.First().Seller)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.WaitforConformationTickets.First().Event)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.WaitforConformationTickets.First().Price)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.WaitforConformationTickets.First().Order.Buyer)
+                </th>
             </tr>
-        }
-        </tbody>
-    </table>
-</div>
+            </thead>
+            <tbody>
+            @foreach (var item in Model.WaitforConformationTickets)
+            {
+                <tr>
+                    <td>
+                        @item.Seller
+                    </td>
+                    <td>
+                        <a asp-controller="Events" asp-action="Details" asp-route-id="@item.Event.Id">@item.Event.Name</a>
+                    </td>
+                    <td>
+                       
+                        @Html.DisplayFor(modelItem => item.Price)
+                    </td>
+                    <td>
+                        @item.Order.Buyer
+                    </td> 
+                </tr>
+            }
+            </tbody>
+        </table>
+    </div>
+    <div class="ui bottom attached tab segment" data-tab="third">
+        <table class="ui celled padded table">
+            <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.ConfirmedTickets.First().Seller)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.ConfirmedTickets.First().Event)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.ConfirmedTickets.First().Price)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.ConfirmedTickets.First().Order.Buyer)
+                </th>
+            </tr>
+            </thead>
+            <tbody>
+            @foreach (var item in Model.ConfirmedTickets)
+            {
+                <tr>
+                    <td>
+                        @item.Seller
+                    </td>
+                    <td>
+                        <a asp-controller="Events" asp-action="Details" asp-route-id="@item.Event.Id">@item.Event.Name</a>
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Price)
+                    </td>
+                    <td>
+                        @item.Order.Buyer
+                    </td> 
+                </tr>
+            }
+            </tbody>
+        </table>
+    </div>
+}
+else
+{
+    <div class="ui top attached tabular menu">
+        <a class="active item" data-tab="first">Selling Tickets</a>
+    </div>
+
+    <div class="ui bottom attached active tab segment" data-tab="first">
+        <table class="ui celled padded table">
+            <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.SellingTickets.First().Price)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.SellingTickets.First().Event)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.SellingTickets.First().SellerNotes)
+                </th>
+            </tr>
+            </thead>
+            <tbody>
+            @foreach (var item in Model.SellingTickets)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Price)
+                    </td>
+                    <td>
+                        @Html.ActionLink(@item.Event.Name, "Details", "Events",new {id=@item.Event.Id})
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.SellerNotes)
+                    </td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    </div>
+}
+
+
+
 <script type="application/javascript">
     $('.menu .item').tab();
 </script>

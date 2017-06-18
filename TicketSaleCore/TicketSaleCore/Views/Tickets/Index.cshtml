@@ -1,10 +1,10 @@
-@model IEnumerable<TicketSaleCore.Models.Ticket>
+@using System.Globalization
+@model TicketSaleCore.ViewModels.TicketIndexViewModel
 
 @{
     ViewData["Title"] = "Index";
 }
 
-<h2>Index</h2>
 @if (User.IsInRole("admin"))
 {
     <p>
@@ -12,10 +12,26 @@
     </p>
 }
 
-<div class="ui message">
-    @if (@ViewBag.CurentEvent != null)
+<div class="ui items">
+    @if (@Model.CurentEvent != null)
     {
-        <div class="header">@ViewBag.CurentEvent.Name </div>
+        <div class="item">
+            <div class="ui small image">
+                <img src="@Model.CurentEvent.Banner">
+            </div>
+            <div class="content">
+                <a class="header">@Model.CurentEvent.Name</a>
+                <div class="meta">
+                    <span>@Model.CurentEvent.Venue.Address</span>
+                </div>
+                <div class="description">
+                    <div>@Model.CurentEvent.Description</div>
+                    <div>@Model.CurentEvent.Date.ToString("D", CultureInfo.CurrentCulture)</div>
+                </div>
+               <div class="extra">@Model.CurentEvent.Venue.City.Name</div>
+            </div>
+        </div>
+        
     }
     else
     {
@@ -29,13 +45,13 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Price)
+                @Html.DisplayNameFor(model => model.availableTicketsToSale.First().Price)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Seller)
+                @Html.DisplayNameFor(model => model.availableTicketsToSale.First().Seller)
             </th>
             <th>
-                @Html.DisplayNameFor(model=>model.SellerNotes)
+                @Html.DisplayNameFor(model=>model.availableTicketsToSale.First().SellerNotes)
             </th>
            
 
@@ -46,18 +62,18 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in Model)
+        @foreach (var item in Model.availableTicketsToSale)
             {
             <tr>
                 <td>
                     @Html.DisplayFor(modelItem => item.Price)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Seller.FirstName)
+                    @Html.ActionLink(@item.Seller.FirstName, "Details","Users",new {id= @item.Seller.Id })
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.SellerNotes)
-                    <div class="ui button negative">Add to Cart</div>
+                    <div style="visibility: hidden" class="ui button negative">Add to Cart</div>
                 </td>
                 @if (User.IsInRole("admin"))
                 {

@@ -4,19 +4,20 @@ using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using TicketSaleCore.Models;
+using TicketSaleCore.Models.IdentityWithoutEF;
 using TicketSaleCore.ViewModels;
 
 namespace TicketSaleCore.Controllers
 {
-    [RequireHttps]
+    
     [Authorize]
     public class AccountController : Controller
     {
-        private readonly UserManager<User> userManager;
-        private readonly SignInManager<User> signInManager;
+        private readonly UserManager<AppUser> userManager;
+        private readonly SignInManager<AppUser> signInManager;
         private readonly ILogger logger;
 
-        public AccountController(UserManager<User> userManager, SignInManager<User> signInManager, ILoggerFactory loggerFactory)
+        public AccountController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, ILoggerFactory loggerFactory)
         {
             this.userManager = userManager;
             this.signInManager = signInManager;
@@ -40,7 +41,7 @@ namespace TicketSaleCore.Controllers
             ViewData["ReturnUrl"] = returnUrl;
             if (ModelState.IsValid)
             {
-                var user = new User { UserName = model.Email, Email = model.Email };
+                var user = new AppUser { UserName = model.Email, Email = model.Email };
                 var result = await userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
@@ -62,7 +63,7 @@ namespace TicketSaleCore.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> Login(string returnUrl = null)
         {
-            await signInManager.SignOutAsync(); //remove all early logins
+            await signInManager.SignOutAsync(); //LogOut
             return View(new LoginViewModel { ReturnUrl = returnUrl });
         }
         #endregion
@@ -80,6 +81,8 @@ namespace TicketSaleCore.Controllers
                 var user = await userManager.FindByNameAsync(model.Email);
 
                 var result = await signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, lockoutOnFailure: false);
+                
+
                 if (result.Succeeded)
                 {
                     logger.LogError(1, $"User {user?.Email} logged");
@@ -88,11 +91,15 @@ namespace TicketSaleCore.Controllers
                 if (result.IsLockedOut)
                 {
                     logger.LogError(2, $"User {user?.Email}  account locked out.");
-                    return View("Lockout");
+                  //  return View("Lockout");
                 }
                 else
                 {
-                    ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+                    if (user==null)
+                    {
+                        ModelState.AddModelError("UserNotFound", "UserNotFound");
+                    }
+                    ModelState.AddModelError("PasswordError", "Invalid login attempt.");
                     logger.LogError(2, $"User {user?.Email}  account eroe .");
                     return View(model);
                 }
@@ -107,7 +114,7 @@ namespace TicketSaleCore.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> LogOff(string returnUrl = null)
         {
-            // удаляем аутентификационные куки
+            // remove coocies
             await signInManager.SignOutAsync();
             logger.LogError(4, "User logged out.");
             return RedirectToLocal(returnUrl);
@@ -117,7 +124,7 @@ namespace TicketSaleCore.Controllers
 
 
         #region AccessDenied HttpGet
-
+        [AllowAnonymous]
         [HttpGet]
         public IActionResult AccessDenied()
         {

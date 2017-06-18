@@ -1,0 +1,42 @@
+@using TicketSaleCore.Models.IdentityWithoutEF
+@model TicketSaleCore.Models.IdentityWithoutEF.AppUser
+@{
+    ViewData["Title"] = "Details";
+}
+
+<div class="ui special cards">
+    <div class="card">
+        <div class="blurring dimmable image">
+            <div class="ui dimmer">
+                <div class="content">
+                    <div class="center">
+                        <a class="ui inverted button" 
+                             asp-controller="UserTickets" 
+                             asp-action="Index" 
+                             asp-route-id="@Model.Id">
+                            All User Ticket
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <img src="/images/EventImg/0000e1r1.jpg">
+        </div>
+        <div class="content">
+            <a class="header"><b>@Model.FirstName  @Model.LastName</b></a>
+            <div class="meta">
+                @*<span class="date">Create in Sep 2014</span>*@
+            </div>
+        </div>
+        <div class="extra content">
+            <a><i class="mail outline icon"></i>@Model.Email
+            @*Html.DisplayFor(model => model.Email)*@</a>
+        </div>
+    </div>
+</div>
+
+
+<script type="text/javascript">
+    $('.special.cards .image').dimmer({
+        on: 'hover'
+    });
+</script>

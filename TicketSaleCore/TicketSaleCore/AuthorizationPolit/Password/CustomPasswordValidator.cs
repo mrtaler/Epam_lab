@@ -4,21 +4,31 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Localization;
 using TicketSaleCore.Models;
+using TicketSaleCore.Models.IdentityWithoutEF;
 
 namespace TicketSaleCore.AuthorizationPolit.Password
 {
-    public class CustomPasswordValidator : IPasswordValidator<User>
+    /// <summary>
+    /// Speshial pasvord Validator
+    /// </summary>
+    public class CustomPasswordValidator : IPasswordValidator<AppUser>
     {
-        public int RequiredLength { get; set; } // минимальная длина
-
+        public int RequiredLength { get; set; } // Min pasword lenght 
         public CustomPasswordValidator(int length)
         {
             RequiredLength = length;
         }
-
+        /// <summary>
+        /// password validator
+        /// </summary>
+        /// <param name="manager">Application user manager</param>
+        /// <param name="user">Check User</param>
+        /// <param name="password">Password for check</param>
+        /// <returns></returns>
         public Task<IdentityResult> ValidateAsync
-            (UserManager<User> manager, User user, string password)
+            (UserManager<AppUser> manager, AppUser user, string password)
         {
             List<IdentityError> errors = new List<IdentityError>();
 
@@ -26,16 +36,17 @@ namespace TicketSaleCore.AuthorizationPolit.Password
             {
                 errors.Add(new IdentityError
                 {
-                    Description = String.Format("Минимальная длина пароля равна {0}", RequiredLength)
+                    Description = String.Format("The minimum password length is {0} symbols", RequiredLength)
                 });
             }
-            string pattern = "^[A-Za-z0-9]+$";
+
+            string pattern = "^[A-Za-z0-9]+$";//password pattern
 
             if (!Regex.IsMatch(password, pattern))
             {
                 errors.Add(new IdentityError
                 {
-                    Description = "Пароль должен состоять только избукв и цифр"
+                    Description = "The password should only consist of letters and numbers"//"Пароль должен состоять только избукв и цифр"
                 });
             }
             return Task.FromResult(errors.Count == 0 ?

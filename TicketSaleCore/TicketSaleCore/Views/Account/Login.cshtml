@@ -1,6 +1,21 @@
+@using System.Collections.Generic
+@using Microsoft.AspNetCore.Http
+@using Microsoft.AspNetCore.Authentication
+@using Microsoft.AspNetCore.Mvc.Localization
+
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+@using TicketSaleCore.App_code
+
+
+
 @model TicketSaleCore.ViewModels.LoginViewModel
+
+@inject IViewLocalizer Localizer
+
+
+
 @{
-    ViewData["Title"] = "Login";
+    ViewData["Title"] = Localizer["Log in"];
     Layout = null;
 }
 <header>
@@ -8,14 +23,18 @@
     <script src="~/lib/semantic/dist/semantic.js"></script>
     <link rel="stylesheet" href="~/lib/semantic/dist/semantic.min.css">
     <style type="text/css">
+        .remember-me {
+            text-align: left;
+        }
+        .ui.checkbox label {
+            color: #ddd;
+        }
         body > .grid {
             height: 100%;
         }
-
         .image {
             margin-top: -100px;
         }
-
         .column {
             max-width: 450px;
         }
@@ -25,80 +44,90 @@
     <div class="ui middle aligned center aligned grid">
         <div class="column">
             <h2 class="ui teal image header">
-                <div class="content"> Log-in to your account </div>
+                <div class="content">@Localizer["Log-in to your account"] </div>
             </h2>
             <form method="post"
                   asp-controller="Account"
                   asp-action="Login"
                   asp-route-returnUrl="@Model.ReturnUrl"
                   class="ui large form">
+
                 <div class="ui stacked secondary segment">
+
                     <div class="field">
                         <div class="ui left icon input">
                             <i class="user icon"></i>
-                            <input asp-for="Email" type="text" name="email" placeholder="Login">
+                            <input asp-for="Email" type="text" name="email" placeholder="@Localizer["Login"]">
                         </div>
                     </div>
                     <div class="field">
                         <div class="ui left icon input">
                             <i class="lock icon"></i>
-                            <input asp-for="Password" type="password" name="password" placeholder="Password">
+                            <input asp-for="Password" type="password" name="password" placeholder="@Localizer["Password"]">
                         </div>
                     </div>
-                    <div class="field">
-                        <label asp-for="RememberMe"></label><br />
-                        <input asp-for="RememberMe" />
-                    </div>
-                    <div class="ui fluid large teal submit button">Login</div>
-                </div>
-                <div class="ui error message"></div>
-            </form>
-            @Html.ActionLink("Home", "Index", "Home")
+                    <div class="inline field">
+                        <div class="ui checkbox">
+                            <label>@Localizer["Remember Me"]</label>
+                            <input asp-for="RememberMe" name="RememberMe" type="checkbox" />
+                        </div>
 
+                    </div>
+                    <div class="field">
+                        @*<input type="submit" class="ui fluid large teal button" value="@Localizer["Login"]" />*@
+                        <div class="ui primary submit button">@Localizer["Log in"]</div>
+                    </div>
+                </div>
+            </form>
+
+            @Html.ModelStateValidMsge(ViewData.ModelState, Localizer)
+           
+            <a asp-controller="Home"  asp-action="Index">@Localizer["Home"]</a>
         </div>
     </div>
+
     <footer>
         @await Html.PartialAsync("_SelectLanguagePartial")
     </footer>
 
+    <script type="text/javascript">
+    if ('@Html.ValidationMessage("LoginError")'.value!=null) {
+        alert('@Html.ValidationMessage("LoginError")'.value);
+    }
+
+
+    </script>
+
 
     <script type="text/javascript">
-        $(document)
-            .ready(function () {
-                $('.ui.form')
-                    .form({
-                        fields: {
-                            email: {
-                                identifier: 'email',
-                                rules: [
-                                    {
-                                        type: 'empty',
-                                        prompt: 'Please enter your Login'
-                                    }//,
-                                    //{
-                                    //    type: 'email',
-                                    //    prompt : 'Please enter a valid e-mail'
-                                    //}
-                                ]
-                            },
-                            password: {
-                                identifier: 'password',
-                                rules: [
-                                    {
-                                        type: 'empty',
-                                        prompt: 'Please enter your password'
-                                    },
-                                    {
-                                        type: 'length[5]',
-                                        prompt: 'Your password must be at least 5 characters'
-                                    }
-                                ]
-                            }
-                        }
-                    })
-                    ;
-            })
-            ;
+        $('.ui.checkbox').checkbox();
+    </script>
+    <script type="text/javascript">
+
+        $('.ui.form')
+            .form({
+                on: 'blur',
+                inline: true,
+                // revalidate:true,
+                fields: {
+                    email: {
+                        identifier: 'email',
+                        rules: [{
+                            type: 'empty',
+                            //prompt: 'Please enter a value'
+                            prompt: '@Localizer["Enter your login"]'
+                        }]
+
+                    },
+                    password: {
+                        identifier: 'password',
+                        rules: [{
+                            type: 'empty',
+                            prompt: '@Localizer["Enter your Password"]'
+                        }]
+                    }
+                }
+            });
     </script>
 
 </body>

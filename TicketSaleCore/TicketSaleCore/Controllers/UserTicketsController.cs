@@ -1,6 +1,4 @@
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
@@ -9,6 +7,9 @@ using Microsoft.Extensions.Localization;
 using TicketSaleCore.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using TicketSaleCore.Models.IdentityWithoutEF;
+using TicketSaleCore.Models.IRepository;
+using TicketSaleCore.ViewModels;
 
 namespace TicketSaleCore.Controllers
 {
@@ -16,17 +17,17 @@ namespace TicketSaleCore.Controllers
     public class UserTicketsController : Controller
     {
         private readonly ILogger logger;
-        private readonly IStringLocalizer<HomeController> localizer;
-        private readonly ApplicationContext context;
-        private readonly UserManager<User> userManager;
-        private readonly SignInManager<User> signInManager;
+        private readonly IStringLocalizer<UserTicketsController> localizer;
+        private readonly IUnitOfWork context;
+        private readonly UserManager<AppUser> userManager;
+        private readonly SignInManager<AppUser> signInManager;
 
         public UserTicketsController(
-            SignInManager<User> signInManager,
-            IStringLocalizer<HomeController> localizer,
+            SignInManager<AppUser> signInManager,
+            IStringLocalizer<UserTicketsController> localizer,
             ILoggerFactory loggerFactory,
-            ApplicationContext context,
-            UserManager<User> userManager)
+            IUnitOfWork context,
+            UserManager<AppUser> userManager)
         {
             this.userManager = userManager;
             this.context = context;
@@ -35,55 +36,28 @@ namespace TicketSaleCore.Controllers
             logger = loggerFactory.CreateLogger<AccountController>();
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index(string id = null)
         {
             if (signInManager.IsSignedIn(User))
             {
-                var qm = userManager.GetUserName(User);
+                bool userId=true;
 
-                var applicationContext = context.TicketDbSet
+                if (id!=null)
+                {
+                    userId = id.Equals(userManager.GetUserId(User));
+                }
 
-                    .Where(p => p.Seller.UserName == qm)
-                    .Where(z => z.Order == null)
-                    .Include(p => p.Event)
-                    .Include(p => p.Order)
-                    .Include(p => p.Seller).ToList();
-
-                var waitConf = context.TicketDbSet
-                    .Include(p => p.Order)
-                        .ThenInclude(p => p.Status)
-                        .Include(z => z.Order.Buyer)
-                    .Include(p => p.Seller)
-                    .Include(p => p.Event)
-
-                    .Where(p => p.Seller.UserName == qm)
-                    .Where(p => p.Order.Status.StatusName=="Waiting for conformation")
-                    .ToList();
-
-
-                ViewData["WaitConf"] = waitConf;
-
-                var confirmed = context.TicketDbSet
-                    .Include(p => p.Order)
-                        .ThenInclude(p => p.Status)
-                        .Include(z=>z.Order.Buyer)
-                    .Include(p => p.Seller)
-                    .Include(p => p.Event)
-                    
-                    .Where(p => p.Seller.UserName == qm)
-                    .Where(p => p.Order.Status.StatusName=="Confirmed")
-                   .ToList();
-                ViewData["Confirmed"] = confirmed;
-
-                return View(applicationContext);
+                UserTicketsViewModel userTickets = new UserTicketsViewModel(
+                  context: context,
+                  id: userManager.GetUserId(User),
+                  userTag: userId);
+                
+                return View(userTickets);
             }
             else
             {
-                return View();
+                return View("Error");
             }
-
-            // 
-
         }
     }
 }

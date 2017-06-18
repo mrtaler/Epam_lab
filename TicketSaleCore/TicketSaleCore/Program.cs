@@ -14,11 +14,14 @@ namespace TicketSaleCore
         {
             var host = new WebHostBuilder()
                 .UseKestrel(
-                (o) =>
-               {
-                   o.UseHttps(new X509Certificate2(@"Taler-WST.crt"));
-               })
-                .UseUrls("https://*:443")
+               // (o) =>
+               //{
+               //    o.UseHttps(new X509Certificate2(@"Taler-WST.crt"));
+               //  //  o.UseHttps(new X509Certificate2(@"Tn.cer"));
+               //}
+               )
+                // .UseUrls("https://*:443").
+                 .UseUrls("http://*:59079")
                 .UseContentRoot(Directory.GetCurrentDirectory())
                 // .UseIISIntegration()
                 .UseStartup<Startup>()

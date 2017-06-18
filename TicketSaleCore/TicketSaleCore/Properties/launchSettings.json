@@ -18,7 +18,6 @@
     },
     "TicketSaleCore": {
       "commandName": "Project",
-      "launchBrowser": true,
       "launchUrl": "https://localhost:443/",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"

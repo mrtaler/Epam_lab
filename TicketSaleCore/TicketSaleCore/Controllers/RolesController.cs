@@ -7,17 +7,18 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using TicketSaleCore.Models;
+using TicketSaleCore.Models.IdentityWithoutEF;
 using TicketSaleCore.ViewModels;
 
 namespace TicketSaleCore.Controllers
 {
-    [RequireHttps]
-    [Authorize(Roles = "admin")]
+    
+    [Authorize(Roles = "NotTask01")]
     public class RolesController : Controller
     {
         RoleManager<IdentityRole> _roleManager;
-        UserManager<User> _userManager;
-        public RolesController(RoleManager<IdentityRole> roleManager, UserManager<User> userManager)
+        UserManager<AppUser> _userManager;
+        public RolesController(RoleManager<IdentityRole> roleManager, UserManager<AppUser> userManager)
         {
             _roleManager = roleManager;
             _userManager = userManager;
@@ -59,10 +60,10 @@ namespace TicketSaleCore.Controllers
 
         public IActionResult UserList() => View(_userManager.Users.ToList());
 
-        public async Task<IActionResult> Edit(string userId)
+        public async Task<IActionResult> Edit(string id)
         {
             // получаем пользователя
-            User user = await _userManager.FindByIdAsync(userId);
+            AppUser user = await _userManager.FindByIdAsync(id);
             if (user != null)
             {
                 // получем список ролей пользователя
@@ -83,17 +84,17 @@ namespace TicketSaleCore.Controllers
         [HttpPost]
         public async Task<IActionResult> Edit(string userId, List<string> roles)
         {
-            // получаем пользователя
-            User user = await _userManager.FindByIdAsync(userId);
+            // get user
+            AppUser user = await _userManager.FindByIdAsync(userId);
             if (user != null)
             {
-                // получем список ролей пользователя
+                // get usrer roles
                 var userRoles = await _userManager.GetRolesAsync(user);
-                // получаем все роли
+                // get all role from store
                 var allRoles = _roleManager.Roles.ToList();
-                // получаем список ролей, которые были добавлены
+                //get added roles 
                 var addedRoles = roles.Except(userRoles);
-                // получаем роли, которые были удалены
+                // get remooved rolse
                 var removedRoles = userRoles.Except(roles);
 
                 await _userManager.AddToRolesAsync(user, addedRoles);
