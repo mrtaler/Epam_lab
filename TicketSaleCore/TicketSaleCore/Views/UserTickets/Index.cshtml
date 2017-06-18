@@ -1,4 +1,7 @@
-﻿@model TicketSaleCore.ViewModels.UserTicketsViewModel
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@model TicketSaleCore.ViewModels.UserTicketsViewModel
+@inject IViewLocalizer Localizer
+
 @{
     ViewBag.Title = "title";
 }
@@ -8,9 +11,9 @@
 @if (@Model.UserCompareTag)
 {
     <div class="ui top attached tabular menu">
-        <a class="active item" data-tab="first">Selling Tickets</a>
-        <a class="item" data-tab="second">Waiting Confomition</a>
-        <a class="item" data-tab="third">Sold</a>
+        <a class="active item" data-tab="first">@Localizer["Selling Tickets"]  </a>
+        <a class="item" data-tab="second">@Localizer["Waiting Confomition"]</a>
+        <a class="item" data-tab="third">@Localizer["Sold"]</a>
     </div>
 
     <div class="ui bottom attached active tab segment" data-tab="first">
