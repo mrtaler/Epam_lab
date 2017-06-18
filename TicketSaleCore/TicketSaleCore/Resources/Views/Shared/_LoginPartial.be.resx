@@ -121,7 +121,7 @@
     <value>Добры дзень</value>
   </data>
   <data name="Log out" xml:space="preserve">
-    <value>выйсці</value>
+    <value>Выйсці</value>
   </data>
   <data name="Login" xml:space="preserve">
     <value>Увайсці</value>
@@ -130,9 +130,12 @@
     <value>або</value>
   </data>
   <data name="Register" xml:space="preserve">
-    <value>рэгістрацыя</value>
+    <value>Рэгістрацыя</value>
   </data>
   <data name="Tikets" xml:space="preserve">
-    <value>квіткі</value>
+    <value>Квіткі</value>
+  </data>
+  <data name="Order" xml:space="preserve">
+    <value>Заказы</value>
   </data>
 </root>

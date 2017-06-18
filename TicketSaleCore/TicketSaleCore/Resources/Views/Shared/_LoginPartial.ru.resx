@@ -135,4 +135,7 @@
   <data name="Tikets" xml:space="preserve">
     <value>Билеты</value>
   </data>
+  <data name="Order" xml:space="preserve">
+    <value>Заказы</value>
+  </data>
 </root>

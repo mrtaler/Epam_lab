@@ -1,5 +1,5 @@
 @using System.Globalization
-@model IEnumerable<TicketSaleCore.Models.Ticket>
+@model TicketSaleCore.ViewModels.TicketIndexViewModel
 
 @{
     ViewData["Title"] = "Index";
@@ -13,22 +13,22 @@
 }
 
 <div class="ui items">
-    @if (@ViewBag.CurentEvent != null)
+    @if (@Model.CurentEvent != null)
     {
         <div class="item">
             <div class="ui small image">
-                <img src="@ViewBag.CurentEvent.Banner">
+                <img src="@Model.CurentEvent.Banner">
             </div>
             <div class="content">
-                <a class="header">@ViewBag.CurentEvent.Name</a>
+                <a class="header">@Model.CurentEvent.Name</a>
                 <div class="meta">
-                    <span>@ViewBag.CurentEvent.Venue.Address</span>
+                    <span>@Model.CurentEvent.Venue.Address</span>
                 </div>
                 <div class="description">
-                    <div>@ViewBag.CurentEvent.Description</div>
-                    <div>@ViewBag.CurentEvent.Date.ToString("D", CultureInfo.CurrentCulture)</div>
+                    <div>@Model.CurentEvent.Description</div>
+                    <div>@Model.CurentEvent.Date.ToString("D", CultureInfo.CurrentCulture)</div>
                 </div>
-               <div class="extra">@ViewBag.CurentEvent.Venue.City.Name</div>
+               <div class="extra">@Model.CurentEvent.Venue.City.Name</div>
             </div>
         </div>
         
@@ -45,13 +45,13 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Price)
+                @Html.DisplayNameFor(model => model.availableTicketsToSale.First().Price)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Seller)
+                @Html.DisplayNameFor(model => model.availableTicketsToSale.First().Seller)
             </th>
             <th>
-                @Html.DisplayNameFor(model=>model.SellerNotes)
+                @Html.DisplayNameFor(model=>model.availableTicketsToSale.First().SellerNotes)
             </th>
            
 
@@ -62,7 +62,7 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in Model)
+        @foreach (var item in Model.availableTicketsToSale)
             {
             <tr>
                 <td>

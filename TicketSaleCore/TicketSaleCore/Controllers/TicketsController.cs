@@ -11,50 +11,39 @@ using TicketSaleCore.Models;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Localization;
 using TicketSaleCore.Models.IRepository;
+using TicketSaleCore.ViewModels;
 
 namespace TicketSaleCore.Controllers
 {
     [Authorize]
     public class TicketsController : Controller
     {
-        private readonly ILogger logger;
-        private readonly IStringLocalizer<TicketsController> localizer;
+        //private readonly ILogger logger;
+        //private readonly IStringLocalizer<TicketsController> localizer;
         private readonly IUnitOfWork context;
 
         public TicketsController(
-            IStringLocalizer<TicketsController> localizer,
-            ILoggerFactory loggerFactory,
+            //IStringLocalizer<TicketsController> localizer,
+            //ILoggerFactory loggerFactory,
             IUnitOfWork context)
         {
             this.context = context;
-            this.localizer = localizer;
-            logger = loggerFactory.CreateLogger<TicketsController>();
+           // this.localizer = localizer;
+          //  logger = loggerFactory.CreateLogger<TicketsController>();
         }
         [AllowAnonymous]
         // GET: Tickets
         public async Task<IActionResult> Index(int? id)
         {
-            IEnumerable<Ticket> applicationContext;
+            var availableTicketsToSale = new TicketIndexViewModel(context, id);
 
-            if (id!=null)
-            {
-                applicationContext = context.Tickets
-                    .Where(p => p.EventId == id)
-                    .Where(p => p.Order == null)
-                    .Include(t => t.Event)
-                    .Include(t => t.Seller);
 
-                ViewData["CurentEvent"] = context.Events
-                    .Include(p => p.Venue).ThenInclude(z=>z.City).First(p=>p.Id==id);
-            }
-            else
-            {
-               applicationContext = context.Tickets.Include(t => t.Event).Include(t => t.Seller);
-            }
-          
 
-            
-            return View(applicationContext);
+
+
+
+
+            return View(availableTicketsToSale);
            
 
           //  var applicationContext = context.TicketDbSet.Include(t => t.Event).Include(t => t.Seller);

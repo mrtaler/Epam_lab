@@ -46,7 +46,6 @@ namespace TicketSaleCore.Controllers
                 {
                     userId = id.Equals(userManager.GetUserId(User));
                 }
-               
 
                 UserTicketsViewModel userTickets = new UserTicketsViewModel(
                   context: context,
@@ -59,9 +58,6 @@ namespace TicketSaleCore.Controllers
             {
                 return View("Error");
             }
-
-            // 
-
         }
     }
 }
