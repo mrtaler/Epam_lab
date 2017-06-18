@@ -150,4 +150,7 @@
   <data name="UserNotFound" xml:space="preserve">
     <value>Карыстальнік не зарэгістраваны.</value>
   </data>
+  <data name="Home" xml:space="preserve">
+    <value>Галоўная страница</value>
+  </data>
 </root>

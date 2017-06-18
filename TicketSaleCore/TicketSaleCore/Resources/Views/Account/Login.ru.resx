@@ -150,4 +150,7 @@
   <data name="UserNotFound" xml:space="preserve">
     <value>Пользователь не зарегистрирован</value>
   </data>
+  <data name="Home" xml:space="preserve">
+    <value>На главную странцу</value>
+  </data>
 </root>

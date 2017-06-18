@@ -1259,43 +1259,262 @@ namespace TicketSaleCore.App_code
 
             #endregion
 
-            #region Order Table Init
+            #region Order Table Init For User1
 
             var order1 = new Order
             {
                 Buyer = user1,
                 Status = statusWaiting,
                 OrderTickets = new List<Ticket>
-            {
-                ticket2CinemaEventMinsk1,
-                ticket3CinemaEventMinsk1,
-                ticket6CinemaEventGomel3
-            },
-                TrackNo = "byTT0"
+                {
+                    ticket2CinemaEventMinsk1,
+                    ticket5CinemaEventMinsk1,
+                },
+                TrackNo = "User1 Order #1"
             };
             var order2 = new Order
             {
                 Buyer = user1,
                 Status = statusConfirmed,
                 OrderTickets = new List<Ticket>
-            {
-                ticket3CinemaEventBrest1,
-                ticket5TheaterEventMinsk1,
-                ticket5TheaterEventGomel2
-            },
-                TrackNo = "byTT1"
+                {
+                    ticket2CinemaEventMinsk2,
+                    ticket6CinemaEventMinsk2,
+                    ticket5CinemaEventMinsk2
+                },
+                TrackNo = "User1 Order #2"
             };
-
+            var order3 = new Order
+            {
+                Buyer = user1,
+                Status = statusRejected,
+                OrderTickets = new List<Ticket>
+                {
+                    ticket6CinemaEventGomel1,
+                    ticket2CinemaEventGomel1,
+                },
+                TrackNo = "User1 Order #3"
+            };
+            var order4 = new Order
+            {
+                Buyer = user1,
+                Status = statusConfirmed,
+                OrderTickets = new List<Ticket>
+                {
+                    ticket2CinemaEventGomel2,
+                },
+                TrackNo = "User1 Order #4"
+            };
+            var order5 = new Order
+            {
+                Buyer = user1,
+                Status = statusWaiting,
+                OrderTickets = new List<Ticket>
+                {
+                    ticket5CinemaEventGomel3,
+                    ticket6CinemaEventGomel3,
+                },
+                TrackNo = "User1 Order #5"
+            };
+            var order6 = new Order
+            {
+                Buyer = user1,
+                Status = statusConfirmed,
+                OrderTickets = new List<Ticket>
+                {
+                    ticket6CinemaEventGrodno1
+                },
+                TrackNo = "User1 Order #6"
+            };
+            var order7 = new Order
+            {
+                Buyer = user1,
+                Status = statusRejected,
+                OrderTickets = new List<Ticket>
+                {
+                    ticket6CinemaEventGrodno2,
+                    ticket6TheaterEventMinsk2,
+                    ticket6TheaterEventGomel1
+                },
+                TrackNo = "User1 Order #7"
+            };
+            var order8 = new Order
+            {
+                Buyer = user1,
+                Status = statusConfirmed,
+                OrderTickets = new List<Ticket>
+                {
+                    ticket2TheaterEventGomel2,//8 
+                    ticket3TheaterEventGomel2,//8 
+                    ticket5TheaterEventGomel2,//8 
+                    ticket6TheaterEventGomel2 //8 
+                },
+                TrackNo = "User1 Order #8"
+            };
+            var order9 = new Order
+            {
+                Buyer = user1,
+                Status = statusWaiting,
+                OrderTickets = new List<Ticket>
+                {
+                    ticket6TheaterEventVitebsk1, //9
+                    ticket5TheaterEventVitebsk1,
+                    ticket2TheaterEventVitebsk1
+                },
+                TrackNo = "User1 Order #9"
+            };
 
             context.Orders.Add(order1);
             context.Orders.Add(order2);
-
+            context.Orders.Add(order3);
+            context.Orders.Add(order4);
+            context.Orders.Add(order5);
+            context.Orders.Add(order6);
+            context.Orders.Add(order7);
+            context.Orders.Add(order8);
+            context.Orders.Add(order9);
             #endregion
+
+            #region Order Table Init For User2
+
+            var order21 = new Order
+            {
+                Buyer = user2,
+                Status = statusWaiting,
+                OrderTickets = new List<Ticket>
+                {
+                    ticket1CinemaEventMinsk1,
+                    ticket6CinemaEventMinsk1,
+                },
+                TrackNo = "User2 Order #1"
+            };
+            var order22 = new Order
+            {
+                Buyer = user2,
+                Status = statusConfirmed,
+                OrderTickets = new List<Ticket>
+                {
+                    ticket1CinemaEventMinsk2,
+                    ticket4CinemaEventMinsk2,
+                    ticket3CinemaEventMinsk2
+                },
+                TrackNo = "User2 Order #2"
+            };
+            var order23 = new Order
+            {
+                Buyer = user2,
+                Status = statusRejected,
+                OrderTickets = new List<Ticket>
+                {
+                    ticket1CinemaEventGomel1,
+                    ticket4CinemaEventGomel1,
+                },
+                TrackNo = "User2 Order #3"
+            };
+            var order24 = new Order
+            {
+                Buyer = user2,
+                Status = statusConfirmed,
+                OrderTickets = new List<Ticket>
+                {
+                    ticket3CinemaEventGomel2,
+                },
+                TrackNo = "User2 Order #4"
+            };
+            var order25 = new Order
+            {
+                Buyer = user2,
+                Status = statusWaiting,
+                OrderTickets = new List<Ticket>
+                {
+                    ticket1CinemaEventGomel3,
+                    ticket3CinemaEventGomel3,
+                },
+                TrackNo = "User2 Order #5"
+            };
+
+            context.Orders.Add(order21);
+            context.Orders.Add(order22);
+            context.Orders.Add(order23);
+            context.Orders.Add(order24);
+            context.Orders.Add(order25);
+            #endregion
+
+
+            #region Order Table Init For User2
+
+            var order31 = new Order
+            {
+                Buyer = user3,
+                Status = statusWaiting,
+                OrderTickets = new List<Ticket>
+                {
+                    ticket1CinemaEventGrodno1,
+                    ticket2CinemaEventGrodno1,
+                    ticket4CinemaEventGrodno1,
+                    ticket5CinemaEventGrodno1,
+                },
+                TrackNo = "User3 Order #1"
+            };
+            var order32 = new Order
+            {
+                Buyer = user3,
+                Status = statusConfirmed,
+                OrderTickets = new List<Ticket>
+                {
+                    ticket1CinemaEventVitebsk1,
+                    ticket2CinemaEventVitebsk1,
+                    ticket4CinemaEventVitebsk1
+                },
+                TrackNo = "User3 Order #2"
+            };
+            var order33 = new Order
+            {
+                Buyer = user3,
+                Status = statusRejected,
+                OrderTickets = new List<Ticket>
+                {
+                    ticket1CinemaEventBrest1,
+                    ticket2CinemaEventBrest1,
+                },
+                TrackNo = "User3 Order #3"
+            };
+            var order34 = new Order
+            {
+                Buyer = user3,
+                Status = statusConfirmed,
+                OrderTickets = new List<Ticket>
+                {
+                    ticket1TheaterEventMinsk1,
+                    ticket2TheaterEventMinsk1,
+                    ticket5TheaterEventMinsk1,
+                },
+                TrackNo = "User3 Order #4"
+            };
+            var order35 = new Order
+            {
+                Buyer = user3,
+                Status = statusWaiting,
+                OrderTickets = new List<Ticket>
+                {
+                    ticket1TheaterEventGrodno1,
+                    ticket2TheaterEventGrodno1,
+                },
+                TrackNo = "User3 Order #5"
+            };
+
+            context.Orders.Add(order31);
+            context.Orders.Add(order32);
+            context.Orders.Add(order33);
+            context.Orders.Add(order34);
+            context.Orders.Add(order35);
+            #endregion
+
 
             context.SaveChanges();
         }
         /// <summary>
-        /// Init User and Roles
+        /// Init User and Roles use User&Role manager
         /// </summary>
         /// <param name="serviceProvider"></param>
         /// <returns></returns>

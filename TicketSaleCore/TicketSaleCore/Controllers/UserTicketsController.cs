@@ -36,18 +36,24 @@ namespace TicketSaleCore.Controllers
             logger = loggerFactory.CreateLogger<AccountController>();
         }
 
-        public async Task<IActionResult> Index(string id=null)
+        public async Task<IActionResult> Index(string id = null)
         {
             if (signInManager.IsSignedIn(User))
             {
-                string userId = null;
-            
-                
-                userId = id ?? userManager.GetUserId(User);
-                 UserTicketsViewModel UserTickets=new UserTicketsViewModel(context, userId);
+                bool userId=true;
+
+                if (id!=null)
+                {
+                    userId = id.Equals(userManager.GetUserId(User));
+                }
                
 
-                return View(UserTickets);
+                UserTicketsViewModel userTickets = new UserTicketsViewModel(
+                  context: context,
+                  id: userManager.GetUserId(User),
+                  userTag: userId);
+                
+                return View(userTickets);
             }
             else
             {

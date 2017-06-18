@@ -37,12 +37,18 @@ namespace TicketSaleCore.Controllers
                 .Include(p=>p.Tickets)
                 .ThenInclude(e=>e.Order)
                 .Include(p=>p.Venue)
-                .ThenInclude(c=>c.City);
+                .ThenInclude(c=>c.City).OrderBy(t=>t.Date);
+
             List<EventsHomeViewModel> evHvEventsHomeViewModels=new List<EventsHomeViewModel>();
 
             foreach (var item in events)
             {
-                evHvEventsHomeViewModels.Add(new EventsHomeViewModel(item));
+                var evTi = new EventsHomeViewModel(item);
+                if (evTi.AvailableTicket>0)
+                {
+                    evHvEventsHomeViewModels.Add(evTi);
+                }
+               
             }
             return View(evHvEventsHomeViewModels);
         }

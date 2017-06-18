@@ -1,10 +1,9 @@
 ﻿@using System.Globalization
-@using TicketSaleCore.Models
 @model  IEnumerable<TicketSaleCore.ViewModels.HomeViewModels.EventsHomeViewModel>
 @{
     ViewData["Title"] = "Event Home";
 }
-<div class="ui grid">
+<div class="ui justified container">
 
     @if (User.Identity.IsAuthenticated)
     {
@@ -17,13 +16,10 @@
     {
 
     }
-    <div class="ui items">
+    <div class="ui items column">
         @foreach (var item in Model)
         {
-            @*@Html.ActionLink("item.Name", "IndexTickedForEvent","Tickets",new {id=@item.Id})*@
-
-
-            <div class="item six wide row">
+            <div class="item wide row">
                 <div class="ui small image">
                     <img src="@item.Banner"
                          @*style="height: 60px;width: 60px" *@>
@@ -45,20 +41,17 @@
                                 <div>@item.Date.ToString("D", CultureInfo.CurrentCulture)</div>
                             </div>
                             <div class="right floated column middle aligned">
-                                <div class="ui vertically divided grid">
-                                    <div class="two column row">
-                                        <div class="small column">
-                                            <div>available </div>
-                                            <div>tikets:</div>
-                                        </div>
-                                        <div class="column small left middle aligned">
-                                            <b>@item.AvailableTicket</b>
-                                        </div>
+                                <div class="ui statistic">
+
+                                    <div class="label">
+                                        available tikets:
+                                    </div>
+                                    <div class="value">
+                                        @item.AvailableTicket
                                     </div>
                                 </div>
                             </div>
                         </div>
-
                     </div>
                     <div class="extra">@item.Venue.City.Name</div>
                 </div>

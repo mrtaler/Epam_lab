@@ -49,6 +49,7 @@ namespace TicketSaleCore
             //    options.Filters.Add(new RequireHttpsAttribute());
             //});
             //use localization
+
             services.Configure<RequestLocalizationOptions>(options =>
             {
                 var supportedCultures = new[]

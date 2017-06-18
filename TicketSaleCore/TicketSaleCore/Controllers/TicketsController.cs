@@ -46,7 +46,6 @@ namespace TicketSaleCore.Controllers
 
                 ViewData["CurentEvent"] = context.Events
                     .Include(p => p.Venue).ThenInclude(z=>z.City).First(p=>p.Id==id);
-
             }
             else
             {
