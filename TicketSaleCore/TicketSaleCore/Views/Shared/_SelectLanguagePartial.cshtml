@@ -14,19 +14,19 @@
         .ToList();
 }
 
-    <form id="selectLanguage" asp-controller="Home"
-          asp-action="SetLanguage" asp-route-returnUrl="@Context.Request.Path"
-          method="post" class="item" role="form">
-          <i class="world icon"></i>
+<form id="selectLanguage" asp-controller="Home"
+      asp-action="SetLanguage" asp-route-returnUrl="@Context.Request.Path"
+      method="post" class="item" role="form">
+    <i class="world icon"></i>
 
+   
+    <select class="ui dropdown"
+            name="culture"
+            asp-for="@requestCulture.RequestCulture.UICulture.Name"
+            asp-items="cultureItems"></select>
 
-        <select class="ui dropdown"
-                name="culture"
-                asp-for="@requestCulture.RequestCulture.UICulture.Name"
-                asp-items="cultureItems"></select>
+    <button type="submit" class="ui button"> Save</button>
 
-        <button type="submit" class="ui button"> Save</button>
-
-    </form>
+</form>
 
 @*<div title="@Localizer["Request culture provider:"] @requestCulture?.Provider?.GetType().Name">*@
