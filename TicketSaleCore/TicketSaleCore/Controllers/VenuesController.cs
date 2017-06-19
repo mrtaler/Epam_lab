@@ -1,5 +1,3 @@
-using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
@@ -15,17 +13,17 @@ namespace TicketSaleCore.Controllers
     [Authorize(Roles = "NotTask01")]
     public class VenuesController : Controller
     {
-        private readonly IUnitOfWork _context;
+        private readonly IUnitOfWork context;
 
         public VenuesController(IUnitOfWork context)
         {
-            _context = context;    
+            this.context = context;    
         }
 
         // GET: Venues
         public async Task<IActionResult> Index()
         {
-            var applicationContext = _context.Venues;//.Include(v => v.City);
+            var applicationContext = context.Venues;//.Include(v => v.City);
             return View(/*await*/ applicationContext/*.ToListAsync()*/);
         }
 
@@ -37,7 +35,7 @@ namespace TicketSaleCore.Controllers
                 return NotFound();
             }
 
-            var venue = /*await*/ _context.Venues.
+            var venue = /*await*/ context.Venues.
                 //.Include(v => v.City)
                 //.SingleOrDefaultAsync(m => m.Id == id);
             SingleOrDefault(m => m.Id == id);
@@ -53,7 +51,7 @@ namespace TicketSaleCore.Controllers
         [Authorize(Roles = "admin")]
         public IActionResult Create()
         {
-            ViewData["CitiesFk"] = new SelectList(_context.Citys, "Id", "Name");
+            ViewData["CitiesFk"] = new SelectList(context.Citys, "Id", "Name");
             return View();
         }
 
@@ -68,13 +66,13 @@ namespace TicketSaleCore.Controllers
         {
             if (ModelState.IsValid)
             {
-                _context.Venues.Add(venue);
+                context.Venues.Add(venue);
                 //await _context.SaveChangesAsync();
-                _context.SaveChanges();
+                context.SaveChanges();
                 return RedirectToAction("Index");
             }
             //   new SelectList(db.Attachments, "uiIndex", "szAttName", iTEM.uiIndex);
-            ViewData["CitiesFk"] = new SelectList(_context.Citys, "Id", "Name", venue.CityFk);
+            ViewData["CitiesFk"] = new SelectList(context.Citys, "Id", "Name", venue.CityFk);
             return View(venue);
         }
 
@@ -88,12 +86,12 @@ namespace TicketSaleCore.Controllers
             }
 
             //var venue = await _context.Venues.SingleOrDefaultAsync(m => m.Id == id);
-            var venue =  _context.Venues.SingleOrDefault(m => m.Id == id);
+            var venue =  context.Venues.SingleOrDefault(m => m.Id == id);
             if (venue == null)
             {
                 return NotFound();
             }
-            ViewData["CitiesFk"] = new SelectList(_context.Citys, "Id", "Name", venue.CityFk);
+            ViewData["CitiesFk"] = new SelectList(context.Citys, "Id", "Name", venue.CityFk);
             return View(venue);
         }
 
@@ -114,8 +112,8 @@ namespace TicketSaleCore.Controllers
             {
                 try
                 {
-                    _context.Venues.Update(venue);
-                     _context.SaveChanges();
+                    context.Venues.Update(venue);
+                     context.SaveChanges();
                     //await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
@@ -131,7 +129,7 @@ namespace TicketSaleCore.Controllers
                 }
                 return RedirectToAction("Index");
             }
-            ViewData["CitiesFk"] = new SelectList(_context.Citys, "Id", "Name", venue.CityFk);
+            ViewData["CitiesFk"] = new SelectList(context.Citys, "Id", "Name", venue.CityFk);
             return View(venue);
         }
 
@@ -147,7 +145,7 @@ namespace TicketSaleCore.Controllers
             //var venue = await _context.Venues
             //    //.Include(v => v.City)
             //    .SingleOrDefaultAsync(m => m.Id == id);
-            var venue =  _context.Venues
+            var venue =  context.Venues
                 //.Include(v => v.City)
                 .SingleOrDefault(m => m.Id == id);
             if (venue == null)
@@ -165,16 +163,16 @@ namespace TicketSaleCore.Controllers
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             //var venue = await _context.VenueDbSet.SingleOrDefaultAsync(m => m.Id == id);
-            var venue =  _context.Venues.SingleOrDefault(m => m.Id == id);
-            _context.Venues.Remove(venue);
-             _context.SaveChanges();
+            var venue =  context.Venues.SingleOrDefault(m => m.Id == id);
+            context.Venues.Remove(venue);
+             context.SaveChanges();
             //await _context.SaveChangesAsync();
             return RedirectToAction("Index");
         }
 
         private bool VenueExists(int id)
         {
-            return _context.Venues.Any(e => e.Id == id);
+            return context.Venues.Any(e => e.Id == id);
         }
     }
 }

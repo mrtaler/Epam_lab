@@ -1,16 +1,6 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using TicketSaleCore.Models;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Localization;
-using Microsoft.Extensions.Logging;
-using Microsoft.AspNetCore.Http;
-using System.IO;
 using Microsoft.AspNetCore.Authorization;
 using TicketSaleCore.Models.IRepository;
 
@@ -20,13 +10,13 @@ namespace TicketSaleCore.Controllers
     public class EventsController : Controller
     {
         private readonly IUnitOfWork context;
-        private readonly IHostingEnvironment appEnvironment;
+     //   private readonly IHostingEnvironment appEnvironment;
         //private IStringLocalizer<EventsController> localizer;
         //private ILoggerFactory loggerFactory;
 
-        public EventsController(IUnitOfWork context, IHostingEnvironment appEnvironment/*, IStringLocalizer<EventsController> localizer, ILoggerFactory loggerFactory*/)
+        public EventsController(IUnitOfWork context/* ,IHostingEnvironment appEnvironment/*, IStringLocalizer<EventsController> localizer, ILoggerFactory loggerFactory*/)
         {
-         this.appEnvironment = appEnvironment;
+        // this.appEnvironment = appEnvironment;
             //this.localizer = localizer;
             //this.loggerFactory = loggerFactory;
             this.context = context;    
@@ -204,9 +194,9 @@ namespace TicketSaleCore.Controllers
         //    return RedirectToAction("Index");
         //}
         #endregion
-        private bool EventExists(int id)
-        {
-            return context.Events.Any(e => e.Id == id);
-        }
+        //private bool EventExists(int id)
+        //{
+        //    return context.Events.Any(e => e.Id == id);
+        //}
     }
 }

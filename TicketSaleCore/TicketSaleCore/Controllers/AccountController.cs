@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
-using TicketSaleCore.Models;
 using TicketSaleCore.Models.IdentityWithoutEF;
 using TicketSaleCore.ViewModels;
 

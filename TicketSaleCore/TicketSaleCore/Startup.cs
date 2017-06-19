@@ -1,17 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.IO;
-using System.Linq;
-using System.Security.Cryptography.X509Certificates;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Globalization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.AspNetCore.Localization;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -22,7 +14,6 @@ using TicketSaleCore.Models;
 using TicketSaleCore.AuthorizationPolit.Password;
 using TicketSaleCore.Models.IdentityWithoutEF;
 using TicketSaleCore.Models.IRepository;
-using TicketSaleCore.Models._Memory;
 
 namespace TicketSaleCore
 {
@@ -48,6 +39,7 @@ namespace TicketSaleCore
             //{
             //    options.Filters.Add(new RequireHttpsAttribute());
             //});
+
             //use localization
 
             services.Configure<RequestLocalizationOptions>(options =>

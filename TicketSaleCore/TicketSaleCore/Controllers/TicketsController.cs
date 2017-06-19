@@ -1,15 +1,10 @@
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Data;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using TicketSaleCore.Models;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Localization;
 using TicketSaleCore.Models.IRepository;
 using TicketSaleCore.ViewModels;
 
@@ -36,13 +31,6 @@ namespace TicketSaleCore.Controllers
         public async Task<IActionResult> Index(int? id)
         {
             var availableTicketsToSale = new TicketIndexViewModel(context, id);
-
-
-
-
-
-
-
             return View(availableTicketsToSale);
            
 

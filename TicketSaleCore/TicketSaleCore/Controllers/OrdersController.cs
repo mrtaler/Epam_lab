@@ -1,12 +1,8 @@
-using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using TicketSaleCore.Models;
 using TicketSaleCore.Models.IRepository;
 
 namespace TicketSaleCore.Controllers
@@ -14,18 +10,18 @@ namespace TicketSaleCore.Controllers
     [Authorize]
     public class OrdersController : Controller
     {
-        private readonly IUnitOfWork _context;
+        private readonly IUnitOfWork context;
 
         public OrdersController(IUnitOfWork context)
         {
-            _context = context;
+            this.context = context;
         }
 
         // GET: Orders
         public async Task<IActionResult> Index(string id)
         {
 
-            var applicationContext = _context.Orders.Include(o => o.Buyer)
+            var applicationContext = context.Orders.Include(o => o.Buyer)
                 .Where(s => s.Buyer.Id.Equals(id))
                 .Include(st=>st.Status)
                 .Include(t => t.OrderTickets).ThenInclude(z => z.Event)
@@ -41,7 +37,7 @@ namespace TicketSaleCore.Controllers
                 return NotFound();
             }
 
-            var order = await _context.Orders
+            var order = await context.Orders
                 .Include(o => o.Buyer)
                 .SingleOrDefaultAsync(m => m.Id == id);
             if (order == null)
@@ -54,9 +50,9 @@ namespace TicketSaleCore.Controllers
 
 
 
-        private bool OrderExists(int id)
-        {
-            return _context.Orders.Any(e => e.Id == id);
-        }
+        //private bool OrderExists(int id)
+        //{
+        //    return context.Orders.Any(e => e.Id == id);
+        //}
     }
 }

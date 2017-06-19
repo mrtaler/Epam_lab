@@ -5,9 +5,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Logging;
-using TicketSaleCore.Models;
 using TicketSaleCore.Models.IRepository;
 using TicketSaleCore.ViewModels.HomeViewModels;
 
@@ -16,18 +14,13 @@ namespace TicketSaleCore.Controllers
 
     public class HomeController : Controller
     {
-        private readonly ILogger logger;
-        private readonly IStringLocalizer<HomeController> localizer;
         private readonly IUnitOfWork context;
 
         public HomeController(
-            IStringLocalizer<HomeController> localizer,
             ILoggerFactory loggerFactory,
             IUnitOfWork context)
         {
             this.context = context;
-            this.localizer = localizer;
-            logger = loggerFactory.CreateLogger<AccountController>();
         }
 
         public IActionResult Index()
@@ -55,16 +48,12 @@ namespace TicketSaleCore.Controllers
 
         public IActionResult About()
         {
-            ViewData["Message"] = localizer["Your application description page."];
-
             return View();
         }
 
         //[Authorize(Policy = "AgeLimit")]
         public IActionResult Contact()
         {
-            ViewData["Message"] = localizer["Your contact page."];
-
             return View();
         }
 
