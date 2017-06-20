@@ -9,30 +9,39 @@ using Microsoft.EntityFrameworkCore.Internal;
 using TicketSaleCore.Models.IRepository;
 
 namespace TicketSaleCore.Models._Memory
-{
+{/// <summary>
+/// Memory repository based on DbSet
+/// </summary>
+/// <typeparam name="T">Class</typeparam>
     public class MemoryGenericRepository<T> : DbSet<T>, IEnumerable<T> where T : class 
     {
         private List<T> list = new List<T>();
-       
+       /// <summary>
+       /// Get all entities
+       /// </summary>
+       /// <returns>list </returns>
         public IEnumerable<T> GetAll()
         {
             return new List<T>(list);
         }
-
+        /// <summary>
+        /// find one entities
+        /// </summary>
+        /// <param name="predicate">lambda</param>
+        /// <returns>one Instance of a class</returns>
         public IEnumerable<T> Find(Func<T, bool> predicate)
         {
             return list.Where(predicate).ToList();
         }
-        //public T FindById(int id)
-        //{
-        //    return list.Find(p=>p T);
-        //        //list.Find();
-        //}
-
+        /// <summary>
+        /// create Instance of a class
+        /// </summary>
+        /// <param name="item">new item</param>
         public void Create(T item)
         {
             list.Add(item);
         }
+
         public void Update(T item)
         {
          //   list.Remove(this.FindById(1));
