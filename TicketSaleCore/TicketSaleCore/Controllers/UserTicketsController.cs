@@ -36,46 +36,34 @@ namespace TicketSaleCore.Controllers
 
         public async Task<IActionResult> Index(string id = null)
         {
-            if (signInManager.IsSignedIn(User))
-            {
-                bool userId=true;
-
-                if (id!=null)
-                {
-                    userId = id.Equals(userManager.GetUserId(User));
-                }
-
-                UserTicketsViewModel userTickets = new UserTicketsViewModel(
-                  context: context,
-                  id: userManager.GetUserId(User),
-                  userTag: userId);
-                
-                return View(userTickets);
-            }
-            else
-            {
-                return View("Error");
-            }
+            //if (signInManager.IsSignedIn(User))
+            //{
+            return View();
+            //}
+            //else
+            //{
+            //return View("Error");
+            //}
         }
-        public async Task<IActionResult> first(string orderStatus,string userId = null)
+        public async Task<IActionResult> SellingTickets(string userId = null)
         {
-            if (userId==null)
+            if(userId == null)
             {
                 userId = userManager.GetUserId(User);
             }
-            List<Ticket> sellingTickets=new List<Ticket>(
+            List<Ticket> sellingTickets = new List<Ticket>(
                 context.Tickets
                 .Where(p => p.Seller.Id == userId)
                 .Where(z => z.Order == null)
                 .Include(p => p.Event)
                 .Include(p => p.Order)
                 .Include(p => p.Seller));
-            JsonResult res=new JsonResult(sellingTickets);
+            JsonResult res = new JsonResult(sellingTickets);
 
-           
+
             return PartialView(sellingTickets);
         }
-        public async Task<IActionResult> second(string orderStatus, string userId = null)
+        public async Task<IActionResult> WaitingConfomition(string userId = null)
         {
             if(userId == null)
             {
@@ -91,7 +79,25 @@ namespace TicketSaleCore.Controllers
                     .Where(p => p.Seller.Id == userId)
                     .Where(p => p.Order.Status.StatusName == "Waiting for conformation"));
 
-            return PartialView("first", sellingTickets);
+            return PartialView("SellingTickets", sellingTickets);
+        }
+        public async Task<IActionResult> Sold(string userId = null)
+        {
+            if(userId == null)
+            {
+                userId = userManager.GetUserId(User);
+            }
+            List<Ticket> sellingTickets = new List<Ticket>(
+                context.Tickets
+                    .Include(p => p.Order)
+                    .ThenInclude(p => p.Status)
+                    .Include(z => z.Order.Buyer)
+                    .Include(p => p.Seller)
+                    .Include(p => p.Event)
+                    .Where(p => p.Seller.Id == userId)
+                    .Where(p => p.Order.Status.StatusName == "Waiting for conformation"));
+
+            return PartialView("SellingTickets", sellingTickets);
         }
 
     }
