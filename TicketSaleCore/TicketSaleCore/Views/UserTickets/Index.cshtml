@@ -1,38 +1,41 @@
-﻿@using Microsoft.AspNetCore.Mvc.Localization
+﻿@using Microsoft.AspNetCore.Identity
+@using Microsoft.AspNetCore.Mvc.Localization
+@using TicketSaleCore.Models.IdentityWithoutEF
 @model TicketSaleCore.ViewModels.UserTicketsViewModel
 @inject IViewLocalizer Localizer
+@inject UserManager<AppUser> UserManager
 
 @{
     ViewBag.Title = "title";
 }
-
-
-
-@if (@Model.UserCompareTag)
+@if(@Model.UserCompareTag)
 {
     <div class="ui top attached tabular menu">
-        <a class="active item" data-tab="first">@Localizer["Selling Tickets"]  </a>
+        <a class="active item" data-tab="first" id="firstTab">@Localizer["Selling Tickets"]  </a>
         <a class="item" data-tab="second">@Localizer["Waiting Confomition"]</a>
         <a class="item" data-tab="third">@Localizer["Sold"]</a>
     </div>
+    <div id="firstTabContent">
 
+    </div>
     <div class="ui bottom attached active tab segment" data-tab="first">
-        <table class="ui celled padded table">
+        @*<table class="ui celled padded table">*@
+        @*     <table class="ui celled padded table">
             <thead>
-            <tr>
-                <th>
-                    @Html.DisplayNameFor(model => model.SellingTickets.First().Price)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.SellingTickets.First().Event)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.SellingTickets.First().SellerNotes)
-                </th>
-            </tr>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.SellingTickets.First().Price)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.SellingTickets.First().Event)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.SellingTickets.First().SellerNotes)
+                    </th>
+                </tr>
             </thead>
             <tbody>
-            @foreach (var item in Model.SellingTickets)
+                @foreach (var item in Model.SellingTickets)
             {
                 <tr>
                     <td>
@@ -47,86 +50,86 @@
                 </tr>
             }
             </tbody>
-        </table>
+                    </table>*@
     </div>
     <div class="ui bottom attached tab segment" data-tab="second">
-        <table class="ui celled padded table">
-            <thead>
-            <tr>
-                <th>
-                    @Html.DisplayNameFor(model => model.WaitforConformationTickets.First().Seller)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.WaitforConformationTickets.First().Event)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.WaitforConformationTickets.First().Price)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.WaitforConformationTickets.First().Order.Buyer)
-                </th>
-            </tr>
-            </thead>
-            <tbody>
-            @foreach (var item in Model.WaitforConformationTickets)
-            {
-                <tr>
-                    <td>
-                        @item.Seller
-                    </td>
-                    <td>
-                        <a asp-controller="Events" asp-action="Details" asp-route-id="@item.Event.Id">@item.Event.Name</a>
-                    </td>
-                    <td>
-                       
-                        @Html.DisplayFor(modelItem => item.Price)
-                    </td>
-                    <td>
-                        @item.Order.Buyer
-                    </td> 
-                </tr>
-            }
-            </tbody>
-        </table>
+        @*<table class="ui celled padded table">
+                <thead>
+                    <tr>
+                        <th>
+                            @Html.DisplayNameFor(model => model.WaitforConformationTickets.First().Seller)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.WaitforConformationTickets.First().Event)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.WaitforConformationTickets.First().Price)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.WaitforConformationTickets.First().Order.Buyer)
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.WaitforConformationTickets)
+                {
+                    <tr>
+                        <td>
+                            @item.Seller
+                        </td>
+                        <td>
+                            <a asp-controller="Events" asp-action="Details" asp-route-id="@item.Event.Id">@item.Event.Name</a>
+                        </td>
+                        <td>
+
+                            @Html.DisplayFor(modelItem => item.Price)
+                        </td>
+                        <td>
+                            @item.Order.Buyer
+                        </td>
+                    </tr>
+                }
+                </tbody>
+            </table>*@
     </div>
     <div class="ui bottom attached tab segment" data-tab="third">
-        <table class="ui celled padded table">
-            <thead>
-            <tr>
-                <th>
-                    @Html.DisplayNameFor(model => model.ConfirmedTickets.First().Seller)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.ConfirmedTickets.First().Event)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.ConfirmedTickets.First().Price)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.ConfirmedTickets.First().Order.Buyer)
-                </th>
-            </tr>
-            </thead>
-            <tbody>
-            @foreach (var item in Model.ConfirmedTickets)
-            {
-                <tr>
-                    <td>
-                        @item.Seller
-                    </td>
-                    <td>
-                        <a asp-controller="Events" asp-action="Details" asp-route-id="@item.Event.Id">@item.Event.Name</a>
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Price)
-                    </td>
-                    <td>
-                        @item.Order.Buyer
-                    </td> 
-                </tr>
-            }
-            </tbody>
-        </table>
+        @*<table class="ui celled padded table">
+                <thead>
+                    <tr>
+                        <th>
+                            @Html.DisplayNameFor(model => model.ConfirmedTickets.First().Seller)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.ConfirmedTickets.First().Event)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.ConfirmedTickets.First().Price)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.ConfirmedTickets.First().Order.Buyer)
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.ConfirmedTickets)
+                {
+                    <tr>
+                        <td>
+                            @item.Seller
+                        </td>
+                        <td>
+                            <a asp-controller="Events" asp-action="Details" asp-route-id="@item.Event.Id">@item.Event.Name</a>
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Price)
+                        </td>
+                        <td>
+                            @item.Order.Buyer
+                        </td>
+                    </tr>
+                }
+                </tbody>
+            </table>*@
     </div>
 }
 else
@@ -138,20 +141,20 @@ else
     <div class="ui bottom attached active tab segment" data-tab="first">
         <table class="ui celled padded table">
             <thead>
-            <tr>
-                <th>
-                    @Html.DisplayNameFor(model => model.SellingTickets.First().Price)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.SellingTickets.First().Event)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.SellingTickets.First().SellerNotes)
-                </th>
-            </tr>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.SellingTickets.First().Price)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.SellingTickets.First().Event)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.SellingTickets.First().SellerNotes)
+                    </th>
+                </tr>
             </thead>
             <tbody>
-            @foreach (var item in Model.SellingTickets)
+                @foreach (var item in Model.SellingTickets)
             {
                 <tr>
                     <td>
@@ -172,6 +175,52 @@ else
 
 
 
-<script type="application/javascript">
-    $('.menu .item').tab();
+<script type="text/javascript">
+    $.fn.api.settings.api = {
+        'get first': '@Url.Action("DisplayViewWithAjax")',
+        'get second': '@Url.Action("DisplayViewWithAjax")'
+    };
+    //$('#firstTab').api({
+    //    action: 'get first',
+    //    method: 'GET',
+    //    dataType: 'html',
+    //    stateContext: '#firstTabContent',
+    //    //data: {},
+    //    onSuccess: function (response){
+    //        //$('[data-tab=first].tab').html(response);
+    //        $('#firstTabContent').html(response);
+    //    }
+    //});
+   $('.menu .item').tab({
+        cache: false,
+        auto: true,
+        context: 'parent',
+        path: '/UserTickets/',
+        apiSettings: {
+            loadingDuration : 300,
+            url: '/UserTickets/',
+            data: { orderStatus: 'null', userId: '@UserManager.GetUserId(User)' }
+           
+                @*function(settings) {
+                    var response = {
+                        data: { orderStatus: 'null', userId: '@UserManager.GetUserId(User)'},
+                        second:{ data: { orderStatus: 'one', userId: '@UserManager.GetUserId(User)' }},
+                        third: { data: { orderStatus: 'sec', userId: '@UserManager.GetUserId(User)' }}
+                };
+                return response[settings.urlData.tab];
+            }*@
+        }
+    });
+</script>
+<script type="text/javascript">
+    @*function LoadTicket() {
+        $.ajax({
+            type: 'POST',
+            data: { orderStatus: 'null', userId: '@UserManager.GetUserId(User)' },
+            url: '@Url.Action("DisplayViewWithAjax")',
+            success: function (result) {
+                $('[data-tab=first]').html(result);
+            }
+        });
+    };*@
 </script>
