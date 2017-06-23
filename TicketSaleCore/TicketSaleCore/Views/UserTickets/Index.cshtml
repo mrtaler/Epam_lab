@@ -1,43 +1,38 @@
 ﻿@using Microsoft.AspNetCore.Identity
 @using Microsoft.AspNetCore.Mvc.Localization
 @using TicketSaleCore.Models.IdentityWithoutEF
-@*@model TicketSaleCore.ViewModels.UserTicketsViewModel*@
+
 @inject IViewLocalizer Localizer
 @inject UserManager<AppUser> UserManager
 
 @{
     ViewBag.Title = "title";
 }
-@*@if(@Model.UserCompareTag)*@
-@*@{*@
-<div class="ui top attached tabular menu">
-    <a class="item active" data-tab="SellingTickets">@Localizer["Selling Tickets"]  </a>
-    <a class="item" data-tab="WaitingConfomition">@Localizer["Waiting Confomition"]</a>
-    <a class="item" data-tab="Sold">@Localizer["Sold"]</a>
-</div>
 
-<div class="ui bottom attached tab segment active" data-tab="SellingTickets"></div>
-<div class="ui bottom attached tab segment" data-tab="WaitingConfomition"></div>
-<div class="ui bottom attached tab segment" data-tab="Sold"></div>
+    <div class="ui top attached tabular menu">
+        <a class="item active" data-tab="SellingTickets">@Localizer["Selling Tickets"] </a>
+        <a class="item" data-tab="WaitingConfomition">@Localizer["Waiting Confomition"]</a>
+        <a class="item" data-tab="Sold">@Localizer["Sold"]</a>
+    </div>
 
+    <div class="ui bottom attached tab segment active" data-tab="SellingTickets"></div>
+    <div class="ui bottom attached tab segment" data-tab="WaitingConfomition"></div>
+    <div class="ui bottom attached tab segment" data-tab="Sold"></div>
 
-<script type="text/javascript">
+   <script type="text/javascript">
     window.onload = function () {
-        $.ajax({
-            type: 'POST',
-            data: {userId: '@UserManager.GetUserId(User)' },
+   $.ajax({
+            type: 'get',
+            data: { userId: '@UserManager.GetUserId(User)'},
             url: '@Url.Action("SellingTickets")',
             success: function (result) {
                 $('[data-tab=SellingTickets].segment').html(result);
             }
         });
-
-        //$('[data-tab=SellingTickets].segment').toggleClass('loading');
     };
 </script>
 
 <script type="text/javascript">
-
     $('.menu .item').tab(
         {
         cache: true,

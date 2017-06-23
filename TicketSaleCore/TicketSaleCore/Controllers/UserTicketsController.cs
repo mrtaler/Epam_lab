@@ -34,10 +34,29 @@ namespace TicketSaleCore.Controllers
 
         }
 
-        public async Task<IActionResult> Index(string id = null)
+        public async Task<IActionResult> Index()
         {
             return View();
         }
+
+        public async Task<IActionResult> IndexAnotherUser(string userId)
+        {
+            if(signInManager.IsSignedIn(User))
+            {
+                if(!userId.Equals(userManager.GetUserId(User)))
+                {
+                    var qq =await userManager.Users.FirstOrDefaultAsync(p=>p.Id==userId);
+                    return View(qq);
+                }
+                else
+                {
+                    return RedirectToAction("Index","UserTickets");
+                }
+
+            }
+            return View("Error");
+        }
+
         public async Task<IActionResult> SellingTickets(string userId = null)
         {
             List<Ticket> sellingTickets = new List<Ticket>(
