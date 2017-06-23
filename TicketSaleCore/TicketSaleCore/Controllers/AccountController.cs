@@ -85,7 +85,8 @@ namespace TicketSaleCore.Controllers
                 if (result.Succeeded)
                 {
                     logger.LogError(1, $"User {user?.Email} logged");
-                    return RedirectToLocal(returnUrl);
+                        return RedirectToLocal(returnUrl);
+                  
                 }
                 if (result.IsLockedOut)
                 {

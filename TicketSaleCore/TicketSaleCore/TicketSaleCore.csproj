@@ -57,9 +57,11 @@
     <DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="1.0.0" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="App_code\TagHelper\" />
     <Folder Include="Properties\PublishProfiles\" />
     <Folder Include="Services\" />
     <Folder Include="SSL\" />
+    <Folder Include="ViewModels\HomeViewModels\" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System.Data.Entity">

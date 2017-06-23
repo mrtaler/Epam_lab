@@ -41,7 +41,7 @@ namespace TicketSaleCore.Controllers
 
         public async Task<IActionResult> IndexAnotherUser(string userId)
         {
-            if(signInManager.IsSignedIn(User))
+            if(userId!=null)
             {
                 if(!userId.Equals(userManager.GetUserId(User)))
                 {

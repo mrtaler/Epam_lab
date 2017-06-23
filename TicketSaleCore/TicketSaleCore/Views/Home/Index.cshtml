@@ -1,6 +1,6 @@
 ﻿@using System.Globalization
 @using TicketSaleCore.Models
-@model  IEnumerable<TicketSaleCore.ViewModels.HomeViewModels.EventsHomeViewModel>
+@model  IEnumerable<Event>
 @{
     ViewData["Title"] = "Event Home";
 }
@@ -13,6 +13,7 @@
             <a>Admin is work</a>
         }
     }
+
     else
     {
 
@@ -48,7 +49,7 @@
                                         available tikets:
                                     </div>
                                     <div class="value">
-                                        @item.AvailableTicket
+                                        @item.Tickets.Count(p => p.Order==null );
                                     </div>
                                 </div>
                             </div>

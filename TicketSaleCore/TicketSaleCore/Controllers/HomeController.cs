@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Localization;
@@ -7,7 +6,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using TicketSaleCore.Models.IRepository;
-using TicketSaleCore.ViewModels.HomeViewModels;
 
 namespace TicketSaleCore.Controllers
 {
@@ -30,20 +28,12 @@ namespace TicketSaleCore.Controllers
                 .Include(p=>p.Tickets)
                 .ThenInclude(e=>e.Order)
                 .Include(p=>p.Venue)
-                .ThenInclude(c=>c.City).OrderBy(t=>t.Date);
+                .ThenInclude(c=>c.City).OrderBy(t=>t.Date)
+                .Where(t=>t.Tickets.Count(c=>c.Order==null)>0)
+                .Where(t=>t.Date>=DateTime.UtcNow);
 
-            List<EventsHomeViewModel> evHvEventsHomeViewModels=new List<EventsHomeViewModel>();
 
-            foreach (var item in events)
-            {
-                var evTi = new EventsHomeViewModel(item);
-                if (evTi.AvailableTicket>0)
-                {
-                    evHvEventsHomeViewModels.Add(evTi);
-                }
-               
-            }
-            return View(evHvEventsHomeViewModels);
+            return View(events);
         }
 
         public IActionResult About()
