@@ -36,21 +36,10 @@ namespace TicketSaleCore.Controllers
 
         public async Task<IActionResult> Index(string id = null)
         {
-            //if (signInManager.IsSignedIn(User))
-            //{
             return View();
-            //}
-            //else
-            //{
-            //return View("Error");
-            //}
         }
         public async Task<IActionResult> SellingTickets(string userId = null)
         {
-            if(userId == null)
-            {
-                userId = userManager.GetUserId(User);
-            }
             List<Ticket> sellingTickets = new List<Ticket>(
                 context.Tickets
                 .Where(p => p.Seller.Id == userId)
@@ -58,17 +47,10 @@ namespace TicketSaleCore.Controllers
                 .Include(p => p.Event)
                 .Include(p => p.Order)
                 .Include(p => p.Seller));
-            JsonResult res = new JsonResult(sellingTickets);
-
-
             return PartialView(sellingTickets);
         }
         public async Task<IActionResult> WaitingConfomition(string userId = null)
         {
-            if(userId == null)
-            {
-                userId = userManager.GetUserId(User);
-            }
             List<Ticket> sellingTickets = new List<Ticket>(
                 context.Tickets
                     .Include(p => p.Order)
@@ -83,10 +65,6 @@ namespace TicketSaleCore.Controllers
         }
         public async Task<IActionResult> Sold(string userId = null)
         {
-            if(userId == null)
-            {
-                userId = userManager.GetUserId(User);
-            }
             List<Ticket> sellingTickets = new List<Ticket>(
                 context.Tickets
                     .Include(p => p.Order)
@@ -95,8 +73,7 @@ namespace TicketSaleCore.Controllers
                     .Include(p => p.Seller)
                     .Include(p => p.Event)
                     .Where(p => p.Seller.Id == userId)
-                    .Where(p => p.Order.Status.StatusName == "Waiting for conformation"));
-
+                    .Where(p => p.Order.Status.StatusName == "Confirmed"));
             return PartialView("SellingTickets", sellingTickets);
         }
 
