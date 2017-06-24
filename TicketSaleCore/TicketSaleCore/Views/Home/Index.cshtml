@@ -18,46 +18,52 @@
     {
 
     }
+    
+    <label asp-for=""></label>
+    
     <div class="ui items column">
-        @foreach (var item in Model)
+        @foreach(var item in Model)
         {
-            <div class="item wide row">
-                <div class="ui small image">
-                    <img src="@item.Banner"
-                         @*style="height: 60px;width: 60px" *@>
-                </div>
-                <div class="content">
-                    <a class="header"
-                       asp-controller="Tickets"
-                       asp-action="Index"
-                       asp-route-id="@item.Id">
-                        @item.Name
-                    </a>
-                    <div class="meta">
-                        <span>@item.Venue.Address</span>
+            <DisplayName asp-for="@item.Id">
+                
+            </DisplayName>
+                <div class="item wide row">
+                    <div class="ui small image">
+                        <img src="@item.Banner"
+                             @*style="height: 60px;width: 60px" *@>
                     </div>
-                    <div class="ui two column divided grid description">
-                        <div class="row">
-                            <div class="column">
-                                <div>@item.Description</div>
-                                <div>@item.Date.ToString("D", CultureInfo.CurrentCulture)</div>
-                            </div>
-                            <div class="right floated column middle aligned">
-                                <div class="ui statistic">
+                    <div class="content">
+                        <a class="header"
+                           asp-controller="Tickets"
+                           asp-action="Index"
+                           asp-route-id="@item.Id">
+                            @item.Name
+                        </a>
+                        <div class="meta">
+                            <span>@item.Venue.Address</span>
+                        </div>
+                        <div class="ui two column divided grid description">
+                            <div class="row">
+                                <div class="column">
+                                    <div>@item.Description</div>
+                                    <div>@item.Date.ToString("D", CultureInfo.CurrentCulture)</div>
+                                </div>
+                                <div class="right floated column middle aligned">
+                                    <div class="ui statistic">
 
-                                    <div class="label">
-                                        available tikets:
-                                    </div>
-                                    <div class="value">
-                                        @item.Tickets.Count(p => p.Order==null );
+                                        <div class="label">
+                                            available tikets:
+                                        </div>
+                                        <div class="value">
+                                            @item.Tickets.Count(p => p.Order == null)
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
+                        <div class="extra">@item.Venue.City.Name</div>
                     </div>
-                    <div class="extra">@item.Venue.City.Name</div>
                 </div>
-            </div>
-        }
-    </div>
+                }
+</div>
 </div>
