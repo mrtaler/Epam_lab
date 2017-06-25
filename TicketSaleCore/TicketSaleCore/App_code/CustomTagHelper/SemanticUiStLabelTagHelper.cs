@@ -56,7 +56,7 @@ namespace TicketSaleCore.App_code.CustomTagHelper
 
             output.Attributes.Add("class", "ui statistic");
 
-            var qq =new string(panelHeading,TagRenderMode.SelfClosing);
+           // var qq =new string(panelHeading,TagRenderMode.SelfClosing);
             var content = panelHeading.InnerHtml;
             //content += panelHeadingContent.InnerHtml.ToString();
 
