@@ -19,14 +19,13 @@
 
     }
     
-    <label asp-for=""></label>
+    
+    
     
     <div class="ui items column">
         @foreach(var item in Model)
         {
-            <DisplayName asp-for="@item.Id">
-                
-            </DisplayName>
+         
                 <div class="item wide row">
                     <div class="ui small image">
                         <img src="@item.Banner"
@@ -49,7 +48,10 @@
                                     <div>@item.Date.ToString("D", CultureInfo.CurrentCulture)</div>
                                 </div>
                                 <div class="right floated column middle aligned">
-                                    <div class="ui statistic">
+                                    <semanticui stlabel label-title=" available tikets:" label-value="@item.Tickets.Count(p => p.Order == null)">
+                                        
+                                    </SemanticUi>
+                                    @*<div class="ui statistic">
 
                                         <div class="label">
                                             available tikets:
@@ -57,11 +59,12 @@
                                         <div class="value">
                                             @item.Tickets.Count(p => p.Order == null)
                                         </div>
-                                    </div>
+                                    </div>*@
                                 </div>
                             </div>
                         </div>
-                        <div class="extra">@item.Venue.City.Name</div>
+                        <div class="extra">@item.Venue.City.Name
+                        </div>
                     </div>
                 </div>
                 }

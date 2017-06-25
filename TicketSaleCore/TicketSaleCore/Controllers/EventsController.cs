@@ -1,7 +1,10 @@
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authorization;
+using TicketSaleCore.Models;
 using TicketSaleCore.Models.IRepository;
 
 namespace TicketSaleCore.Controllers
@@ -25,7 +28,8 @@ namespace TicketSaleCore.Controllers
         // GET: Events
         public async Task<IActionResult> Index()
         {
-            return View(await context.Events.ToListAsync());
+            List<Event> @event = await context.Events.ToListAsync();
+            return View(@event);
         }
 
         // GET: Events/Details/5
@@ -42,7 +46,7 @@ namespace TicketSaleCore.Controllers
             {
                 return NotFound();
             }
-
+         
             return View(@event);
         }
 
