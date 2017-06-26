@@ -5,7 +5,10 @@ namespace TicketSaleCore.CustomTagHelper
 {
     // You may need to install the Microsoft.AspNetCore.Razor.Runtime package into your project
 
-    [HtmlTargetElement("SemanticUi", Attributes = ("StLabel"))]
+    [HtmlTargetElement(
+        "SemanticUi", 
+        Attributes = ("StLabel"), 
+        TagStructure = TagStructure.WithoutEndTag)]
     public class SemanticUiStLabelTagHelper : TagHelper
     {
         [HtmlAttributeName("label-title")]
@@ -45,6 +48,7 @@ namespace TicketSaleCore.CustomTagHelper
             labelSb.Append(valueSb);
 
             output.TagName = "div";
+            output.TagMode=TagMode.StartTagAndEndTag;
             output.Attributes.RemoveAll("StLabel");
 
 
