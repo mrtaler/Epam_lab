@@ -1,16 +1,10 @@
-﻿using Microsoft.AspNetCore.Html;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.AspNetCore.Mvc.TagHelpers;
-using Microsoft.AspNetCore.Razor.Runtime.TagHelpers;
+﻿using System.Text;
 using Microsoft.AspNetCore.Razor.TagHelpers;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
-namespace TicketSaleCore.App_code.CustomTagHelper
+namespace TicketSaleCore.CustomTagHelper
 {
     // You may need to install the Microsoft.AspNetCore.Razor.Runtime package into your project
+
     [HtmlTargetElement("SemanticUi", Attributes = ("StLabel"))]
     public class SemanticUiStLabelTagHelper : TagHelper
     {
@@ -35,34 +29,31 @@ namespace TicketSaleCore.App_code.CustomTagHelper
             </div>
          </div>
          */
-
-
         public override void Process(TagHelperContext context, TagHelperOutput output)
         {
-            var panelHeadingContent = new TagBuilder("div");
-            panelHeadingContent.Attributes.Add("class", "label");
-
-            panelHeadingContent.InnerHtml.SetContent(Label);
-           
-            // header
-            var panelHeading = new TagBuilder("div");
-            panelHeading.AddCssClass("value");
-            panelHeading.InnerHtml.SetContent(Value);
+            var labelSb=new StringBuilder();
+            labelSb.Append("<div class='label'>");
+            labelSb.Append(Label);
+            labelSb.Append("</div>");
 
 
+            var valueSb=new StringBuilder();
+            valueSb.Append( "<div class='value'>");
+            valueSb.Append(Value);
+            valueSb.Append("</div>");
+
+            labelSb.Append(valueSb);
 
             output.TagName = "div";
             output.Attributes.RemoveAll("StLabel");
 
+
             output.Attributes.Add("class", "ui statistic");
 
-           // var qq =new string(panelHeading,TagRenderMode.SelfClosing);
-            var content = panelHeading.InnerHtml;
-            //content += panelHeadingContent.InnerHtml.ToString();
+           // var content = new HtmlString(labelSb.ToString());
 
-           // output.Content.SetContent(content);
+            output.Content.SetHtmlContent(labelSb.ToString());
 
-            //.ToHtmlString(TagRenderMode.Normal).ToString();
 
 
         }
