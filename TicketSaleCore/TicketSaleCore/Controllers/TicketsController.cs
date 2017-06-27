@@ -1,61 +1,37 @@
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Data;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using TicketSaleCore.Models;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Localization;
 using TicketSaleCore.Models.IRepository;
+using TicketSaleCore.ViewModels;
 
 namespace TicketSaleCore.Controllers
 {
     [Authorize]
     public class TicketsController : Controller
     {
-        private readonly ILogger logger;
-        private readonly IStringLocalizer<TicketsController> localizer;
+        //private readonly ILogger logger;
+        //private readonly IStringLocalizer<TicketsController> localizer;
         private readonly IUnitOfWork context;
 
         public TicketsController(
-            IStringLocalizer<TicketsController> localizer,
-            ILoggerFactory loggerFactory,
+            //IStringLocalizer<TicketsController> localizer,
+            //ILoggerFactory loggerFactory,
             IUnitOfWork context)
         {
             this.context = context;
-            this.localizer = localizer;
-            logger = loggerFactory.CreateLogger<TicketsController>();
+           // this.localizer = localizer;
+          //  logger = loggerFactory.CreateLogger<TicketsController>();
         }
         [AllowAnonymous]
         // GET: Tickets
         public async Task<IActionResult> Index(int? id)
         {
-            IEnumerable<Ticket> applicationContext;
-
-            if (id!=null)
-            {
-                applicationContext = context.Tickets
-                    .Where(p => p.EventId == id)
-                    .Where(p => p.Order == null)
-                    .Include(t => t.Event)
-                    .Include(t => t.Seller);
-
-                ViewData["CurentEvent"] = context.Events;
-                    //.Include(p => p.Venue).ThenInclude(z=>z.City).First(p=>p.Id==id);
-
-            }
-            else
-            {
-               applicationContext = context.Tickets;//.Include(t => t.Event).Include(t => t.Seller);
-            }
-          
-
-            
-            return View(applicationContext);
+            var availableTicketsToSale = new TicketIndexViewModel(context, id);
+            return View(availableTicketsToSale);
            
 
           //  var applicationContext = context.TicketDbSet.Include(t => t.Event).Include(t => t.Seller);
@@ -70,10 +46,10 @@ namespace TicketSaleCore.Controllers
                 return NotFound();
             }
 
-            var ticket = /*await*/ context.Tickets.SingleOrDefault(m => m.Id == id);
-                //.Include(t => t.Event)
-                //.Include(t => t.Seller)
-                //.SingleOrDefaultAsync(m => m.Id == id);
+            var ticket = await context.Tickets
+                .Include(t => t.Event)
+                .Include(t => t.Seller)
+                .SingleOrDefaultAsync(m => m.Id == id);
             if (ticket == null)
             {
                 return NotFound();
@@ -83,7 +59,8 @@ namespace TicketSaleCore.Controllers
         }
 
         // GET: Tickets/Create
-        [Authorize(Roles = "admin")]
+        //[Authorize(Roles = "admin")]
+        [Authorize(Roles = "NotTask01")]
         public IActionResult Create(string returnUrl = null)
         {
             ViewData["ReturnUrl"] = @returnUrl;
@@ -96,7 +73,8 @@ namespace TicketSaleCore.Controllers
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        [Authorize(Roles = "admin")]
+        //[Authorize(Roles = "admin")]
+        [Authorize(Roles = "NotTask01")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Price,SellerId,EventId")] Ticket ticket, string returnUrl = null)
         {
@@ -113,7 +91,8 @@ namespace TicketSaleCore.Controllers
         }
 
         // GET: Tickets/Edit/5
-        [Authorize(Roles = "admin")]
+        //[Authorize(Roles = "admin")]
+        [Authorize(Roles = "NotTask01")]
         public async Task<IActionResult> Edit(int? id, string returnUrl = null)
         {
            // var retUrl = returnUrl.Replace(@"/Tickets","");
@@ -123,8 +102,7 @@ namespace TicketSaleCore.Controllers
                 return NotFound();
             }
 
-        //    var ticket = await context.TicketDbSet.SingleOrDefaultAsync(m => m.Id == id);
-            var ticket = /*await*/ context.Tickets.SingleOrDefault(m => m.Id == id);
+            var ticket = await context.Tickets.SingleOrDefaultAsync(m => m.Id == id);
             if (ticket == null)
             {
                 return NotFound();
@@ -139,7 +117,8 @@ namespace TicketSaleCore.Controllers
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        [Authorize(Roles = "admin")]
+        //[Authorize(Roles = "admin")]
+        [Authorize(Roles = "NotTask01")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Price,SellerId,EventId")] Ticket ticket, string returnUrl = null)
         {
@@ -176,7 +155,8 @@ namespace TicketSaleCore.Controllers
         }
 
         // GET: Tickets/Delete/5
-        [Authorize(Roles = "admin")]
+        //[Authorize(Roles = "admin")]
+        [Authorize(Roles = "NotTask01")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -198,7 +178,8 @@ namespace TicketSaleCore.Controllers
 
         // POST: Tickets/Delete/5
         [HttpPost, ActionName("Delete")]
-        [Authorize(Roles = "admin")]
+        //[Authorize(Roles = "admin")]
+        [Authorize(Roles = "NotTask01")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {

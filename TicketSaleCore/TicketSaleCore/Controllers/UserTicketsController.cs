@@ -1,22 +1,22 @@
-using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
 using System.Linq;
+using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Localization;
-using TicketSaleCore.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using TicketSaleCore.Models;
 using TicketSaleCore.Models.IdentityWithoutEF;
 using TicketSaleCore.Models.IRepository;
+using TicketSaleCore.ViewModels;
 
 namespace TicketSaleCore.Controllers
 {
     [Authorize]
     public class UserTicketsController : Controller
     {
-        private readonly ILogger logger;
-        private readonly IStringLocalizer<UserTicketsController> localizer;
         private readonly IUnitOfWork context;
         private readonly UserManager<AppUser> userManager;
         private readonly SignInManager<AppUser> signInManager;
@@ -31,75 +31,70 @@ namespace TicketSaleCore.Controllers
             this.userManager = userManager;
             this.context = context;
             this.signInManager = signInManager;
-            this.localizer = localizer;
-            logger = loggerFactory.CreateLogger<AccountController>();
+
         }
 
-        public async Task<IActionResult> Index(string id=null)
+        public async Task<IActionResult> Index()
         {
-            if (signInManager.IsSignedIn(User))
-            {
-                string userId = null;
-             //   var users = User.FindFirst(ClaimTypes.NameIdentifier).Value;
-             //var LoggedInUser = User.Identity;
-
-             //   var claimsIdentity = (ClaimsIdentity)this.User.Identity;
-             //   var claim = claimsIdentity.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier);
-             //   var userIdsss = claim.Value;
-
-
-             //   //  var currentUserID = currentUser.FindFirst(ClaimTypes.NameIdentifier).Value;
-
-             //   var qwe=User.Claims.First(p=>p.Type.Contains("id")).Value;
-             //   var qq = userManager.GetUserName(User);
-                
-                userId = id ?? userManager.GetUserId(User);
-
-                //Find All User Selling Ticket
-                var applicationContext = context.Tickets
-
-                    .Where(p => p.Seller.Id == userId)
-                    .Where(z => z.Order == null);
-                    //.Include(p => p.Event)
-                    //.Include(p => p.Order)
-                    //.Include(p => p.Seller).ToList();
-
-                //Find All User Selling Ticket Waiting for conformation
-                var waitConf = context.Tickets
-                    //.Include(p => p.Order)
-                    //    .ThenInclude(p => p.Status)
-                    //    .Include(z => z.Order.Buyer)
-                    //.Include(p => p.Seller)
-                    //.Include(p => p.Event)
-
-                    .Where(p => p.Seller.Id == userId)
-                    .Where(p => p.Order.Status.StatusName=="Waiting for conformation")
-                    .ToList();
-                
-                ViewData["WaitConf"] = waitConf;
-
-                //Find All User Selling Ticket Sold
-                var confirmed = context.Tickets
-                 //   .Include(p => p.Order)
-                 //      .ThenInclude(p => p.Status)
-                 //       .Include(z=>z.Order.Buyer)
-                 //   .Include(p => p.Seller)
-                 //   .Include(p => p.Event)
-                    
-                    .Where(p => p.Seller.Id == userId)
-                    .Where(p => p.Order.Status.StatusName=="Confirmed")
-                   .ToList();
-                ViewData["Confirmed"] = confirmed;
-
-                return View(applicationContext);
-            }
-            else
-            {
-                return View();
-            }
-
-            // 
-
+            return View();
         }
+
+        public async Task<IActionResult> IndexAnotherUser(string userId)
+        {
+            if(userId!=null)
+            {
+                if(!userId.Equals(userManager.GetUserId(User)))
+                {
+                    var qq =await userManager.Users.FirstOrDefaultAsync(p=>p.Id==userId);
+                    return View(qq);
+                }
+                else
+                {
+                    return RedirectToAction("Index","UserTickets");
+                }
+
+            }
+            return View("Error");
+        }
+
+        public async Task<IActionResult> SellingTickets(string userId = null)
+        {
+            List<Ticket> sellingTickets = new List<Ticket>(
+                context.Tickets
+                .Where(p => p.Seller.Id == userId)
+                .Where(z => z.Order == null)
+                .Include(p => p.Event)
+                .Include(p => p.Order)
+                .Include(p => p.Seller));
+            return PartialView(sellingTickets);
+        }
+        public async Task<IActionResult> WaitingConfomition(string userId = null)
+        {
+            List<Ticket> sellingTickets = new List<Ticket>(
+                context.Tickets
+                    .Include(p => p.Order)
+                    .ThenInclude(p => p.Status)
+                    .Include(z => z.Order.Buyer)
+                    .Include(p => p.Seller)
+                    .Include(p => p.Event)
+                    .Where(p => p.Seller.Id == userId)
+                    .Where(p => p.Order.Status.StatusName == "Waiting for conformation"));
+
+            return PartialView("SellingTickets", sellingTickets);
+        }
+        public async Task<IActionResult> Sold(string userId = null)
+        {
+            List<Ticket> sellingTickets = new List<Ticket>(
+                context.Tickets
+                    .Include(p => p.Order)
+                    .ThenInclude(p => p.Status)
+                    .Include(z => z.Order.Buyer)
+                    .Include(p => p.Seller)
+                    .Include(p => p.Event)
+                    .Where(p => p.Seller.Id == userId)
+                    .Where(p => p.Order.Status.StatusName == "Confirmed"));
+            return PartialView("SellingTickets", sellingTickets);
+        }
+
     }
 }

@@ -22,7 +22,7 @@
         <link rel="stylesheet" href="~/lib/semantic-ui-calendar/dist/calendar.css"/>
     </environment>
     @Html.Raw(JavaScriptSnippet.FullScript)
-</head>
+    </head>
 
 
 
@@ -36,13 +36,13 @@
     </div>
 </div>
 
-<div class="ui main text container" style="margin-top: 55px">
+<div class="ui main text container sixteen wide" style="margin-top: 55px">@*ui main sixteen wide text container*@ 
     @RenderBody()
 </div>
 
-<footer class="ui vertical footer " style="position:fixed;bottom:50px;">
-    <p>&copy; 2017 - TicketSaleCore</p>
-    @await Html.PartialAsync("_SelectLanguagePartial")
+<footer class="ui vertical footer " style="position:fixed;bottom:5px; right: 10px">
+            <p>&copy; 2017 - TicketSaleCore</p>
+            @await Html.PartialAsync("_SelectLanguagePartial")
 </footer>
 
 <environment names="Development">
@@ -50,7 +50,12 @@
     <script src="~/lib/semantic/dist/semantic.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     <script type="text/javascript" src="~/lib/semantic-ui-calendar/dist/calendar.js" asp-append-version="true"></script>
-
+    <script type="text/javascript">
+        $(document)
+            .ready(function() {
+                $('.ui.form').form(submit);
+            });
+    </script>
 </environment>
 <environment names="Staging,Production">
     <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-2.2.0.min.js"
@@ -65,6 +70,12 @@
     </script>
     <script src="~/js/site.min.js" asp-append-version="true"></script>
     <script type="text/javascript" src="~/lib/semantic-ui-calendar/dist/calendar.js" asp-append-version="true"></script>
+    <script type="text/javascript">
+        $(document)
+            .ready(function() {
+                $('.ui.form').form(submit);
+            });
+    </script>
 </environment>
 
 @RenderSection("Scripts", required: false)

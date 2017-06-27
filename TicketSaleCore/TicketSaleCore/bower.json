@@ -6,7 +6,8 @@
     "jquery-validation": "1.16.0",
     "jquery-validation-unobtrusive": "3.2.6",
     "semantic": "Semantic-UI#2.2.10",
-    "semantic-ui-calendar": "0.0.8"
+    "semantic-ui-calendar": "0.0.8",
+    "jquery-ajax-unobtrusive": "3.2.4"
   },
   "resolutions": {
     "jquery-validation": "1.16.0",

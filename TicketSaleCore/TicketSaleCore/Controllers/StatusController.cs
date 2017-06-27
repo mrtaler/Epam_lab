@@ -1,30 +1,28 @@
-using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using TicketSaleCore.Models;
 using TicketSaleCore.Models.IRepository;
 
 namespace TicketSaleCore.Controllers
 {
-    [Authorize(Roles = "admin")]
+    //[Authorize(Roles = "admin")]
+    [Authorize(Roles = "NotTask01")]
     public class StatusController : Controller
     {
-        private readonly IUnitOfWork _context;
+        private readonly IUnitOfWork context;
 
         public StatusController(IUnitOfWork context)
         {
-            _context = context;    
+            this.context = context;    
         }
 
         // GET: Status
         public async Task<IActionResult> Index()
         {
-            return View(/*await*/ _context.OrderStatuses);
+            return View(/*await*/ context.OrderStatuses);
         }
 
         // GET: Status/Details/5
@@ -35,7 +33,7 @@ namespace TicketSaleCore.Controllers
                 return NotFound();
             }
 
-            var status = /*await*/ _context.OrderStatuses
+            var status = /*await*/ context.OrderStatuses
                 .SingleOrDefault(m => m.Id == id);
             if (status == null)
             {
@@ -60,8 +58,8 @@ namespace TicketSaleCore.Controllers
         {
             if (ModelState.IsValid)
             {
-                _context.OrderStatuses.Add(status);
-                /*await*/ _context.SaveChanges();
+                context.OrderStatuses.Add(status);
+                /*await*/ context.SaveChanges();
                 return RedirectToAction("Index");
             }
             return View(status);
@@ -75,7 +73,7 @@ namespace TicketSaleCore.Controllers
                 return NotFound();
             }
 
-            var status = /*await*/ _context.OrderStatuses.SingleOrDefault(m => m.Id == id);
+            var status = /*await*/ context.OrderStatuses.SingleOrDefault(m => m.Id == id);
             if (status == null)
             {
                 return NotFound();
@@ -99,8 +97,8 @@ namespace TicketSaleCore.Controllers
             {
                 try
                 {
-                    _context.OrderStatuses.Update(status);
-                    /*await*/ _context.SaveChanges();
+                    context.OrderStatuses.Update(status);
+                    /*await*/ context.SaveChanges();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -126,7 +124,7 @@ namespace TicketSaleCore.Controllers
                 return NotFound();
             }
 
-            var status = /*await*/ _context.OrderStatuses
+            var status = /*await*/ context.OrderStatuses
                 .SingleOrDefault(m => m.Id == id);
             if (status == null)
             {
@@ -141,15 +139,15 @@ namespace TicketSaleCore.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var status = /*await*/ _context.OrderStatuses.SingleOrDefault(m => m.Id == id);
-            _context.OrderStatuses.Remove(status);
-            /*await*/ _context.SaveChanges();
+            var status = /*await*/ context.OrderStatuses.SingleOrDefault(m => m.Id == id);
+            context.OrderStatuses.Remove(status);
+            /*await*/ context.SaveChanges();
             return RedirectToAction("Index");
         }
 
         private bool StatusExists(int id)
         {
-            return _context.OrderStatuses.Any(e => e.Id == id);
+            return context.OrderStatuses.Any(e => e.Id == id);
         }
     }
 }

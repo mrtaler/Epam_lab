@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using TicketSaleCore.Models.IdentityWithoutEF;
 using TicketSaleCore.Models.IRepository;
@@ -11,16 +7,18 @@ namespace TicketSaleCore.Models._Memory
 {
     public class MemoryUnitOfWork : IUnitOfWork
     {
-        DbSet<Order> orders;
-        DbSet<City> citys;
-        DbSet<Event> events;
-        DbSet<EventsType> eventsTypes;
-        DbSet<OrderStatus> orderStatuses;
-        DbSet<Ticket> tickets;
+        private DbSet<Order> orders;
+        private DbSet<City> citys;
+        private DbSet<Event> events;
+        private DbSet<EventsType> eventsTypes;
+        private DbSet<OrderStatus> orderStatuses;
+
+        private DbSet<Ticket> tickets;
         //DbSet<TicketsOrder> ticketsOrders;
-        DbSet<Venue> venues;
-        DbSet<IdentityRole> appRoles;
-        DbSet<AppUser> appUsers;
+        private DbSet<Venue> venues;
+
+        private DbSet<IdentityRole> appRoles;
+        private DbSet<AppUser> appUsers;
 
 
 

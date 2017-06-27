@@ -3,13 +3,12 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
-using TicketSaleCore.Models;
 using TicketSaleCore.Models.IdentityWithoutEF;
 using TicketSaleCore.ViewModels;
 
 namespace TicketSaleCore.Controllers
 {
-    [RequireHttps]
+    
     [Authorize]
     public class AccountController : Controller
     {
@@ -63,7 +62,7 @@ namespace TicketSaleCore.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> Login(string returnUrl = null)
         {
-            await signInManager.SignOutAsync(); //remove all early logins
+            await signInManager.SignOutAsync(); //LogOut
             return View(new LoginViewModel { ReturnUrl = returnUrl });
         }
         #endregion
@@ -86,7 +85,8 @@ namespace TicketSaleCore.Controllers
                 if (result.Succeeded)
                 {
                     logger.LogError(1, $"User {user?.Email} logged");
-                    return RedirectToLocal(returnUrl);
+                        return RedirectToLocal(returnUrl);
+                  
                 }
                 if (result.IsLockedOut)
                 {
@@ -114,7 +114,7 @@ namespace TicketSaleCore.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> LogOff(string returnUrl = null)
         {
-            // удаляем аутентификационные куки
+            // remove coocies
             await signInManager.SignOutAsync();
             logger.LogError(4, "User logged out.");
             return RedirectToLocal(returnUrl);
@@ -124,7 +124,7 @@ namespace TicketSaleCore.Controllers
 
 
         #region AccessDenied HttpGet
-
+        [AllowAnonymous]
         [HttpGet]
         public IActionResult AccessDenied()
         {

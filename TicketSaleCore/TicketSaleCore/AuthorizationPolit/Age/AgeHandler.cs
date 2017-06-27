@@ -7,6 +7,9 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace TicketSaleCore.AuthorizationPolit.Age
 {
+    /// <summary>
+    /// Age Claim
+    /// </summary>
     public class AgeHandler : AuthorizationHandler<AgeRequirement>
     {
         protected override Task HandleRequirementAsync(AuthorizationHandlerContext context,

@@ -12,7 +12,17 @@ namespace TicketSaleCore.App_code
 {
     public static class ModelStateValidMessage
     {
-        public static HtmlString ModelStateValidMsge(this IHtmlHelper html, ModelStateDictionary modelStateDictionary, IViewLocalizer errorLocalizer)
+        /// <summary>
+        /// HTML Helper for show ModelState in list
+        /// </summary>
+        /// <param name="html"></param>
+        /// <param name="modelStateDictionary">modelStateDictionary</param>
+        /// <param name="errorLocalizer">state localizator</param>
+        /// <returns></returns>
+        public static HtmlString ModelStateValidMsge(
+            this IHtmlHelper html, 
+            ModelStateDictionary modelStateDictionary,
+            IViewLocalizer errorLocalizer)
         {
             StringBuilder strRes = new StringBuilder();
             if (modelStateDictionary.ErrorCount > 0)
@@ -30,11 +40,9 @@ namespace TicketSaleCore.App_code
                         strRes.Append(q1);
                         strRes.Append("</li>");
                     }
-
-                }
+                    }
                 strRes.Append("</div>");
             }
-
             return new HtmlString(
                 strRes.ToString()
                 );

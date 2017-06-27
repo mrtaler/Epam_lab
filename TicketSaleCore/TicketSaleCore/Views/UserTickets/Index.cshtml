@@ -1,129 +1,60 @@
-﻿@model IEnumerable<TicketSaleCore.Models.Ticket>
+﻿@using Microsoft.AspNetCore.Identity
+@using Microsoft.AspNetCore.Mvc.Localization
+@using TicketSaleCore.Models.IdentityWithoutEF
+
+@inject IViewLocalizer Localizer
+@inject UserManager<AppUser> UserManager
+
 @{
     ViewBag.Title = "title";
 }
 
+    <div class="ui top attached tabular menu">
+        <a class="item active" data-tab="SellingTickets">@Localizer["Selling Tickets"] </a>
+        <a class="item" data-tab="WaitingConfomition">@Localizer["Waiting Confomition"]</a>
+        <a class="item" data-tab="Sold">@Localizer["Sold"]</a>
+    </div>
 
-<h2>Index</h2>
+    <div class="ui bottom attached tab segment active" data-tab="SellingTickets"></div>
+    <div class="ui bottom attached tab segment" data-tab="WaitingConfomition"></div>
+    <div class="ui bottom attached tab segment" data-tab="Sold"></div>
 
-
-<div class="ui top attached tabular menu">
-    <a class="active item" data-tab="first">Selling Tickets</a>
-    <a class="item" data-tab="second">Waiting Confomition</a>
-    <a class="item" data-tab="third">Sold</a>
-</div>
-
-<div class="ui bottom attached active tab segment" data-tab="first">
-    <table class="ui celled padded table">
-        <thead>
-            <tr>
-                <th>
-                    @Html.DisplayNameFor(model => model.Price)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Event)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.SellerNotes)
-                </th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Model)
-            {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Price)
-                </td>
-                <td>
-                    @Html.ActionLink(@item.Event.Name, "Details", "Events",new {id=@item.Event.Id})
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.SellerNotes)
-                </td>
-            </tr>
+   <script type="text/javascript">
+    window.onload = function () {
+   $.ajax({
+            type: 'get',
+            data: { userId: '@UserManager.GetUserId(User)'},
+            url: '@Url.Action("SellingTickets")',
+            success: function (result) {
+                $('[data-tab=SellingTickets].segment').html(result);
             }
-        </tbody>
-    </table>
-</div>
-<div class="ui bottom attached tab segment" data-tab="second">
-       <table class="ui celled padded table">
-           <thead>
-           <tr>
-               <th>
-                   @Html.DisplayNameFor(model => model.Seller)
-               </th>
-               <th>
-                   @Html.DisplayNameFor(model => model.Event)
-               </th>
-               <th>
-                   @Html.DisplayNameFor(model => model.Price)
-               </th>
-               <th>
-                   @Html.DisplayNameFor(model => model.Order.Buyer)
-               </th>
-           </tr>
-           </thead>
-           <tbody>
-           @foreach (var item in ViewBag.WaitConf)
-           {
-               <tr>
-                   <td>
-                       @item.Seller
-                   </td>
-                   <td>
-                     <a asp-controller="Events" asp-action="Details" asp-route-id="@item.Event.Id">@item.Event.Name</a>
-                   </td>
-                   <td>
-                       @item.Price
-                   </td>
-                   <td>
-                       @item.Order.Buyer
-                   </td> 
-               </tr>
-           }
-           </tbody>
-       </table>
-</div>
-<div class="ui bottom attached tab segment" data-tab="third">
-    <table class="ui celled padded table">
-        <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Seller)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Event)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Price)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Order.Buyer)
-            </th>
-        </tr>
-        </thead>
-        <tbody>
-        @foreach (var item in ViewBag.Confirmed)
+        });
+    };
+</script>
+
+<script type="text/javascript">
+    $('.menu .item').tab(
         {
-            <tr>
-                <td>
-                    @item.Seller
-                </td>
-                <td>
-                    <a asp-controller="Events" asp-action="Details" asp-route-id="@item.Event.Id">@item.Event.Name</a>
-                </td>
-                <td>
-                    @item.Price
-                </td>
-                <td>
-                    @item.Order.Buyer
-                </td> 
-            </tr>
+        cache: true,
+        context : 'parent',
+        //path: '/UserTickets/{tab}',
+        apiSettings: {
+            loadingDuration: 300,
+            url: '/UserTickets/{tab}',
+            data: { userId: '@UserManager.GetUserId(User)' }
         }
-        </tbody>
-    </table>
-</div>
-<script type="application/javascript">
-    $('.menu .item').tab();
+    });
+
+</script>
+<script type="text/javascript">
+    @*function LoadTicket() {
+        $.ajax({
+            type: 'POST',
+            data: { orderStatus: 'null', userId: '@UserManager.GetUserId(User)' },
+            url: '@Url.Action("DisplayViewWithAjax")',
+            success: function (result) {
+                $('[data-tab=first]').html(result);
+            }
+        });
+    };*@
 </script>

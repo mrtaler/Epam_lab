@@ -1,10 +1,10 @@
 ﻿@using System.Globalization
 @using TicketSaleCore.Models
-@model  IEnumerable<TicketSaleCore.ViewModels.HomeViewModels.EventsHomeViewModel>
+@model  IEnumerable<Event>
 @{
     ViewData["Title"] = "Event Home";
 }
-<div class="ui grid">
+<div class="ui justified container">
 
     @if (User.Identity.IsAuthenticated)
     {
@@ -13,56 +13,60 @@
             <a>Admin is work</a>
         }
     }
+
     else
     {
 
     }
-    <div class="ui items">
-        @foreach (var item in Model)
+    
+    
+    
+    
+    <div class="ui items column">
+        @foreach(var item in Model)
         {
-            @*@Html.ActionLink("item.Name", "IndexTickedForEvent","Tickets",new {id=@item.Id})*@
-
-
-            <div class="item six wide row">
-                <div class="ui small image">
-                    <img src="@item.Banner"
-                         @*style="height: 60px;width: 60px" *@>
-                </div>
-                <div class="content">
-                    <a class="header"
-                       asp-controller="Tickets"
-                       asp-action="Index"
-                       asp-route-id="@item.Id">
-                        @item.Name
-                    </a>
-                    <div class="meta">
-                        <span>@item.Venue.Address</span>
+         
+                <div class="item wide row">
+                    <div class="ui small image">
+                        <img src="@item.Banner"
+                             @*style="height: 60px;width: 60px" *@>
                     </div>
-                    <div class="ui two column divided grid description">
-                        <div class="row">
-                            <div class="column">
-                                <div>@item.Description</div>
-                                <div>@item.Date.ToString("D", CultureInfo.CurrentCulture)</div>
-                            </div>
-                            <div class="right floated column middle aligned">
-                                <div class="ui vertically divided grid">
-                                    <div class="two column row">
-                                        <div class="small column">
-                                            <div>available </div>
-                                            <div>tikets:</div>
+                    <div class="content">
+                        <a class="header"
+                           asp-controller="Tickets"
+                           asp-action="Index"
+                           asp-route-id="@item.Id">
+                            @item.Name
+                        </a>
+                        <div class="meta">
+                            <span>@item.Venue.Address</span>
+                        </div>
+                        <div class="ui two column divided grid description">
+                            <div class="row">
+                                <div class="column">
+                                    <div>@item.Description</div>
+                                    <div>@item.Date.ToString("D", CultureInfo.CurrentCulture)</div>
+                                </div>
+                                <div class="right floated column middle aligned">
+                                    <semanticui stlabel label-title="available tikets:" label-value="@item.Tickets.Count(p => p.Order == null)">
+                                        
+                                    </SemanticUi>
+                                    @*<div class="ui statistic">
+
+                                        <div class="label">
+                                            available tikets:
                                         </div>
-                                        <div class="column small left middle aligned">
-                                            <b>@item.AvailableTicket</b>
+                                        <div class="value">
+                                            @item.Tickets.Count(p => p.Order == null)
                                         </div>
-                                    </div>
+                                    </div>*@
                                 </div>
                             </div>
                         </div>
-
+                        <div class="extra">@item.Venue.City.Name
+                        </div>
                     </div>
-                    <div class="extra">@item.Venue.City.Name</div>
                 </div>
-            </div>
-        }
-    </div>
+                }
+</div>
 </div>
