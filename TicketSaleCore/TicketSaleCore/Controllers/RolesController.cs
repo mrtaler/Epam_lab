@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-using TicketSaleCore.Models.IdentityWithoutEF;
+using TicketSaleCore.Models.Entities;
 using TicketSaleCore.ViewModels;
 
 namespace TicketSaleCore.Controllers

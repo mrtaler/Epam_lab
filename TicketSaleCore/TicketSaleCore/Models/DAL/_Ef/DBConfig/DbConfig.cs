@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace TicketSaleCore.Models.DBConfig
+namespace TicketSaleCore.Models.DAL._Ef.DBConfig
 {
     public abstract class EntityTypeConfiguration<TEntity>
         where TEntity : class

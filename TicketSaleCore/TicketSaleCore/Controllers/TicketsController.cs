@@ -4,8 +4,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using TicketSaleCore.Models;
-using TicketSaleCore.Models.IRepository;
+using TicketSaleCore.Models.DAL.IRepository;
+using TicketSaleCore.Models.Entities;
 using TicketSaleCore.ViewModels;
 
 namespace TicketSaleCore.Controllers

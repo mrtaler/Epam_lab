@@ -1,7 +1,4 @@
-﻿using System.Collections.Generic;
-using TicketSaleCore.Models.IdentityWithoutEF;
-
-namespace TicketSaleCore.Models
+﻿namespace TicketSaleCore.Models.Entities
 {
     public class Ticket
     {

@@ -13,6 +13,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="ViewModels\HomeViewModels\**" />
+    <Content Remove="ViewModels\HomeViewModels\**" />
+    <EmbeddedResource Remove="ViewModels\HomeViewModels\**" />
+    <None Remove="ViewModels\HomeViewModels\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Remove="Properties\PublishProfiles\CustomProfile.pubxml" />
   </ItemGroup>
 
@@ -58,10 +65,10 @@
     <DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="1.0.0" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Models\BLL\" />
     <Folder Include="Properties\PublishProfiles\" />
     <Folder Include="Services\" />
     <Folder Include="SSL\" />
-    <Folder Include="ViewModels\HomeViewModels\" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System.Data.Entity">

@@ -3,8 +3,8 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using TicketSaleCore.Models;
-using TicketSaleCore.Models.IRepository;
+using TicketSaleCore.Models.DAL.IRepository;
+using TicketSaleCore.Models.Entities;
 
 namespace TicketSaleCore.Controllers
 {

@@ -9,11 +9,11 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using TicketSaleCore.App_code;
-using TicketSaleCore.Models;
 using TicketSaleCore.AuthorizationPolit.Password;
-using TicketSaleCore.Models.IdentityWithoutEF;
-using TicketSaleCore.Models.IRepository;
+using TicketSaleCore.Models.DAL;
+using TicketSaleCore.Models.DAL.IRepository;
+using TicketSaleCore.Models.DAL._Ef;
+using TicketSaleCore.Models.Entities;
 
 namespace TicketSaleCore
 {

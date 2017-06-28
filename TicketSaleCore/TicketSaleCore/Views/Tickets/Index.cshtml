@@ -45,13 +45,13 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.availableTicketsToSale.First().Price)
+                @Html.DisplayNameFor(model => model.AvailableTicketsToSale.First().Price)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.availableTicketsToSale.First().Seller)
+                @Html.DisplayNameFor(model => model.AvailableTicketsToSale.First().Seller)
             </th>
             <th>
-                @Html.DisplayNameFor(model=>model.availableTicketsToSale.First().SellerNotes)
+                @Html.DisplayNameFor(model=>model.AvailableTicketsToSale.First().SellerNotes)
             </th>
            
 
@@ -62,7 +62,7 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in Model.availableTicketsToSale)
+        @foreach (var item in Model.AvailableTicketsToSale)
             {
             <tr>
                 <td>

@@ -2,13 +2,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
-using Microsoft.EntityFrameworkCore.Internal;
-using TicketSaleCore.Models.IRepository;
 
-namespace TicketSaleCore.Models._Memory
+namespace TicketSaleCore.Models.DAL._Memory
 {/// <summary>
 /// Memory repository based on DbSet
 /// </summary>

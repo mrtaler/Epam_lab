@@ -1,12 +1,10 @@
-﻿using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using TicketSaleCore.Models;
-using TicketSaleCore.Models.IdentityWithoutEF;
+using TicketSaleCore.Models.Entities;
 using TicketSaleCore.ViewModels.ManageViewModels;
 
 namespace TicketSaleCore.Controllers

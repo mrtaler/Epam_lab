@@ -1,12 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.AspNetCore.Mvc.TagHelpers;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.AspNetCore.Razor.TagHelpers;
-using System.Linq.Expressions;
 using System.Reflection;
 
 namespace TicketSaleCore.CustomTagHelper
@@ -52,28 +49,12 @@ namespace TicketSaleCore.CustomTagHelper
             }
 
             var modelMetadata = ViewContext.ViewData.ModelMetadata;
-            var model = ViewContext.ViewData.Model;
-
-
-
-
-            //if(modelMetadata.IsCollectionType)
-            //{
-            var qt = modelMetadata.ElementType;
-            var qt1 = qt.GetRuntimeProperties();
 
             if(DisplayFor == null)
             {
                 return;
             }
 
-            //   ModelExplorer.ModelType;
-            // var chosen = qt1.SingleOrDefault(p => p.Name == DisplayFor.ModelExplorer.Model);
-            //if(chosen != null)
-            //{
-            //    output.Content.SetContent(chosen.Name);
-            //    return;
-            //}
             foreach(var elementType in modelMetadata.ModelType.GetGenericArguments())
             {
                 var props = MetadataProvider.GetMetadataForProperties(elementType);
@@ -84,27 +65,6 @@ namespace TicketSaleCore.CustomTagHelper
                     return;
                 }
             }
-            // }
-
-
-            //var tagBuilder = Generator.GenerateSelect(
-            //    ViewContext,
-            //    DisplayFor.ModelExplorer,
-            //    optionLabel: null,
-            //    expression: DisplayFor.Name,
-            //    selectList: items,
-            //    currentValues: _currentValues,
-            //    allowMultiple: _allowMultiple,
-            //    htmlAttributes: null);
-
-            //if(tagBuilder != null)
-            //{
-            //    output.MergeAttributes(tagBuilder);
-            //    if(tagBuilder.HasInnerHtml)
-            //    {
-            //        output.PostContent.AppendHtml(tagBuilder.InnerHtml);
-            //    }
-            //}
         }
 
     }

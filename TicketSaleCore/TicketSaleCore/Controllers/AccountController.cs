@@ -3,8 +3,9 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
-using TicketSaleCore.Models.IdentityWithoutEF;
+using TicketSaleCore.Models.Entities;
 using TicketSaleCore.ViewModels;
+using TicketSaleCore.ViewModels.Account;
 
 namespace TicketSaleCore.Controllers
 {

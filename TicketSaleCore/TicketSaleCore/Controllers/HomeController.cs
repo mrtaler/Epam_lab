@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using TicketSaleCore.Models.IRepository;
+using TicketSaleCore.Models.DAL.IRepository;
 
 namespace TicketSaleCore.Controllers
 {

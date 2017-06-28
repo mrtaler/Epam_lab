@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using TicketSaleCore.Models.Entities;
 
 namespace TicketSaleCore.Models.IdentityWithoutEF
 {
@@ -15,20 +14,20 @@ namespace TicketSaleCore.Models.IdentityWithoutEF
         IUserRoleStore<AppUser>
         {
         
-        private static readonly List<AppUser> _users = new List<AppUser>();
+        private static readonly List<AppUser> Users = new List<AppUser>();
 
         public Task<IdentityResult> CreateAsync(AppUser user, CancellationToken cancellationToken)
         {
             user.Id = Guid.NewGuid().ToString();
 
-            _users.Add(user);
+            Users.Add(user);
 
             return Task.FromResult(IdentityResult.Success);
         }
 
         public Task<IdentityResult> UpdateAsync(AppUser user, CancellationToken cancellationToken)
         {
-            var match = _users.FirstOrDefault(u => u.Id == user.Id);
+            var match = Users.FirstOrDefault(u => u.Id == user.Id);
             if (match != null)
             {
                 match.UserName = user.UserName;
@@ -47,10 +46,10 @@ namespace TicketSaleCore.Models.IdentityWithoutEF
 
         public Task<IdentityResult> DeleteAsync(AppUser user, CancellationToken cancellationToken)
         {
-            var match = _users.FirstOrDefault(u => u.Id == user.Id);
+            var match = Users.FirstOrDefault(u => u.Id == user.Id);
             if (match != null)
             {
-                _users.Remove(match);
+                Users.Remove(match);
 
                 return Task.FromResult(IdentityResult.Success);
             }
@@ -62,14 +61,14 @@ namespace TicketSaleCore.Models.IdentityWithoutEF
 
         public Task<AppUser> FindByIdAsync(string userId, CancellationToken cancellationToken)
         {
-            var user = _users.FirstOrDefault(u => u.Id == userId);
+            var user = Users.FirstOrDefault(u => u.Id == userId);
 
             return Task.FromResult(user);
         }
 
         public Task<AppUser> FindByNameAsync(string normalizedUserName, CancellationToken cancellationToken)
         {
-            var user = _users.FirstOrDefault(u => String.Equals(u.NormalizedUserName, normalizedUserName, StringComparison.OrdinalIgnoreCase));
+            var user = Users.FirstOrDefault(u => String.Equals(u.NormalizedUserName, normalizedUserName, StringComparison.OrdinalIgnoreCase));
 
             return Task.FromResult(user);
         }
@@ -186,40 +185,41 @@ namespace TicketSaleCore.Models.IdentityWithoutEF
 
         public async Task<bool> IsInRoleAsync(AppUser user, string roleName, CancellationToken cancellationToken)
         {
-            if (user == null)
-                throw new ArgumentNullException("user");
+            //if (user == null)
+            //    throw new ArgumentNullException("user");
 
-            if (String.IsNullOrEmpty(roleName))
-                throw new ArgumentNullException("roleName");
+            //if (String.IsNullOrEmpty(roleName))
+            //    throw new ArgumentNullException("roleName");
 
-            if (user == null)
-            {
-                throw new ArgumentNullException("user");
-            }
+            //if (user == null)
+            //{
+            //    throw new ArgumentNullException("user");
+            //}
 
-            if (user.UserName.Contains("Admin"))
-            {
-                if (String.Equals(roleName, "admin", StringComparison.CurrentCultureIgnoreCase))
-                {
-                    return await Task.FromResult<bool>(true);
-                }
-                else
-                {
-                    return await Task.FromResult<bool>(false);
-                }
-            }
-            if (user.UserName.Contains("User") )
-            {
-                if (String.Equals(roleName, "user", StringComparison.CurrentCultureIgnoreCase))
-                {
-                    return await Task.FromResult<bool>(true);
-                }
-                else
-                {
-                    return await Task.FromResult<bool>(false);
-                }
-            }
-            return await Task.FromResult<bool>(false);
+            //if (user.UserName.Contains("Admin"))
+            //{
+            //    if (String.Equals(roleName, "admin", StringComparison.CurrentCultureIgnoreCase))
+            //    {
+            //        return await Task.FromResult<bool>(true);
+            //    }
+            //    else
+            //    {
+            //        return await Task.FromResult<bool>(false);
+            //    }
+            //}
+            //if (user.UserName.Contains("User") )
+            //{
+            //    if (String.Equals(roleName, "user", StringComparison.CurrentCultureIgnoreCase))
+            //    {
+            //        return await Task.FromResult<bool>(true);
+            //    }
+            //    else
+            //    {
+            //        return await Task.FromResult<bool>(false);
+            //    }
+            //}
+            //return await Task.FromResult<bool>(false);
+            throw new NotImplementedException();
         }
 
         public Task<IList<AppUser>> GetUsersInRoleAsync(string roleName, CancellationToken cancellationToken)

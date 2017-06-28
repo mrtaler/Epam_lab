@@ -2,7 +2,8 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authorization;
-using TicketSaleCore.Models.IdentityWithoutEF;
+using TicketSaleCore.Models.Entities;
+
 namespace TicketSaleCore.Controllers
 {
     [Authorize]

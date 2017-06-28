@@ -1,14 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using TicketSaleCore.Models.DBConfig;
-using TicketSaleCore.Models.IdentityWithoutEF;
-using TicketSaleCore.Models.IRepository;
+using TicketSaleCore.Models.DAL.IRepository;
+using TicketSaleCore.Models.Entities;
 
-namespace TicketSaleCore.Models
+/*this EF G Rep (maybe)
+ */
+namespace TicketSaleCore.Models.DAL._Ef
 {
     public class ApplicationContext : IdentityDbContext<AppUser>, IUnitOfWork
     {
@@ -16,41 +13,17 @@ namespace TicketSaleCore.Models
             : base(options)
         {
         }
-        
+      
         public virtual DbSet<City> Citys { get; set; }
         public virtual DbSet<Event> Events { get; set; }
         public virtual DbSet<EventsType> EventsTypes { get; set; }
         public virtual DbSet<Order> Orders { get; set; }
         public virtual DbSet<OrderStatus> OrderStatuses { get; set; }
         public virtual DbSet<Ticket> Tickets { get; set; }
-        //public virtual DbSet<TicketsOrder> TicketsOrders { get; set; }
         public virtual DbSet<Venue> Venues { get; set; }
-       // public virtual DbSet<AppRole> AppRoles { get; set; }
         public virtual DbSet<AppUser> AppUsers { get; set; }
+       
         
-        //public IRepository<City> Citys { get; set; }
-
-        //public IRepository<Event> Events { get; set; }
-
-        //public IRepository<EventsType> EventsTypes { get; set; }
-
-        //public IRepository<Order> Orders { get; set; }
-
-        //public IRepository<OrderStatus> OrderStatuses { get; set; }
-
-        //public IRepository<Ticket> Tickets { get; set; }
-
-        //public IRepository<TicketsOrder> TicketsOrders { get; set; }
-
-        //public IRepository<Venue> Venues { get; set; }
-
-        //public IRepository<AppRole> AppRoles { get; set; }
-
-        //public IRepository<AppUser> AppUsers { get; set; }
-
-
-        // public virtual DbSet<User> UserDbSet { get; set; }
-        //  public virtual DbSet<TicketsOrder> TicketsOrderDbSet { get; set; }
         //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         //{
         //    base.OnConfiguring(optionsBuilder);

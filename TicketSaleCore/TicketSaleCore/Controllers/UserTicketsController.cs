@@ -7,10 +7,8 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Localization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using TicketSaleCore.Models;
-using TicketSaleCore.Models.IdentityWithoutEF;
-using TicketSaleCore.Models.IRepository;
-using TicketSaleCore.ViewModels;
+using TicketSaleCore.Models.DAL.IRepository;
+using TicketSaleCore.Models.Entities;
 
 namespace TicketSaleCore.Controllers
 {

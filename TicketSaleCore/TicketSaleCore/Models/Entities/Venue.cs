@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace TicketSaleCore.Models
+namespace TicketSaleCore.Models.Entities
 {
     public class Venue
     {

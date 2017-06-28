@@ -1,16 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using TicketSaleCore.Models;
-using TicketSaleCore.Models.IRepository;
+using TicketSaleCore.Models.DAL.IRepository;
+using TicketSaleCore.Models.Entities;
 
 namespace TicketSaleCore.ViewModels
 {
     public class TicketIndexViewModel
     {
-      public  IEnumerable<Ticket> availableTicketsToSale { get; set; }
+      public  IEnumerable<Ticket> AvailableTicketsToSale { get; set; }
         public Event CurentEvent { get; set; }
 
         public TicketIndexViewModel(IUnitOfWork context,int? id )
@@ -19,7 +17,7 @@ namespace TicketSaleCore.ViewModels
             {
 
 
-                availableTicketsToSale = context.Tickets
+                AvailableTicketsToSale = context.Tickets
                     .Where(p => p.EventId == id)
                     .Where(p => p.Order == null)
                     .Include(t => t.Event)
@@ -32,7 +30,7 @@ namespace TicketSaleCore.ViewModels
             }
             else
             {
-                availableTicketsToSale = context.Tickets.Include(t => t.Event).Include(t => t.Seller);
+                AvailableTicketsToSale = context.Tickets.Include(t => t.Event).Include(t => t.Seller);
                 CurentEvent = null;
             }
         }

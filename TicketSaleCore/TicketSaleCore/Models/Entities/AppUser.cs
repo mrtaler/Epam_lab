@@ -1,8 +1,7 @@
 ﻿using System.Collections.Generic;
-using System.Security.Claims;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
-namespace TicketSaleCore.Models.IdentityWithoutEF
+namespace TicketSaleCore.Models.Entities
 {
     public class AppUser: IdentityUser
     {

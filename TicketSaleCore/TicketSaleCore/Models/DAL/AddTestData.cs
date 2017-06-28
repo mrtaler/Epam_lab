@@ -5,11 +5,10 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using TicketSaleCore.Models;
-using TicketSaleCore.Models.IdentityWithoutEF;
-using TicketSaleCore.Models.IRepository;
+using TicketSaleCore.Models.DAL.IRepository;
+using TicketSaleCore.Models.Entities;
 
-namespace TicketSaleCore.App_code
+namespace TicketSaleCore.Models.DAL
 {
     public static class DbInit
     {
