@@ -10,6 +10,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using TicketSaleCore.AuthorizationPolit.Password;
+using TicketSaleCore.Models.BLL.Interfaces;
+using TicketSaleCore.Models.BLL.Services;
 using TicketSaleCore.Models.DAL;
 using TicketSaleCore.Models.DAL.IRepository;
 using TicketSaleCore.Models.DAL._Ef;
@@ -103,6 +105,8 @@ namespace TicketSaleCore
             #endregion
 
 
+
+
             #region Identity
             //Add Identity to services
             services.AddIdentity<AppUser, IdentityRole>()
@@ -119,9 +123,13 @@ namespace TicketSaleCore
                 // Add support for localizing strings in data annotations (e.g. validation messages)
                 .AddDataAnnotationsLocalization();
 
+
+            services.AddTransient<IEventService, EventService>();
+
+
             #region IUnitOfWork serv
 
-            services.AddSingleton<IUnitOfWork, ApplicationContext>();
+            services.AddScoped<IUnitOfWork, ApplicationContext>();
             // services.AddSingleton<IUnitOfWork, MemoryUnitOfWork>(); 
             #endregion
         }

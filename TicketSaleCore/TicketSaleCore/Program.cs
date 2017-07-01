@@ -21,7 +21,7 @@ namespace TicketSaleCore
                //}
                )
                 // .UseUrls("https://*:443").
-                 .UseUrls("http://*:59079")
+                 //.UseUrls("http://*:59079")
                 .UseContentRoot(Directory.GetCurrentDirectory())
                 // .UseIISIntegration()
                 .UseStartup<Startup>()
