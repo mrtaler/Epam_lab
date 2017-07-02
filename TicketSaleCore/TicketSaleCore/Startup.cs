@@ -128,7 +128,6 @@ namespace TicketSaleCore
 
 
             #region IUnitOfWork serv
-
             services.AddScoped<IUnitOfWork, ApplicationContext>();
             // services.AddSingleton<IUnitOfWork, MemoryUnitOfWork>(); 
             #endregion
