@@ -116,15 +116,11 @@ namespace TicketSaleCore
                   .AddEntityFrameworkStores<ApplicationContext>()//comment if use MemoryUnitOfWork
                 .AddDefaultTokenProviders();
             #endregion
-
+          
             services.AddMvc(O=>O.Conventions.Add(new FeatureConvention()))
                 .AddRazorOptions(options =>
                 {
-                    options.ViewLocationFormats.Clear();
-                    options.ViewLocationFormats.Add("/Features/{2}/{1}/{0}.cshtml");
-                    options.ViewLocationFormats.Add("/Features/{2}/{0}.cshtml");
-                    options.ViewLocationFormats.Add("/Features/Shared/{0}.cshtml");
-                    options.ViewLocationExpanders.Add(new FeatureFoldersRazorViewEngine());
+                    options.ConfigureFeatureFolders();
                 })
                 // Add support for finding localized views, based on file name suffix, e.g. Index.fr.cshtml
                 .AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix,
@@ -132,7 +128,7 @@ namespace TicketSaleCore
                 // Add support for localizing strings in data annotations (e.g. validation messages)
                 .AddDataAnnotationsLocalization();
 
-
+            services.AddScoped<LanguageActionFilter>();
             services.AddTransient<IEventService, EventService>();
             services.AddTransient<ITicketsService, TicketsService>();
 

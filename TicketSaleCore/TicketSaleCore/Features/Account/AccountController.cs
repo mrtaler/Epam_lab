@@ -6,6 +6,7 @@ using Microsoft.Extensions.Logging;
 using TicketSaleCore.Models.Entities;
 using TicketSaleCore.ViewModels;
 using TicketSaleCore.ViewModels.Account;
+using TicketSaleCore.Features.Home;
 
 namespace TicketSaleCore.Controllers
 {

@@ -7,10 +7,11 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using TicketSaleCore.Models.BLL.Interfaces;
 using TicketSaleCore.Models.DAL.IRepository;
+using TicketSaleCore.App_code;
 
-namespace TicketSaleCore.Controllers
+namespace TicketSaleCore.Features.Home
 {
-
+    [ServiceFilter(typeof(LanguageActionFilter))]
     public class HomeController : Controller
     {
         //private readonly IUnitOfWork context;

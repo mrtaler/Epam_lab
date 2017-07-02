@@ -8,8 +8,9 @@ using TicketSaleCore.Models.DAL.IRepository;
 using TicketSaleCore.Models.Entities;
 using TicketSaleCore.ViewModels;
 using TicketSaleCore.Models.BLL.Interfaces;
+using TicketSaleCore.Features.Home;
 
-namespace TicketSaleCore.Controllers
+namespace TicketSaleCore.Features.Tickets
 {
     [Authorize]
     public class TicketsController : Controller
