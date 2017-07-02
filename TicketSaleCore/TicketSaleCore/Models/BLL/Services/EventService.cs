@@ -24,25 +24,16 @@ namespace TicketSaleCore.Models.BLL.Services
         }
 
 
-        public EventsType GetEventsType(int? id)
+        public Event GetEvent(int? id)
         {
             if(id == null)
                 throw new ValidationException("Не установлено id", "");
-            var eventType = Context.EventsTypes.Find(id.Value);
-            if(eventType == null)
+            var _event = Context.Events.Find(id.Value)                ;
+            if(_event == null)
                 throw new ValidationException("eventType не найден", "");
-            // применяем автомаппер для проекции Phone на PhoneDTO
            // Mapper.Initialize(cfg => cfg.CreateMap<EventsType, EventsTypeDTO>());
-            return eventType;
+            return _event;
                 /*Mapper.Map<EventsType, EventsTypeDTO>(eventType);*/
-        }
-        public IEnumerable<Ticket> GetTickets(Event _event)
-        {
-            var Tickets = Context.Tickets;
-            //  Mapper.Initialize(cfg => cfg.CreateMap<Ticket, TicketsDTO>());
-
-            return Tickets.Where(p => p.Event.Id == _event.Id);
-            //Mapper.Map<IEnumerable<Ticket>, List<TicketsDTO>>(Context.Tickets.Where(p => p.Event.Id == events.Id));
         }
         public IEnumerable<Event> GetEvents()
         {

@@ -11,8 +11,7 @@ namespace TicketSaleCore.Models.BLL.Interfaces
     {
         void MakeEvent(Event _event);
         
-        EventsType GetEventsType(int? id);
-        IEnumerable<Ticket> GetTickets(Event _event);
+        Event GetEvent(int? id);
         IEnumerable<Event> GetEvents();
         void Dispose();
     }
