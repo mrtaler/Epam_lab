@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using TicketSaleCore.Models.DAL.IRepository;
 using TicketSaleCore.Models.Entities;
 
-namespace TicketSaleCore.Controllers
+namespace TicketSaleCore.Features.Status
 {
     //[Authorize(Roles = "admin")]
     [Authorize(Roles = "NotTask01")]

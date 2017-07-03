@@ -3,15 +3,12 @@ using System.Linq;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using TicketSaleCore.Models.BLL.Interfaces;
-using TicketSaleCore.Models.DAL.IRepository;
-using TicketSaleCore.App_code;
 
 namespace TicketSaleCore.Features.Home
 {
-    [ServiceFilter(typeof(LanguageActionFilter))]
+  //  [ServiceFilter(typeof(LanguageActionFilter))]
     public class HomeController : Controller
     {
         //private readonly IUnitOfWork context;

@@ -1,14 +1,14 @@
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
+using TicketSaleCore.Features.Home;
 using TicketSaleCore.Models.Entities;
 using TicketSaleCore.ViewModels;
 using TicketSaleCore.ViewModels.Account;
-using TicketSaleCore.Features.Home;
 
-namespace TicketSaleCore.Controllers
+namespace TicketSaleCore.Features.Account
 {
     
     [Authorize]

@@ -68,6 +68,7 @@
   <ItemGroup>
     <Folder Include="Models\BLL\BM\" />
     <Folder Include="Properties\PublishProfiles\" />
+    <Folder Include="Resources\Features\Views\" />
     <Folder Include="Services\" />
     <Folder Include="SSL\" />
   </ItemGroup>
@@ -77,22 +78,22 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Update="Resources\Features\Views\Shared\_Layout.be.resx">
+    <EmbeddedResource Update="Resources\Features\Shared\_Layout.be.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="Resources\Features\Views\Shared\_Layout.en.resx">
+    <EmbeddedResource Update="Resources\Features\Shared\_Layout.en.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="Resources\Features\Views\Shared\_Layout.ru.resx">
+    <EmbeddedResource Update="Resources\Features\Shared\_Layout.ru.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="Resources\Features\Views\Shared\_LoginPartial.be.resx">
+    <EmbeddedResource Update="Resources\Features\Shared\_LoginPartial.be.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="Resources\Features\Views\Shared\_LoginPartial.en.resx">
+    <EmbeddedResource Update="Resources\Features\Shared\_LoginPartial.en.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="Resources\Features\Views\Shared\_LoginPartial.ru.resx">
+    <EmbeddedResource Update="Resources\Features\Shared\_LoginPartial.ru.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Resources\Controllers.HomeController.ru.resx">

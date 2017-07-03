@@ -20,7 +20,7 @@ namespace TicketSaleCore.App_code
         private string GetFeatureName(TypeInfo controllerType)
         {
             string[] tokens = controllerType.FullName.Split('.');
-            if(!tokens.Any(t => t == "Features"))
+            if(tokens.All(t => t != "Features"))
                 return "";
             string featureName = tokens
                 .SkipWhile(t => !t.Equals("features", StringComparison.CurrentCultureIgnoreCase))
@@ -76,7 +76,9 @@ namespace TicketSaleCore.App_code
             options.ViewLocationFormats.Clear();
             options.ViewLocationFormats.Add("/Features/{3}/{1}/{0}.cshtml");
             options.ViewLocationFormats.Add("/Features/{3}/{1}/Views/{0}.cshtml");
+
             options.ViewLocationFormats.Add("/Features/{3}/{0}.cshtml");
+            options.ViewLocationFormats.Add("/Features/{3}/Views/{0}.cshtml");
             options.ViewLocationFormats.Add("/Features/Shared/{0}.cshtml");
 
             //options.ViewLocationFormats.Add("/Features/{3}/{0}.cshtml");
@@ -89,34 +91,34 @@ namespace TicketSaleCore.App_code
 
 
 
-        }
-        ////public class FeatureViewLocationExpander : IViewLocationExpander
-        ////{
-        //    public IEnumerable<string> ExpandViewLocations(
-        //        ViewLocationExpanderContext context,
-        //        IEnumerable<string> viewLocations)
-        //    {
-        //        var controllerActionDescriptor = (context.ActionContext.ActionDescriptor as ControllerActionDescriptor);
-        //        if(controllerActionDescriptor != null && controllerActionDescriptor.ControllerTypeInfo.FullName.Contains("Features"))
-        //            return new List<string> { GetFeatureLocation(controllerActionDescriptor.ControllerTypeInfo.FullName) };
-        //        return viewLocations;
-        //    }
-        //    private string GetFeatureLocation(string fullControllerName)
-        //    {
-        //        var words = fullControllerName.Split('.');
-        //        var path = "";
-        //        bool isInFeature = false;
-        //        foreach(var word in words.Take(words.Count() - 1))
-        //        {
-        //            if(word.Equals("features", StringComparison.CurrentCultureIgnoreCase))
-        //                isInFeature = true;
-        //            if(isInFeature)
-        //                path = System.IO.Path.Combine(path, word);
-        //        }
-        //        return System.IO.Path.Combine(path, "views", "{0}.cshtml");
-        //    }
-        //    public void PopulateValues(ViewLocationExpanderContext context)
-        //    {
-        //    }
-        //}
     }
+    ////public class FeatureViewLocationExpander : IViewLocationExpander
+    ////{
+    //    public IEnumerable<string> ExpandViewLocations(
+    //        ViewLocationExpanderContext context,
+    //        IEnumerable<string> viewLocations)
+    //    {
+    //        var controllerActionDescriptor = (context.ActionContext.ActionDescriptor as ControllerActionDescriptor);
+    //        if(controllerActionDescriptor != null && controllerActionDescriptor.ControllerTypeInfo.FullName.Contains("Features"))
+    //            return new List<string> { GetFeatureLocation(controllerActionDescriptor.ControllerTypeInfo.FullName) };
+    //        return viewLocations;
+    //    }
+    //    private string GetFeatureLocation(string fullControllerName)
+    //    {
+    //        var words = fullControllerName.Split('.');
+    //        var path = "";
+    //        bool isInFeature = false;
+    //        foreach(var word in words.Take(words.Count() - 1))
+    //        {
+    //            if(word.Equals("features", StringComparison.CurrentCultureIgnoreCase))
+    //                isInFeature = true;
+    //            if(isInFeature)
+    //                path = System.IO.Path.Combine(path, word);
+    //        }
+    //        return System.IO.Path.Combine(path, "views", "{0}.cshtml");
+    //    }
+    //    public void PopulateValues(ViewLocationExpanderContext context)
+    //    {
+    //    }
+    //}
+}

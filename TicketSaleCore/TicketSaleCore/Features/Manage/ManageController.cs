@@ -7,7 +7,7 @@ using Microsoft.Extensions.Options;
 using TicketSaleCore.Models.Entities;
 using TicketSaleCore.ViewModels.ManageViewModels;
 
-namespace TicketSaleCore.Controllers
+namespace TicketSaleCore.Features.Manage
 {
     //[Authorize]
     [Authorize(Roles = "NotTask01")]

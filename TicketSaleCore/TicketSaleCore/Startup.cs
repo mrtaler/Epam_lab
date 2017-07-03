@@ -117,7 +117,7 @@ namespace TicketSaleCore
                 .AddDefaultTokenProviders();
             #endregion
           
-            services.AddMvc(O=>O.Conventions.Add(new FeatureConvention()))
+            services.AddMvc(o=>o.Conventions.Add(new FeatureConvention()))
                 .AddRazorOptions(options =>
                 {
                     options.ConfigureFeatureFolders();
@@ -128,7 +128,7 @@ namespace TicketSaleCore
                 // Add support for localizing strings in data annotations (e.g. validation messages)
                 .AddDataAnnotationsLocalization();
 
-            services.AddScoped<LanguageActionFilter>();
+          //  services.AddScoped<LanguageActionFilter>();
             services.AddTransient<IEventService, EventService>();
             services.AddTransient<ITicketsService, TicketsService>();
 

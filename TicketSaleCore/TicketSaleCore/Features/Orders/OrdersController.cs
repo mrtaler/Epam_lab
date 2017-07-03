@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using TicketSaleCore.Models.DAL.IRepository;
 
-namespace TicketSaleCore.Controllers
+namespace TicketSaleCore.Features.Orders
 {
     [Authorize]
     public class OrdersController : Controller
