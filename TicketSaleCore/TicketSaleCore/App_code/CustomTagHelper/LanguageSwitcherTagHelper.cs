@@ -1,14 +1,17 @@
-﻿using System.Text;
+﻿using System.Linq;
+using System.Text;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.AspNetCore.Razor.TagHelpers;
 using Microsoft.Extensions.Options;
-using System.Linq;
 
-namespace TicketSaleCore
+namespace TicketSaleCore.CustomTagHelper
 {
+    /// <summary>
+    /// Tag Helper for language swith with Cookie
+    /// </summary>
     [HtmlTargetElement("language-switcher")]
     public class LanguageSwitcherTagHelper : TagHelper
     {
@@ -27,25 +30,32 @@ namespace TicketSaleCore
         public override void Process(TagHelperContext context, TagHelperOutput output)
         {
             var cultureItems = locOptions.Value.SupportedUICultures
-                .Select(c => new SelectListItem { Value = c.Name, Text = c.DisplayName })
+                //.Select(c => new SelectListItem { Value = c.Name, Text = c.DisplayName })
+                .Select(c => new { Value = c.Name, Text = c.DisplayName,shValue =c.TwoLetterISOLanguageName,cul=c.NativeName})
                 .ToList();
-
-
 
             output.TagName = null;
 
             var strBld = new StringBuilder();
             
-            strBld.Append("<div class=\"ui floating dropdown labeled search icon button\">");
+            strBld.Append("<div class=\"ui icon top left pointing dropdown button\">");
                  strBld.Append("<i class='world icon'></i>");
-                 strBld.Append("<span class='text'>Select Language</span>");
                  strBld.Append("<div class='menu'>");
             foreach(var culture in cultureItems)
             {
+                string flag="";
+                switch (culture.Value)
+                {
+                    case "en": flag = "us"; break;
+                    case "be": flag = "by"; break;
+                    case "ru": flag = "ru"; break;
+                }
+
+
                 strBld.Append($"<div class='item' " +
-                            //  $"data-value='{culture.Value}'" +
-                              $"onclick=\"useCookieToChangeLanguage('{culture.Value}')\">{culture.Text}</div>");
-               // output.Content.AppendHtml($"<li><a href='#' onclick=\"useCookie('{culture.TwoLetterISOLanguageName}')\">{culture.EnglishName}</a></li>");
+                            $"onclick=\"useCookieToChangeLanguage('{culture.Value}')\">" +
+                              $"<i class=\"{flag} flag\"></i>" +
+                              $"{culture.Text}</div>");
             }
             strBld.Append("</div>");
             strBld.Append("</div>");
@@ -53,7 +63,7 @@ namespace TicketSaleCore
 
             strBld.Append("<script type='text/javascript'>");
             strBld.Append("$('.ui.dropdown')");
-            strBld.Append(".dropdown('set selected','1');");
+            strBld.Append(".dropdown()");
             strBld.Append("</script>");
             //   strBld.Append("<script type='text/javascript'>");
 

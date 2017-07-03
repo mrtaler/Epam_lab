@@ -13,13 +13,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="ViewModels\HomeViewModels\**" />
-    <Content Remove="ViewModels\HomeViewModels\**" />
-    <EmbeddedResource Remove="ViewModels\HomeViewModels\**" />
-    <None Remove="ViewModels\HomeViewModels\**" />
-  </ItemGroup>
-
-  <ItemGroup>
     <None Remove="Properties\PublishProfiles\CustomProfile.pubxml" />
   </ItemGroup>
 
@@ -66,6 +59,14 @@
     <DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="1.0.0" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Features\Cities\ViewModels\" />
+    <Folder Include="Features\Events\ViewModels\" />
+    <Folder Include="Features\Home\ViewModels\" />
+    <Folder Include="Features\Orders\ViewModels\" />
+    <Folder Include="Features\Status\ViewModels\" />
+    <Folder Include="Features\Users\ViewModels\" />
+    <Folder Include="Features\Tickets\UserTickets\ViewModels\" />
+    <Folder Include="Features\Venues\ViewModels\" />
     <Folder Include="Models\BLL\BM\" />
     <Folder Include="Properties\PublishProfiles\" />
     <Folder Include="Resources\Features\Views\" />

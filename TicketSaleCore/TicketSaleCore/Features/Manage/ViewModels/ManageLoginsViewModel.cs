@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Http.Authentication;
 using Microsoft.AspNetCore.Identity;
 
-namespace TicketSaleCore.ViewModels.ManageViewModels
+namespace TicketSaleCore.Features.Manage.ViewModels
 {
     public class ManageLoginsViewModel
     {

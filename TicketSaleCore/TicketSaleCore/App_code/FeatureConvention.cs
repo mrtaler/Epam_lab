@@ -1,13 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc.ApplicationModels;
-using System.Reflection;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Linq;
-using Microsoft.AspNetCore.Mvc.Razor;
+using System.Reflection;
+using Microsoft.AspNetCore.Mvc.ApplicationModels;
 using Microsoft.AspNetCore.Mvc.Controllers;
+using Microsoft.AspNetCore.Mvc.Razor;
 
-namespace TicketSaleCore.App_code
+namespace TicketSaleCore
 {
     public class FeatureConvention : IControllerModelConvention
     {

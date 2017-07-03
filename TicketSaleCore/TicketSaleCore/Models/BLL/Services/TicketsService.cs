@@ -1,12 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
+using TicketSaleCore.Features.Tickets.ViewModels;
 using TicketSaleCore.Models.BLL.Interfaces;
 using TicketSaleCore.Models.DAL.IRepository;
 using TicketSaleCore.Models.Entities;
-using TicketSaleCore.ViewModels;
 
 namespace TicketSaleCore.Models.BLL.Services
 {
@@ -23,30 +21,30 @@ namespace TicketSaleCore.Models.BLL.Services
             var ticket = context.Tickets;
             return ticket;
         }
-        public TicketIndexViewModel GetTicketByEvent(int? _eventId)
+        public TicketIndexViewModel GetTicketByEvent(int? eventId)
         {
-            TicketIndexViewModel ticketsVM = new TicketIndexViewModel();
-            if(_eventId != null)
+            TicketIndexViewModel ticketsVm = new TicketIndexViewModel();
+            if(eventId != null)
             {
 
 
-                ticketsVM.AvailableTicketsToSale = context.Tickets
-                    .Where(p => p.EventId == _eventId)
+                ticketsVm.AvailableTicketsToSale = context.Tickets
+                    .Where(p => p.EventId == eventId)
                     .Where(p => p.Order == null)
                     .Include(t => t.Event)
                     .Include(t => t.Seller);
 
-                ticketsVM. CurentEvent = context.Events
+                ticketsVm. CurentEvent = context.Events
                     .Include(p => p.Venue)
                     .ThenInclude(z => z.City)
-                    .First(p => p.Id == _eventId);
+                    .First(p => p.Id == eventId);
             }
             else
             {
-                ticketsVM. AvailableTicketsToSale = context.Tickets.Include(t => t.Event).Include(t => t.Seller);
-                ticketsVM. CurentEvent = null;
+                ticketsVm. AvailableTicketsToSale = context.Tickets.Include(t => t.Event).Include(t => t.Seller);
+                ticketsVm. CurentEvent = null;
             }
-            return ticketsVM;
+            return ticketsVm;
         }
         public Ticket GetTicket(int? ticketId)
         {

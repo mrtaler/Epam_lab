@@ -1,4 +1,4 @@
-﻿namespace TicketSaleCore.ViewModels.Account
+﻿namespace TicketSaleCore.Features.Account.ViewModels
 {
     public class CreateUserViewModel
     {

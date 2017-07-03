@@ -1,10 +1,7 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
-using Microsoft.EntityFrameworkCore;
-using TicketSaleCore.Models.DAL.IRepository;
 using TicketSaleCore.Models.Entities;
 
-namespace TicketSaleCore.ViewModels
+namespace TicketSaleCore.Features.Tickets.ViewModels
 {
     public class TicketIndexViewModel
     {

@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using Microsoft.AspNetCore.Identity;
 
-namespace TicketSaleCore.ViewModels.ManageViewModels
+namespace TicketSaleCore.Features.Manage.ViewModels
 {
     public class IndexViewModel
     {

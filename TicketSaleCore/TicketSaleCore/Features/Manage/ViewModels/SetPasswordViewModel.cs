@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace TicketSaleCore.ViewModels.ManageViewModels
+namespace TicketSaleCore.Features.Manage.ViewModels
 {
     public class SetPasswordViewModel
     {

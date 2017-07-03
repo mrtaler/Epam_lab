@@ -4,8 +4,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using TicketSaleCore.Features.Manage.ViewModels;
 using TicketSaleCore.Models.Entities;
-using TicketSaleCore.ViewModels.ManageViewModels;
 
 namespace TicketSaleCore.Features.Manage
 {

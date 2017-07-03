@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace TicketSaleCore.ViewModels
+namespace TicketSaleCore.Features.Roles.ViewModels
 {
     public class RegisterViewModel
     {

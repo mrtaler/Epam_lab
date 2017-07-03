@@ -10,7 +10,7 @@ using Microsoft.Extensions.Logging;
 using TicketSaleCore.Models.DAL.IRepository;
 using TicketSaleCore.Models.Entities;
 
-namespace TicketSaleCore.Features.UserTickets
+namespace TicketSaleCore.Features.Tickets
 {
     [Authorize]
     public class UserTicketsController : Controller
@@ -57,6 +57,7 @@ namespace TicketSaleCore.Features.UserTickets
 
         public async Task<IActionResult> SellingTickets(string userId = null)
         {
+
             List<Ticket> sellingTickets = new List<Ticket>(
                 context.Tickets
                 .Where(p => p.Seller.Id == userId)

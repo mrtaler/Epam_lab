@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using TicketSaleCore.Features.Tickets.ViewModels;
 using TicketSaleCore.Models.Entities;
 using TicketSaleCore.ViewModels;
 
@@ -16,9 +17,9 @@ namespace TicketSaleCore.Models.BLL.Interfaces
         /// <summary>
         /// Get all event tickets 
         /// </summary>
-        /// <param name="_eventId">Event ID</param>
+        /// <param name="eventId">Event ID</param>
         /// <returns>event ticket list</returns>
-        TicketIndexViewModel GetTicketByEvent(int? _eventId);
+        TicketIndexViewModel GetTicketByEvent(int? eventId);
         /// <summary>
         /// Get ticket
         /// </summary>

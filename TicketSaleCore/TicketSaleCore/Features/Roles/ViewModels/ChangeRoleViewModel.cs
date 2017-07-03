@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
-namespace TicketSaleCore.ViewModels
+namespace TicketSaleCore.Features.Roles.ViewModels
 {
     public class ChangeRoleViewModel
     {

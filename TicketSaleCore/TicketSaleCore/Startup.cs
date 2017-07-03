@@ -16,7 +16,6 @@ using TicketSaleCore.Models.DAL;
 using TicketSaleCore.Models.DAL.IRepository;
 using TicketSaleCore.Models.DAL._Ef;
 using TicketSaleCore.Models.Entities;
-using TicketSaleCore.App_code;
 
 namespace TicketSaleCore
 {

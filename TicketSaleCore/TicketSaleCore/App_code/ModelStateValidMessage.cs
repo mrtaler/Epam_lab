@@ -1,10 +1,10 @@
 ﻿using System.Text;
 using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Mvc.Localization;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
-namespace TicketSaleCore.App_code
+namespace TicketSaleCore
 {
     public static class ModelStateValidMessage
     {
