@@ -25,7 +25,7 @@ namespace TicketSaleCore.Features.Home
             var events = eventService.GetEvents().Where(t => t.Tickets.Count(c => c.Order == null) > 0);
             return View(events);
         }
-        [Authorize(Policy = "delete")]
+        [Authorize(Policy = "delete", "read")]
         public IActionResult About()
         {
             return View();
