@@ -81,6 +81,7 @@ namespace TicketSaleCore.Features.Account
             {
 
                 var user = await userManager.FindByNameAsync(model.Email);
+                var claim = user.Claims;
 
                 var result = await signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, lockoutOnFailure: false);
                 

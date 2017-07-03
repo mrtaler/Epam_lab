@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using TicketSaleCore.Models.DAL.IRepository;
 using TicketSaleCore.Models.Entities;
+using System.Security.Claims;
 
 namespace TicketSaleCore.Models.DAL
 {
@@ -1526,23 +1527,29 @@ namespace TicketSaleCore.Models.DAL
             RoleManager<IdentityRole> roleManager =
                 serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
 
+
             string adminEmail = "Admin";
             string password = "Admin";
-            if (await roleManager.FindByNameAsync("admin") == null)
+            if(await roleManager.FindByNameAsync("admin") == null)
             {
                 await roleManager.CreateAsync(new IdentityRole("admin"));
             }
-            if (await roleManager.FindByNameAsync("user") == null)
+            if(await roleManager.FindByNameAsync("user") == null)
             {
                 await roleManager.CreateAsync(new IdentityRole("user"));
             }
-            if (await userManager.FindByNameAsync(adminEmail) == null)
+
+            if(await userManager.FindByNameAsync(adminEmail) == null)
             {
                 AppUser admin = new AppUser { Email = adminEmail, UserName = adminEmail, EmailConfirmed = true };
                 IdentityResult result = await userManager.CreateAsync(admin, password);
-                if (result.Succeeded)
+                if(result.Succeeded)
                 {
                     await userManager.AddToRoleAsync(admin, "admin");
+                    await userManager.AddClaimAsync(admin, new Claim("crud", "c"));
+                   // await userManager.AddClaimAsync(admin, new Claim("crud", "r"));
+                    await userManager.AddClaimAsync(admin, new Claim("crud", "u"));
+                    await userManager.AddClaimAsync(admin, new Claim("crud", "d"));
                 }
                 var users = new List<AppUser>
                 {
@@ -1582,11 +1589,15 @@ namespace TicketSaleCore.Models.DAL
                 };
 
 
-                foreach (var item in users)
+                foreach(var item in users)
                 {
                     IdentityResult result1 = await userManager.CreateAsync(item, item.Email);
-                    if (result1.Succeeded)
+                    if(result1.Succeeded)
                     {
+                        await userManager.AddClaimAsync(item, new Claim("crud", "c"));
+                        await userManager.AddClaimAsync(item, new Claim("crud", "r"));
+                        await userManager.AddClaimAsync(item, new Claim("crud", "u"));
+
                         await userManager.AddToRoleAsync(item, "user");
                     }
                 }

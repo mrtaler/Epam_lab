@@ -64,7 +64,9 @@ namespace TicketSaleCore.CustomTagHelper
             strBld.Append("<script type='text/javascript'>");
             strBld.Append("$('.ui.dropdown')");
             strBld.Append(".dropdown()");
-            strBld.Append("</script>");
+           
+
+            strBld.Append(";</script>");
             //   strBld.Append("<script type='text/javascript'>");
 
 
@@ -74,15 +76,15 @@ namespace TicketSaleCore.CustomTagHelper
              *                          
              */
 
-            output.Content.AppendHtml(@"<script type='text/javascript'>
- function useCookieToChangeLanguage(code) {
- var culture = code;
- var uiCulture = code;
- var cookieValue = '" + CookieRequestCultureProvider.DefaultCookieName + @"=c='+code+'|uic='+code; 
- document.cookie = cookieValue; 
- window.location.reload();
- }
- </script>");
+ //           output.Content.AppendHtml(@"<script type='text/javascript'>
+ //function useCookieToChangeLanguage(code) {
+ //var culture = code;
+ //var uiCulture = code;
+ //var cookieValue = '" + CookieRequestCultureProvider.DefaultCookieName + @"=c='+code+'|uic='+code; 
+ //document.cookie = cookieValue; 
+ //window.location.reload();
+ //}
+ //</script>");
         }
     }
 
