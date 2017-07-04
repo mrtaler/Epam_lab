@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using TicketSaleCore.Features.Tickets.ViewModels;
+using TicketSaleCore.Models.BLL.Services;
 using TicketSaleCore.Models.Entities;
 using TicketSaleCore.ViewModels;
 
@@ -32,6 +33,12 @@ namespace TicketSaleCore.Models.BLL.Interfaces
         /// <param name="id">ticket id</param>
         /// <returns></returns>
         bool TicketExists(int id);
+
+        /// <summary>
+        /// Get all User Ticket
+        /// </summary>
+        /// <returns></returns>
+        IEnumerable<Ticket> GetAllUserTickets(string userId, TicketStatus param);
         void Dispose();
     }
 }

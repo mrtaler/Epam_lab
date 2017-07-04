@@ -55,7 +55,8 @@ namespace TicketSaleCore.CustomTagHelper
                 strBld.Append($"<div class='item' " +
                             $"onclick=\"useCookieToChangeLanguage('{culture.Value}')\">" +
                               $"<i class=\"{flag} flag\"></i>" +
-                              $"{culture.Text}</div>");
+                              $"{culture.Text}" +
+                              $"</div>");
             }
             strBld.Append("</div>");
             strBld.Append("</div>");
@@ -63,7 +64,15 @@ namespace TicketSaleCore.CustomTagHelper
 
             strBld.Append("<script type='text/javascript'>");
             strBld.Append("$('.ui.dropdown')");
-            strBld.Append(".dropdown()");
+            strBld.Append(".dropdown(" +
+                          "{" +
+                          "onChange: function(value, text, $selectedItem){" +
+                        //  "alert(value);" +
+                        //  "alert(text);" +
+                        //  "alert($selectedItem);" +
+                          "}" +
+                          "})" +
+                          ";");
             strBld.Append("</script>");
             //   strBld.Append("<script type='text/javascript'>");
 

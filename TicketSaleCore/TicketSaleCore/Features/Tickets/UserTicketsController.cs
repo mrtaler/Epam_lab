@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -7,7 +6,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Logging;
-using TicketSaleCore.Models.DAL.IRepository;
+using TicketSaleCore.Models.BLL.Interfaces;
+using TicketSaleCore.Models.BLL.Services;
 using TicketSaleCore.Models.Entities;
 
 namespace TicketSaleCore.Features.Tickets
@@ -15,21 +15,15 @@ namespace TicketSaleCore.Features.Tickets
     [Authorize]
     public class UserTicketsController : Controller
     {
-        private readonly IUnitOfWork context;
+        private readonly ITicketsService context;
         private readonly UserManager<AppUser> userManager;
-        private readonly SignInManager<AppUser> signInManager;
 
         public UserTicketsController(
-            SignInManager<AppUser> signInManager,
-            IStringLocalizer<UserTicketsController> localizer,
-            ILoggerFactory loggerFactory,
-            IUnitOfWork context,
+            ITicketsService context,
             UserManager<AppUser> userManager)
         {
             this.userManager = userManager;
             this.context = context;
-            this.signInManager = signInManager;
-
         }
 
         public async Task<IActionResult> Index()
@@ -39,16 +33,16 @@ namespace TicketSaleCore.Features.Tickets
 
         public async Task<IActionResult> IndexAnotherUser(string userId)
         {
-            if(userId!=null)
+            if(userId != null)
             {
                 if(!userId.Equals(userManager.GetUserId(User)))
                 {
-                    var qq =await userManager.Users.FirstOrDefaultAsync(p=>p.Id==userId);
+                    var qq = await userManager.Users.FirstOrDefaultAsync(p => p.Id == userId);
                     return View(qq);
                 }
                 else
                 {
-                    return RedirectToAction("Index","UserTickets");
+                    return RedirectToAction("Index", "UserTickets");
                 }
 
             }
@@ -57,42 +51,15 @@ namespace TicketSaleCore.Features.Tickets
 
         public async Task<IActionResult> SellingTickets(string userId = null)
         {
-
-            List<Ticket> sellingTickets = new List<Ticket>(
-                context.Tickets
-                .Where(p => p.Seller.Id == userId)
-                .Where(z => z.Order == null)
-                .Include(p => p.Event)
-                .Include(p => p.Order)
-                .Include(p => p.Seller));
-            return PartialView(sellingTickets);
+            return PartialView(context.GetAllUserTickets(userId, TicketStatus.SellingTickets));
         }
         public async Task<IActionResult> WaitingConfomition(string userId = null)
         {
-            List<Ticket> sellingTickets = new List<Ticket>(
-                context.Tickets
-                    .Include(p => p.Order)
-                    .ThenInclude(p => p.Status)
-                    .Include(z => z.Order.Buyer)
-                    .Include(p => p.Seller)
-                    .Include(p => p.Event)
-                    .Where(p => p.Seller.Id == userId)
-                    .Where(p => p.Order.Status.StatusName == "Waiting for conformation"));
-
-            return PartialView("SellingTickets", sellingTickets);
+            return PartialView("SellingTickets", context.GetAllUserTickets(userId, TicketStatus.WaitingConfomition));
         }
         public async Task<IActionResult> Sold(string userId = null)
         {
-            List<Ticket> sellingTickets = new List<Ticket>(
-                context.Tickets
-                    .Include(p => p.Order)
-                    .ThenInclude(p => p.Status)
-                    .Include(z => z.Order.Buyer)
-                    .Include(p => p.Seller)
-                    .Include(p => p.Event)
-                    .Where(p => p.Seller.Id == userId)
-                    .Where(p => p.Order.Status.StatusName == "Confirmed"));
-            return PartialView("SellingTickets", sellingTickets);
+            return PartialView("SellingTickets", context.GetAllUserTickets(userId, TicketStatus.Sold));
         }
 
     }
