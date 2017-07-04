@@ -9,6 +9,6 @@ pipelines:
   default:
     - step:
         script: # Modify the commands below to build your repository.
-          - export PROJECT_NAME=epam_Labs/TicketSaleCore/
+          - export PROJECT_NAME=TicketSaleCore/TicketSaleCore
           - dotnet restore
           - dotnet build $PROJECT_NAME
