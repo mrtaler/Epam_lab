@@ -96,7 +96,7 @@ namespace TicketSaleCore
             // services.AddSingleton<IRoleStore<IdentityRole>>(roleStore);
 
             //  services.AddAuthentication();
-            //  services.AddAuthorization();
+            //  
 
             //https://github.com/timschreiber/Mvc5IdentityExample/tree/master/Mvc5IdentityExample
             //http://techbrij.com/generic-repository-unit-of-work-entity-framework-unit-testing-asp-net-mvc
@@ -114,8 +114,23 @@ namespace TicketSaleCore
                   // .AddRoleStore<RoleStoreWef>()
                   .AddEntityFrameworkStores<ApplicationContext>()//comment if use MemoryUnitOfWork
                 .AddDefaultTokenProviders();
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("age-policy", x => {
+                    x.RequireClaim("age");
+                });
+                options.AddPolicy("Read", x =>
+                {
+                    x.RequireClaim("crud","r");
+                });
+                options.AddPolicy("delete", x =>
+                {
+                    x.RequireClaim("crud", "d");
+                });
+            });
+            
             #endregion
-          
+
             services.AddMvc(o=>o.Conventions.Add(new FeatureConvention()))
                 .AddRazorOptions(options =>
                 {

@@ -5,10 +5,11 @@ namespace TicketSaleCore.Models.Entities
 {
     public class AppUser: IdentityUser
     {
-        public AppUser()
+        public AppUser():base()
         {
             Orders=new HashSet<Order>();
             Tickets= new HashSet<Ticket>();
+            
         }
 
 
