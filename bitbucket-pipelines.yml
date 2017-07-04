@@ -12,4 +12,4 @@ pipelines:
           - export PROJECT_NAME=TicketSaleCore/TicketSaleCore/
           
           - dotnet restore
-          - dotnet build $PROJECT_NAME
+          - dotnet build TicketSaleCore
