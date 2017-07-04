@@ -16,7 +16,6 @@ namespace TicketSaleCore.Features.Manage
         private readonly UserManager<AppUser> userManager;
         private readonly SignInManager<AppUser> signInManager;
         private readonly string externalCookieScheme;
-        private readonly ILogger logger;
 
         public ManageController(
           UserManager<AppUser> userManager,
@@ -27,7 +26,6 @@ namespace TicketSaleCore.Features.Manage
             this.userManager = userManager;
             this.signInManager = signInManager;
             externalCookieScheme = identityCookieOptions.Value.ExternalCookieAuthenticationScheme;
-            logger = loggerFactory.CreateLogger<ManageController>();
         }
 
         //

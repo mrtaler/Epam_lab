@@ -142,9 +142,17 @@ namespace TicketSaleCore
                 // Add support for localizing strings in data annotations (e.g. validation messages)
                 .AddDataAnnotationsLocalization();
 
-          //  services.AddScoped<LanguageActionFilter>();
+            //  services.AddScoped<LanguageActionFilter>();
+
+            #region BLL Services
+            services.AddTransient<ICityService, CityService>();
             services.AddTransient<IEventService, EventService>();
+            services.AddTransient<IOrdersService, OrdersService>();
+            services.AddTransient<IOrderStatusService, OrdersService>();
             services.AddTransient<ITicketsService, TicketsService>();
+            services.AddTransient<IVenuesService, VenuesService>();
+            #endregion
+
 
 
             #region IUnitOfWork serv

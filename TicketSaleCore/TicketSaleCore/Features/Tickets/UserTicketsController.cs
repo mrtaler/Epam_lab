@@ -1,11 +1,9 @@
-using System.Collections.Generic;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Localization;
-using Microsoft.Extensions.Logging;
 using TicketSaleCore.Models.BLL.Interfaces;
 using TicketSaleCore.Models.BLL.Services;
 using TicketSaleCore.Models.Entities;
@@ -35,7 +33,7 @@ namespace TicketSaleCore.Features.Tickets
         {
             if(userId != null)
             {
-                if(!userId.Equals(userManager.GetUserId(User)))
+                if(!userId.Equals(User.FindFirst(p=>p.Type==ClaimTypes.NameIdentifier).Value))
                 {
                     var qq = await userManager.Users.FirstOrDefaultAsync(p => p.Id == userId);
                     return View(qq);

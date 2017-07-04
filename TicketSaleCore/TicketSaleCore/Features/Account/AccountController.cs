@@ -1,3 +1,4 @@
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -81,14 +82,14 @@ namespace TicketSaleCore.Features.Account
             {
 
                 var user = await userManager.FindByNameAsync(model.Email);
-                var claim = user.Claims;
+           
 
                 var result = await signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, lockoutOnFailure: false);
                 
 
                 if (result.Succeeded)
                 {
-                    logger.LogError(1, $"User {user?.Email} logged");
+                   logger.LogError(1, $"User {user?.Email} logged");
                         return RedirectToLocal(returnUrl);
                   
                 }

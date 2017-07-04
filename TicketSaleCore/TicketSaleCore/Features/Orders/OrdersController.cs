@@ -1,18 +1,17 @@
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using TicketSaleCore.Models.DAL.IRepository;
+using TicketSaleCore.Models.BLL.Services;
+using TicketSaleCore.Models.BLL.Interfaces;
 
 namespace TicketSaleCore.Features.Orders
 {
     [Authorize]
     public class OrdersController : Controller
     {
-        private readonly IUnitOfWork context;
+        private readonly IOrdersService context;
 
-        public OrdersController(IUnitOfWork context)
+        public OrdersController(IOrdersService context)
         {
             this.context = context;
         }
@@ -20,13 +19,7 @@ namespace TicketSaleCore.Features.Orders
         // GET: Orders
         public async Task<IActionResult> Index(string id)
         {
-
-            var applicationContext = context.Orders.Include(o => o.Buyer)
-                .Where(s => s.Buyer.Id.Equals(id))
-                .Include(st=>st.Status)
-                .Include(t => t.OrderTickets).ThenInclude(z => z.Event)
-                .Include(t => t.OrderTickets).ThenInclude(z => z.Seller);
-            return View(await applicationContext.ToListAsync());
+            return View(context.GetUserOrders(id));
         }
 
         // GET: Orders/Details/5
@@ -37,9 +30,7 @@ namespace TicketSaleCore.Features.Orders
                 return NotFound();
             }
 
-            var order = await context.Orders
-                .Include(o => o.Buyer)
-                .SingleOrDefaultAsync(m => m.Id == id);
+            var order =  context.GetOrder(id);
             if (order == null)
             {
                 return NotFound();

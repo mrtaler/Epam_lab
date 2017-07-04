@@ -3,13 +3,12 @@ using System.Linq;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using TicketSaleCore.Models.BLL.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 
 namespace TicketSaleCore.Features.Home
 {
-  //  [ServiceFilter(typeof(LanguageActionFilter))]
+    //  [ServiceFilter(typeof(LanguageActionFilter))]
     public class HomeController : Controller
     {
         private readonly IEventService eventService;
@@ -23,9 +22,11 @@ namespace TicketSaleCore.Features.Home
         public IActionResult Index()
         {
             var events = eventService.GetEvents().Where(t => t.Tickets.Count(c => c.Order == null) > 0);
+
             return View(events);
         }
-        [Authorize(Policy = "delete", "read")]
+        [Authorize(Policy = "delete")]
+        [Authorize(Policy = "read")]
         public IActionResult About()
         {
             return View();
@@ -48,7 +49,7 @@ namespace TicketSaleCore.Features.Home
 
             return LocalRedirect(returnUrl);
         }
-        
+
         public IActionResult Error()
         {
             return View();

@@ -1,4 +1,5 @@
-﻿@using Microsoft.AspNetCore.Identity
+﻿@using System.Security.Claims
+@using Microsoft.AspNetCore.Identity
 @using Microsoft.AspNetCore.Mvc.Localization
 @using TicketSaleCore.Models
 @using TicketSaleCore.Models.Entities
@@ -13,7 +14,10 @@
 
 @if (SignInManager.IsSignedIn(User))
 {
-    <a class="item" asp-controller="Manage" asp-action="Index" title="Manage">@Localizer["Hello"] @UserManager.GetUserName(User)!</a>
+    <a class="item" 
+       asp-controller="Manage" 
+       asp-action="Index" 
+       title="Manage">@Localizer["Hello"] @User.FindFirst(p => p.Type == ClaimTypes.Name).Value!</a>
     <form asp-controller="Account"
           asp-action="LogOff"
           method="post"
@@ -27,7 +31,7 @@
        asp-action="Index">@UserManager.GetUserName(User) @Localizer["Tikets"]</a>
     <a class="item" 
        asp-controller="Orders" 
-       asp-action="Index" asp-route-id="@UserManager.GetUserId(User)">@UserManager.GetUserName(User) @Localizer["Order"]</a>
+       asp-action="Index" asp-route-id="@User.FindFirst(p=>p.Type==ClaimTypes.NameIdentifier).Value">@User.FindFirst(p => p.Type == ClaimTypes.Name).Value @Localizer["Order"]</a>
     if (User.IsInRole("admin"))
     {
         <div class="item">
