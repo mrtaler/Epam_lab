@@ -1,14 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Text;
 using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Mvc.Localization;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
-namespace TicketSaleCore.App_code
+namespace TicketSaleCore
 {
     public static class ModelStateValidMessage
     {
@@ -34,7 +30,7 @@ namespace TicketSaleCore.App_code
                     if (item.Value.ValidationState == ModelValidationState.Invalid)
                     {
                         strRes.Append("<li>");
-                        var qq = item.Key.ToString();
+                        var qq = item.Key;
                         var q1 = errorLocalizer[qq].Value;
 
                         strRes.Append(q1);

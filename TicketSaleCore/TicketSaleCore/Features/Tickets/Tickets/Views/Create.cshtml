@@ -1,0 +1,45 @@
+@using TicketSaleCore.Models.Entities
+@model TicketSaleCore.Models.Entities.Ticket
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h2>Create</h2>
+
+<form asp-action="Create" asp-route-returnUrl="@ViewBag.ReturnUrl">
+    <div class="form-horizontal">
+        <h4>Ticket</h4>
+        <hr />
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="form-group">
+            <label asp-for="Price" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="Price" class="form-control" />
+                <span asp-validation-for="Price" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="SellerId" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <select asp-for="SellerId" class ="form-control" asp-items="ViewBag.SellerId"></select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="EventId" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <select asp-for="EventId" class ="form-control" asp-items="ViewBag.EventId"></select>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Create" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+</form>
+
+<div>
+    <a asp-action="Index" asp-route-returnUrl="@ViewBag.ReturnUrl">Back to List</a>
+</div>
+

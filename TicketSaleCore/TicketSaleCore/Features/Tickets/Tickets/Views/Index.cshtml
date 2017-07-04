@@ -1,0 +1,90 @@
+@using System.Globalization
+@using TicketSaleCore.Features.Tickets.ViewModels
+@model TicketSaleCore.Features.Tickets.ViewModels.TicketIndexViewModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+@if (User.IsInRole("admin"))
+{
+    <p>
+        <a asp-action="Create" asp-route-returnUrl="@Context.Request.Path">Create New</a>
+    </p>
+}
+
+<div class="ui items">
+    @if (@Model.CurentEvent != null)
+    {
+        <div class="item">
+            <div class="ui small image">
+                <img src="@Model.CurentEvent.Banner">
+            </div>
+            <div class="content">
+                <a class="header">@Model.CurentEvent.Name</a>
+                <div class="meta">
+                    <span>@Model.CurentEvent.Venue.Address</span>
+                </div>
+                <div class="description">
+                    <div>@Model.CurentEvent.Description</div>
+                    <div>@Model.CurentEvent.Date.ToString("D", CultureInfo.CurrentCulture)</div>
+                </div>
+               <div class="extra">@Model.CurentEvent.Venue.City.Name</div>
+            </div>
+        </div>
+        
+    }
+    else
+    {
+        <div class="header">All  ticket</div>
+    }
+</div>
+
+
+
+<table class="ui celled padded table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.AvailableTicketsToSale.First().Price)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AvailableTicketsToSale.First().Seller)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model=>model.AvailableTicketsToSale.First().SellerNotes)
+            </th>
+           
+
+            @if (User.IsInRole("admin"))
+            {
+                <th></th>
+            }
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.AvailableTicketsToSale)
+            {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Price)
+                </td>
+                <td>
+                    @Html.ActionLink(@item.Seller.FirstName, "Details","Users",new {id= @item.Seller.Id })
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.SellerNotes)
+                    <div style="visibility: hidden" class="ui button negative">Add to Cart</div>
+                </td>
+                @if (User.IsInRole("admin"))
+                {
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@item.Id" asp-route-returnUrl="@Context.Request.Path">Edit</a> |
+                        <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                        <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                    </td>
+                }
+            </tr>
+        }
+    </tbody>
+</table>

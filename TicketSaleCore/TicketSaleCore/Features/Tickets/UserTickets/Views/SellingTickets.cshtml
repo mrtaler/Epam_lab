@@ -1,0 +1,36 @@
+﻿@using TicketSaleCore.Models.Entities
+@model IEnumerable<TicketSaleCore.Models.Entities.Ticket>
+
+@*<div class="ui bottom attached active tab segment" data-tab="first">*@
+    <table class="ui celled padded table">
+        <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.First().Price)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.First().Event)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.First().SellerNotes)
+            </th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Price)
+                </td>
+                <td>
+                    @Html.ActionLink(@item.Event.Name, "Details", "Events",new {id=@item.Event.Id})
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.SellerNotes)
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+@*</div>*@

@@ -1,0 +1,59 @@
+@using TicketSaleCore.Models.Entities
+@model TicketSaleCore.Models.Entities.Ticket
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h2>Edit</h2>
+
+<form asp-action="Edit" asp-route-returnUrl="@ViewBag.ReturnUrl">
+    <div class="form-horizontal">
+        <h4>Ticket</h4>
+        <hr />
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+    <input type="hidden" asp-for="Id" />
+        <div class="form-group">
+            <div class="ui right labeled input">
+                <label class="ui label" asp-for="Price"></label>
+                <input asp-for="Price" placeholder="Price" type="text"/>
+                <div class="ui basic label">BYN</div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="SellerId" class="control-label col-md-2"></label>
+            <div class="col-md-10">
+                <select asp-for="SellerId" class="form-control" asp-items="ViewBag.SellerId"></select>
+                <span asp-validation-for="SellerId" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="EventId" class="control-label col-md-2"></label>
+            <div class="col-md-10">
+                <select asp-for="EventId" class="form-control" asp-items="ViewBag.EventId"></select>
+                <span asp-validation-for="EventId" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Save" class="button" />
+            </div>
+        </div>
+    </div>
+</form>
+
+@if (@ViewBag.returnUrl != "")
+{
+    <div id="Redirct">
+        <a href="@ViewBag.ReturnUrl">Back to List</a>
+    </div>    
+}
+else
+{
+    <div id="Redirct">
+        <a asp-action="Index">Back to List</a>
+    </div> 
+}
+
+

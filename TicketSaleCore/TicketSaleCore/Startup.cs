@@ -9,11 +9,13 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using TicketSaleCore.App_code;
-using TicketSaleCore.Models;
 using TicketSaleCore.AuthorizationPolit.Password;
-using TicketSaleCore.Models.IdentityWithoutEF;
-using TicketSaleCore.Models.IRepository;
+using TicketSaleCore.Models.BLL.Interfaces;
+using TicketSaleCore.Models.BLL.Services;
+using TicketSaleCore.Models.DAL;
+using TicketSaleCore.Models.DAL.IRepository;
+using TicketSaleCore.Models.DAL._Ef;
+using TicketSaleCore.Models.Entities;
 
 namespace TicketSaleCore
 {
@@ -94,13 +96,15 @@ namespace TicketSaleCore
             // services.AddSingleton<IRoleStore<IdentityRole>>(roleStore);
 
             //  services.AddAuthentication();
-            //  services.AddAuthorization();
+            //  
 
             //https://github.com/timschreiber/Mvc5IdentityExample/tree/master/Mvc5IdentityExample
             //http://techbrij.com/generic-repository-unit-of-work-entity-framework-unit-testing-asp-net-mvc
             //https://aspnetboilerplate.com/Pages/Documents/Unit-Of-Work
 
             #endregion
+
+
 
 
             #region Identity
@@ -110,18 +114,49 @@ namespace TicketSaleCore
                   // .AddRoleStore<RoleStoreWef>()
                   .AddEntityFrameworkStores<ApplicationContext>()//comment if use MemoryUnitOfWork
                 .AddDefaultTokenProviders();
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("age-policy", x => {
+                    x.RequireClaim("age");
+                });
+                options.AddPolicy("Read", x =>
+                {
+                    x.RequireClaim("crud","r");
+                });
+                options.AddPolicy("delete", x =>
+                {
+                    x.RequireClaim("crud", "d");
+                });
+            });
+            
             #endregion
 
-            services.AddMvc()
+            services.AddMvc(o=>o.Conventions.Add(new FeatureConvention()))
+                .AddRazorOptions(options =>
+                {
+                    options.ConfigureFeatureFolders();
+                })
                 // Add support for finding localized views, based on file name suffix, e.g. Index.fr.cshtml
                 .AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix,
                     opts => { opts.ResourcesPath = "Resources"; })
                 // Add support for localizing strings in data annotations (e.g. validation messages)
                 .AddDataAnnotationsLocalization();
 
-            #region IUnitOfWork serv
+            //  services.AddScoped<LanguageActionFilter>();
 
-            services.AddSingleton<IUnitOfWork, ApplicationContext>();
+            #region BLL Services
+            services.AddTransient<ICityService, CityService>();
+            services.AddTransient<IEventService, EventService>();
+            services.AddTransient<IOrdersService, OrdersService>();
+            services.AddTransient<IOrderStatusService, OrdersService>();
+            services.AddTransient<ITicketsService, TicketsService>();
+            services.AddTransient<IVenuesService, VenuesService>();
+            #endregion
+
+
+
+            #region IUnitOfWork serv
+            services.AddScoped<IUnitOfWork, ApplicationContext>();
             // services.AddSingleton<IUnitOfWork, MemoryUnitOfWork>(); 
             #endregion
         }

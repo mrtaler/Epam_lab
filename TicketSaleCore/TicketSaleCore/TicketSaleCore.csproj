@@ -28,8 +28,9 @@
     <Content Include="wwwroot\images\EventImg\d2faf957332ebe65f73cee77def0996a.jpg" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="6.1.1" />
     <PackageReference Include="jQuery.Ajax.Unobtrusive" Version="2.0.20710" />
-    <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.0.1" />
+    <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.1.0" />
     <PackageReference Include="Microsoft.AspNetCore" Version="1.1.2" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.Cookies" Version="1.1.2" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="1.1.2" />
@@ -58,10 +59,19 @@
     <DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="1.0.0" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Features\Cities\ViewModels\" />
+    <Folder Include="Features\Events\ViewModels\" />
+    <Folder Include="Features\Home\ViewModels\" />
+    <Folder Include="Features\Orders\ViewModels\" />
+    <Folder Include="Features\Status\ViewModels\" />
+    <Folder Include="Features\Users\ViewModels\" />
+    <Folder Include="Features\Tickets\UserTickets\ViewModels\" />
+    <Folder Include="Features\Venues\ViewModels\" />
+    <Folder Include="Models\BLL\BM\" />
     <Folder Include="Properties\PublishProfiles\" />
+    <Folder Include="Resources\Features\Views\" />
     <Folder Include="Services\" />
     <Folder Include="SSL\" />
-    <Folder Include="ViewModels\HomeViewModels\" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System.Data.Entity">
@@ -69,6 +79,24 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Update="Resources\Features\Shared\_Layout.be.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Features\Shared\_Layout.en.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Features\Shared\_Layout.ru.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Features\Shared\_LoginPartial.be.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Features\Shared\_LoginPartial.en.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Features\Shared\_LoginPartial.ru.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
     <EmbeddedResource Update="Resources\Controllers.HomeController.ru.resx">
       <Generator>ResXFileCodeGenerator</Generator>
     </EmbeddedResource>
@@ -81,22 +109,22 @@
     <EmbeddedResource Update="Resources\Error\Errors.ru.resx">
       <Generator>ResXFileCodeGenerator</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="Resources\Views\Shared\_Layout.be.resx">
+    <EmbeddedResource Update="Resources\Shared\_Layout.be.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="Resources\Views\Shared\_Layout.en.resx">
+    <EmbeddedResource Update="Resources\Shared\_Layout.en.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="Resources\Views\Shared\_Layout.ru.resx">
+    <EmbeddedResource Update="Resources\Shared\_Layout.ru.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="Resources\Views\Shared\_LoginPartial.be.resx">
+    <EmbeddedResource Update="Resources\Shared\_LoginPartial.be.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="Resources\Views\Shared\_LoginPartial.en.resx">
+    <EmbeddedResource Update="Resources\Shared\_LoginPartial.en.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="Resources\Views\Shared\_LoginPartial.ru.resx">
+    <EmbeddedResource Update="Resources\Shared\_LoginPartial.ru.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
     </EmbeddedResource>
   </ItemGroup>

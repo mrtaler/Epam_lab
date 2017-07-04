@@ -10,23 +10,23 @@ namespace TicketSaleCore.Models.IdentityWithoutEF
 {
     public class RoleStoreWef : IRoleStore<IdentityRole>
     {
-        private readonly List<IdentityRole> _roles;
+        private readonly List<IdentityRole> roles;
 
         public RoleStoreWef()
         {
-            _roles = new List<IdentityRole>();
+            roles = new List<IdentityRole>();
         }
 
         public Task<IdentityResult> CreateAsync(IdentityRole role, CancellationToken cancellationToken)
         {
-            _roles.Add(role);
+            roles.Add(role);
 
             return Task.FromResult(IdentityResult.Success);
         }
 
         public Task<IdentityResult> UpdateAsync(IdentityRole role, CancellationToken cancellationToken)
         {
-            var match = _roles.FirstOrDefault(r => r.Id == role.Id);
+            var match = roles.FirstOrDefault(r => r.Id == role.Id);
             if (match != null)
             {
                 match.Name = role.Name;
@@ -41,10 +41,10 @@ namespace TicketSaleCore.Models.IdentityWithoutEF
 
         public Task<IdentityResult> DeleteAsync(IdentityRole role, CancellationToken cancellationToken)
         {
-            var match = _roles.FirstOrDefault(r => r.Id == role.Id);
+            var match = roles.FirstOrDefault(r => r.Id == role.Id);
             if (match != null)
             {
-                _roles.Remove(match);
+                roles.Remove(match);
 
                 return Task.FromResult(IdentityResult.Success);
             }
@@ -56,14 +56,14 @@ namespace TicketSaleCore.Models.IdentityWithoutEF
 
         public Task<IdentityRole> FindByIdAsync(string roleId, CancellationToken cancellationToken)
         {
-            var role = _roles.FirstOrDefault(r => r.Id == roleId);
+            var role = roles.FirstOrDefault(r => r.Id == roleId);
 
             return Task.FromResult(role);
         }
 
         public Task<IdentityRole> FindByNameAsync(string normalizedRoleName, CancellationToken cancellationToken)
         {
-            var role = _roles.FirstOrDefault(r => String.Equals(r.NormalizedName, normalizedRoleName, StringComparison.OrdinalIgnoreCase));
+            var role = roles.FirstOrDefault(r => String.Equals(r.NormalizedName, normalizedRoleName, StringComparison.OrdinalIgnoreCase));
 
             return Task.FromResult(role);
         }

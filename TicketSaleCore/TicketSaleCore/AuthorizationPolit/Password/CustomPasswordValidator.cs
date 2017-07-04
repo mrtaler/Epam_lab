@@ -1,12 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.Localization;
-using TicketSaleCore.Models;
-using TicketSaleCore.Models.IdentityWithoutEF;
+using TicketSaleCore.Models.Entities;
 
 namespace TicketSaleCore.AuthorizationPolit.Password
 {
