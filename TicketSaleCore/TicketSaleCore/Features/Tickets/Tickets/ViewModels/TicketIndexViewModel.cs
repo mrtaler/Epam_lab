@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using TicketSaleCore.Models.Entities;
 
-namespace TicketSaleCore.Features.Tickets.ViewModels
+namespace TicketSaleCore.Features.Tickets.Tickets.ViewModels
 {
     public class TicketIndexViewModel
     {

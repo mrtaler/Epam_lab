@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
 using TicketSaleCore.Models.BLL.Interfaces;
 using Microsoft.AspNetCore.Authorization;
+using TicketSaleCore.AuthorizationPolit.ResourceBased;
 
 namespace TicketSaleCore.Features.Home
 {
@@ -17,21 +19,22 @@ namespace TicketSaleCore.Features.Home
             )
         {
             this.eventService = eventService;
+
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            var events = eventService.GetEvents().Where(t => t.Tickets.Count(c => c.Order == null) > 0);
 
+            var events = eventService.GetAllEventWithTickets();
             return View(events);
+
         }
-        [Authorize(Policy = "delete")]
-        [Authorize(Policy = "read")]
+
         public IActionResult About()
         {
             return View();
         }
-        [Authorize(Policy = "Read")]
+
         //[Authorize(Policy = "Read")]
         public IActionResult Contact()
         {

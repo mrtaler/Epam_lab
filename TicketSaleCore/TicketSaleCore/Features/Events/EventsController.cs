@@ -23,7 +23,7 @@ namespace TicketSaleCore.Features.Events
         // GET: Events
         public async Task<IActionResult> Index()
         {
-            return View(context.GetEvents());
+            return View(context.GetAll());
         }
 
         // GET: Events/Details/5
@@ -34,7 +34,7 @@ namespace TicketSaleCore.Features.Events
                 return NotFound();
             }
 
-            var @event = context.GetEvent(id);
+            var @event = context.Get(id);
             if (@event == null)
             {
                 return NotFound();

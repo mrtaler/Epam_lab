@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using TicketSaleCore.Features.Tickets.ViewModels;
+using TicketSaleCore.Features.Tickets.Tickets.ViewModels;
 using TicketSaleCore.Models.BLL.Services;
 using TicketSaleCore.Models.Entities;
-using TicketSaleCore.ViewModels;
 
 namespace TicketSaleCore.Models.BLL.Interfaces
 {

@@ -1,10 +1,8 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using TicketSaleCore.Features.Home;
 using TicketSaleCore.Models.BLL.Interfaces;
-using TicketSaleCore.Models.Entities;
 
 namespace TicketSaleCore.Features.Tickets
 {

@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using TicketSaleCore.Models.BLL.Interfaces;
 using TicketSaleCore.Models.DAL.IRepository;
 using TicketSaleCore.Models.Entities;

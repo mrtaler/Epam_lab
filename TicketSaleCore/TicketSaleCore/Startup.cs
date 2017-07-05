@@ -1,4 +1,5 @@
 ﻿using System.Globalization;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
@@ -10,6 +11,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using TicketSaleCore.AuthorizationPolit.Password;
+using TicketSaleCore.AuthorizationPolit.ResourceBased;
+using TicketSaleCore.AuthorizationPolit.UserAndPassword;
 using TicketSaleCore.Models.BLL.Interfaces;
 using TicketSaleCore.Models.BLL.Services;
 using TicketSaleCore.Models.DAL;
@@ -31,19 +34,23 @@ namespace TicketSaleCore
             Configuration = builder.Build();
         }
 
-        public IConfigurationRoot Configuration { get; }
+        public IConfigurationRoot Configuration
+        {
+            get;
+        }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
             //use HTTPS
-            //services.Configure<MvcOptions>(options =>
-            //{
-            //    options.Filters.Add(new RequireHttpsAttribute());
-            //});
+            /*
+             *services.Configure<MvcOptions>(options =>
+             * {
+             * options.Filters.Add(new RequireHttpsAttribute());
+             * });
+             */
 
             //use localization
-
             services.Configure<RequestLocalizationOptions>(options =>
             {
                 var supportedCultures = new[]
@@ -69,6 +76,7 @@ namespace TicketSaleCore
             //Add Pasword validator
             services.AddTransient<IPasswordValidator<AppUser>,
                 CustomPasswordValidator>(serv => new CustomPasswordValidator(5));
+            services.AddTransient<IUserValidator<AppUser>, MyUserValidator>();
 
             //Add localizaion based on Resx files
             services.AddLocalization(options => options.ResourcesPath = "Resources");
@@ -76,6 +84,7 @@ namespace TicketSaleCore
             #region use EF in memory
             services.AddDbContext<ApplicationContext>(opt => opt.UseInMemoryDatabase());
             #endregion
+
             #region Use existing DB
 
             /*
@@ -116,29 +125,27 @@ namespace TicketSaleCore
                 .AddDefaultTokenProviders();
             services.AddAuthorization(options =>
             {
-                options.AddPolicy("age-policy", x => {
-                    x.RequireClaim("age");
-                });
-                options.AddPolicy("Read", x =>
-                {
-                    x.RequireClaim("crud","r");
-                });
-                options.AddPolicy("delete", x =>
-                {
-                    x.RequireClaim("crud", "d");
-                });
+                options.AddPolicy(Operations.ClaimTypeForDbWork, x =>
+                              {
+                                  x.RequireClaim(Operations.ClaimTypeForDbWork);
+                              });
             });
-            
+
+            services.AddSingleton<IAuthorizationHandler, UserManagerAccesHander>();
+
             #endregion
 
-            services.AddMvc(o=>o.Conventions.Add(new FeatureConvention()))
+            services.AddMvc(o => o.Conventions.Add(new FeatureConvention()))
                 .AddRazorOptions(options =>
                 {
                     options.ConfigureFeatureFolders();
                 })
                 // Add support for finding localized views, based on file name suffix, e.g. Index.fr.cshtml
                 .AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix,
-                    opts => { opts.ResourcesPath = "Resources"; })
+                    opts =>
+                    {
+                        opts.ResourcesPath = "Resources";
+                    })
                 // Add support for localizing strings in data annotations (e.g. validation messages)
                 .AddDataAnnotationsLocalization();
 
@@ -188,7 +195,7 @@ namespace TicketSaleCore
                 SupportedUICultures = supportedCultures
             });
 
-            if (env.IsDevelopment())
+            if(env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
                 app.UseBrowserLink();
@@ -218,5 +225,5 @@ namespace TicketSaleCore
             DbInit.AddTestData(applicationContext).Wait();
             #endregion
         }
-     }
+    }
 }

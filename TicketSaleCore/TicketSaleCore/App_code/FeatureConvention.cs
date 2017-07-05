@@ -62,6 +62,7 @@ namespace TicketSaleCore
 
         public void PopulateValues(ViewLocationExpanderContext context)
         {
+            context.Values["customviewlocation"] = nameof(FeatureViewLocationExpander);
         }
     }
     public static class RazorExtensions

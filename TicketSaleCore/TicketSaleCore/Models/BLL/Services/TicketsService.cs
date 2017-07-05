@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
-using TicketSaleCore.Features.Tickets.ViewModels;
+using TicketSaleCore.Features.Tickets.Tickets.ViewModels;
 using TicketSaleCore.Models.BLL.Interfaces;
 using TicketSaleCore.Models.DAL.IRepository;
 using TicketSaleCore.Models.Entities;

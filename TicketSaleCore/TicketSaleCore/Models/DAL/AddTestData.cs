@@ -8,9 +8,11 @@ using Microsoft.Extensions.DependencyInjection;
 using TicketSaleCore.Models.DAL.IRepository;
 using TicketSaleCore.Models.Entities;
 using System.Security.Claims;
+using TicketSaleCore.AuthorizationPolit.ResourceBased;
 
 namespace TicketSaleCore.Models.DAL
 {
+    
     public static class DbInit
     {
         /// <summary>
@@ -1539,6 +1541,15 @@ namespace TicketSaleCore.Models.DAL
                 await roleManager.CreateAsync(new IdentityRole("user"));
             }
 
+        
+
+            var create = new Claim(Operations.ClaimTypeForDbWork, Operations.Create.Name);
+            var read = new Claim(Operations.ClaimTypeForDbWork, Operations.Read.Name);
+            var update = new Claim(Operations.ClaimTypeForDbWork, Operations.Update.Name);
+            var delete = new Claim(Operations.ClaimTypeForDbWork, Operations.Delete.Name);
+
+         
+
             if(await userManager.FindByNameAsync(adminEmail) == null)
             {
                 AppUser admin = new AppUser { Email = adminEmail, UserName = adminEmail, EmailConfirmed = true };
@@ -1546,10 +1557,11 @@ namespace TicketSaleCore.Models.DAL
                 if(result.Succeeded)
                 {
                     await userManager.AddToRoleAsync(admin, "admin");
-                    await userManager.AddClaimAsync(admin, new Claim("crud", "c"));
-                   // await userManager.AddClaimAsync(admin, new Claim("crud", "r"));
-                    await userManager.AddClaimAsync(admin, new Claim("crud", "u"));
-                    await userManager.AddClaimAsync(admin, new Claim("crud", "d"));
+
+                    await userManager.AddClaimAsync(admin, create);
+                    await userManager.AddClaimAsync(admin, read);
+                    await userManager.AddClaimAsync(admin, update);
+                    await userManager.AddClaimAsync(admin, delete);
                 }
                 var users = new List<AppUser>
                 {
@@ -1588,15 +1600,20 @@ namespace TicketSaleCore.Models.DAL
                     }
                 };
 
+                var userManagerAcces = new Claim("UserManagerAcces", Operations.Read.Name);
 
                 foreach(var item in users)
                 {
                     IdentityResult result1 = await userManager.CreateAsync(item, item.Email);
                     if(result1.Succeeded)
                     {
-                        await userManager.AddClaimAsync(item, new Claim("crud", "c"));
-                        await userManager.AddClaimAsync(item, new Claim("crud", "r"));
-                        await userManager.AddClaimAsync(item, new Claim("crud", "u"));
+                        await userManager.AddClaimAsync(item, create);
+                        await userManager.AddClaimAsync(item, read);
+                        await userManager.AddClaimAsync(item, update);
+                        if (!item.UserName.Contains("3"))
+                        {
+                            await userManager.AddClaimAsync(item, userManagerAcces);
+                        }
 
                         await userManager.AddToRoleAsync(item, "user");
                     }
