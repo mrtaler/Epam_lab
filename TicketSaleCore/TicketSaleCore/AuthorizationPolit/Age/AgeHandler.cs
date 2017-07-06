@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 namespace TicketSaleCore.AuthorizationPolit.Age
 {
     /// <summary>
-    /// Age Claim
+    /// Age Checker
     /// </summary>
     public class AgeHandler : AuthorizationHandler<AgeRequirement>
     {

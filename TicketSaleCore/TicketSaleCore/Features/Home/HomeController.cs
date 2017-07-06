@@ -19,28 +19,21 @@ namespace TicketSaleCore.Features.Home
             )
         {
             this.eventService = eventService;
-
         }
-
         public async Task<IActionResult> Index()
         {
-
             var events = eventService.GetAllEventWithTickets();
             return View(events);
-
         }
-
         public IActionResult About()
         {
             return View();
         }
-
         //[Authorize(Policy = "Read")]
         public IActionResult Contact()
         {
             return View();
         }
-
         [HttpPost]
         public IActionResult SetLanguage(string culture, string returnUrl)
         {
@@ -49,10 +42,8 @@ namespace TicketSaleCore.Features.Home
                 CookieRequestCultureProvider.MakeCookieValue(new RequestCulture(culture)),
                 new CookieOptions { Expires = DateTimeOffset.UtcNow.AddYears(1) }
             );
-
             return LocalRedirect(returnUrl);
         }
-
         public IActionResult Error()
         {
             return View();

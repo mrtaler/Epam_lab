@@ -5,6 +5,8 @@ using TicketSaleCore.Features.Tickets.Tickets.ViewModels;
 using TicketSaleCore.Models.BLL.Interfaces;
 using TicketSaleCore.Models.DAL.IRepository;
 using TicketSaleCore.Models.Entities;
+using System;
+using static TicketSaleCore.Models.BLL.Infrastructure.TicketStatusEnum;
 
 namespace TicketSaleCore.Models.BLL.Services
 {
@@ -19,7 +21,7 @@ namespace TicketSaleCore.Models.BLL.Services
         }
 
 
-        public IEnumerable<Ticket> GetAllTicket()
+        public IEnumerable<Ticket> GetAll()
         {
             var ticket = context.Tickets;
             return ticket;
@@ -92,7 +94,7 @@ namespace TicketSaleCore.Models.BLL.Services
             return returnTickets;
         }
 
-        public Ticket GetTicket(int? ticketId)
+        public Ticket Get(int? ticketId)
         {
             var ticket = context.Tickets
                .Include(t => t.Event)
@@ -108,12 +110,20 @@ namespace TicketSaleCore.Models.BLL.Services
         {
             context.Dispose();
         }
+
+        public bool Delete(Ticket entity)
+        {
+            throw new NotImplementedException();
+        }
+        public Ticket Add(Ticket entity)
+        {
+            throw new NotImplementedException();
+        }
+        public Ticket Update(Ticket entity)
+        {
+            throw new NotImplementedException();
+        }
     }
 
-    public enum TicketStatus
-    {
-        SellingTickets,
-        WaitingConfomition,
-        Sold
-    }
+   
 }

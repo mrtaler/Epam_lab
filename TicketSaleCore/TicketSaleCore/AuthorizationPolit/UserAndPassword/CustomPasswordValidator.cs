@@ -43,7 +43,7 @@ namespace TicketSaleCore.AuthorizationPolit.Password
             {
                 errors.Add(new IdentityError
                 {
-                    Description = "The password should only consist of letters and numbers"//"Пароль должен состоять только избукв и цифр"
+                    Description = "The password should only consist of letters and numbers"
                 });
             }
             return Task.FromResult(errors.Count == 0 ?

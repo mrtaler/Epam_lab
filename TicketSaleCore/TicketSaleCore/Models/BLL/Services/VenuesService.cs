@@ -9,7 +9,6 @@ using TicketSaleCore.Models.Entities;
 namespace TicketSaleCore.Models.BLL.Services
 {
     public class VenuesService : IVenuesService
-
     {
         private IUnitOfWork Context
         {
@@ -26,14 +25,27 @@ namespace TicketSaleCore.Models.BLL.Services
         }
 
 
-        public Venue GetVenue(int? id)
+        public Venue Get(int? id)
         {
             return Context.Venues.SingleOrDefault(m => m.Id == id);
         }
 
-        public IEnumerable<Venue> GetVenues()
+        public IEnumerable<Venue> GetAll()
         {
             return Context.Venues;
+        }
+
+        public bool Delete(Venue entity)
+        {
+            throw new NotImplementedException();
+        }
+        public Venue Add(Venue entity)
+        {
+            throw new NotImplementedException();
+        }
+        public Venue Update(Venue entity)
+        {
+            throw new NotImplementedException();
         }
     }
 }

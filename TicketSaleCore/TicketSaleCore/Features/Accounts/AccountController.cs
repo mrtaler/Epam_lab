@@ -61,7 +61,6 @@ namespace TicketSaleCore.Features.Accounts
 
         #endregion
 
-
         #region Login HttpGet
         [HttpGet]
         [AllowAnonymous]
@@ -126,7 +125,6 @@ namespace TicketSaleCore.Features.Accounts
             // return RedirectToAction("Index", "Home");
         }
         #endregion
-
 
         #region AccessDenied HttpGet
         [AllowAnonymous]

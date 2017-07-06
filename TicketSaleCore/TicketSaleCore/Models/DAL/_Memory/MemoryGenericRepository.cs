@@ -51,11 +51,9 @@ namespace TicketSaleCore.Models.DAL._Memory
 
        public override EntityEntry<T> Add(T item)
        {
-             // return this.SetEntityState<TEntity>(Check.NotNull<TEntity>(entity, "entity"), EntityState.Added);
-            list.Add(item);
+           list.Add(item);
            return null;
        }
-
 
         IEnumerator<T>  IEnumerable<T>.GetEnumerator()
         {

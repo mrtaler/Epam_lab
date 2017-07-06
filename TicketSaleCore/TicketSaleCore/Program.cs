@@ -13,22 +13,14 @@ namespace TicketSaleCore
         public static void Main(string[] args)
         {
             var host = new WebHostBuilder()
-                .UseKestrel(
-               // (o) =>
-               //{
-               //    o.UseHttps(new X509Certificate2(@"Taler-WST.crt"));
-               //  //  o.UseHttps(new X509Certificate2(@"Tn.cer"));
-               //}
-               )
-                // .UseUrls("https://*:443").
-                 //.UseUrls("http://*:59079")
+                .UseKestrel()
                 .UseContentRoot(Directory.GetCurrentDirectory())
-                // .UseIISIntegration()
+                .UseIISIntegration()
                 .UseStartup<Startup>()
                 .UseApplicationInsights()
                 .Build();
 
             host.Run();
-        }//
+        }
     }
 }

@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Razor.TagHelpers;
 
 namespace TicketSaleCore.CustomTagHelper
 {
-    // You may need to install the Microsoft.AspNetCore.Razor.Runtime package into your project
 
     [HtmlTargetElement(
         "SemanticUi", 
@@ -21,7 +20,6 @@ namespace TicketSaleCore.CustomTagHelper
         {
             get; set;
         }
-
         /*
          <div class="ui statistic">
             <div class="label">
@@ -54,12 +52,7 @@ namespace TicketSaleCore.CustomTagHelper
 
             output.Attributes.Add("class", "ui statistic");
 
-           // var content = new HtmlString(labelSb.ToString());
-
             output.Content.SetHtmlContent(labelSb.ToString());
-
-
-
         }
     }
 }

@@ -1,45 +1,46 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using TicketSaleCore.Models.BLL.Interfaces;
 using TicketSaleCore.Models.DAL.IRepository;
 using TicketSaleCore.Models.Entities;
 
 namespace TicketSaleCore.Models.BLL.Services
 {
-    public class CityService : ICityService
+    public class OrderStatusService : IOrderStatusService
     {
         private IUnitOfWork Context
         {
-            get; 
+            get;
         }
-        public CityService(IUnitOfWork context)
+        public OrderStatusService(IUnitOfWork context)
         {
             this.Context = context;
         }
-
         public void Dispose()
         {
-           Context.Dispose();
-        }
-        public IEnumerable<City> GetAll()
-        {
-          return (Context.Citys);
-        }
-        public City Get(int? id)
-        {
-          return Context.Citys.SingleOrDefault(m => m.Id == id);
+            Context.Dispose();
         }
 
-        public bool Delete(City entity)
+        public OrderStatus Get(int? id)
+        {
+            return this.GetAll().SingleOrDefault(m => m.Id == id);
+        }
+        public IEnumerable<OrderStatus> GetAll()
+        {
+            return Context.OrderStatuses;
+        }
+
+        public OrderStatus Add(OrderStatus entity)
         {
             throw new NotImplementedException();
         }
-        public City Add(City entity)
+        public bool Delete(OrderStatus entity)
         {
             throw new NotImplementedException();
         }
-        public City Update(City entity)
+        public OrderStatus Update(OrderStatus entity)
         {
             throw new NotImplementedException();
         }

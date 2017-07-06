@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using TicketSaleCore.Features.Accounts.Manage;
 using TicketSaleCore.Features.Accounts.Manage.ViewModels;
 using TicketSaleCore.Models.Entities;
 
@@ -27,19 +28,17 @@ namespace TicketSaleCore.Features.Accounts
             this.signInManager = signInManager;
             externalCookieScheme = identityCookieOptions.Value.ExternalCookieAuthenticationScheme;
         }
-
-        //
         // GET: /Manage/Index
         [HttpGet]
-        public async Task<IActionResult> Index(ManageMessageId? message = null)
+        public async Task<IActionResult> Index(ManageMessage.ManageMessageId? message = null)
         {
             ViewData["StatusMessage"] =
-                message == ManageMessageId.ChangePasswordSuccess ? "Your password has been changed."
-                : message == ManageMessageId.SetPasswordSuccess ? "Your password has been set."
-                : message == ManageMessageId.SetTwoFactorSuccess ? "Your two-factor authentication provider has been set."
-                : message == ManageMessageId.Error ? "An error has occurred."
-                : message == ManageMessageId.AddPhoneSuccess ? "Your phone number was added."
-                : message == ManageMessageId.RemovePhoneSuccess ? "Your phone number was removed."
+                message == ManageMessage.ManageMessageId.ChangePasswordSuccess ? "Your password has been changed."
+                : message == ManageMessage.ManageMessageId.SetPasswordSuccess ? "Your password has been set."
+                : message == ManageMessage.ManageMessageId.SetTwoFactorSuccess ? "Your two-factor authentication provider has been set."
+                : message == ManageMessage.ManageMessageId.Error ? "An error has occurred."
+                : message == ManageMessage.ManageMessageId.AddPhoneSuccess ? "Your phone number was added."
+                : message == ManageMessage.ManageMessageId.RemovePhoneSuccess ? "Your phone number was removed."
                 : "";
 
             var user = await GetCurrentUserAsync();
@@ -57,18 +56,12 @@ namespace TicketSaleCore.Features.Accounts
             };
             return View(model);
         }
-
-    
-        
-        //
         // GET: /Manage/SetPassword
         [HttpGet]
         public IActionResult SetPassword()
         {
             return View();
         }
-
-        //
         // POST: /Manage/SetPassword
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -78,7 +71,6 @@ namespace TicketSaleCore.Features.Accounts
             {
                 return View(model);
             }
-
             var user = await GetCurrentUserAsync();
             if (user != null)
             {
@@ -86,16 +78,14 @@ namespace TicketSaleCore.Features.Accounts
                 if (result.Succeeded)
                 {
                     await signInManager.SignInAsync(user, isPersistent: false);
-                    return RedirectToAction(nameof(Index), new { Message = ManageMessageId.SetPasswordSuccess });
+                    return RedirectToAction(nameof(Index), new { Message = ManageMessage.ManageMessageId.SetPasswordSuccess });
                 }
                 AddErrors(result);
                 return View(model);
             }
-            return RedirectToAction(nameof(Index), new { Message = ManageMessageId.Error });
+            return RedirectToAction(nameof(Index), new { Message = ManageMessage.ManageMessageId.Error });
         }
-
         #region Helpers
-
         private void AddErrors(IdentityResult result)
         {
             foreach (var error in result.Errors)
@@ -103,19 +93,6 @@ namespace TicketSaleCore.Features.Accounts
                 ModelState.AddModelError(string.Empty, error.Description);
             }
         }
-
-        public enum ManageMessageId
-        {
-            AddPhoneSuccess,
-            AddLoginSuccess,
-            ChangePasswordSuccess,
-            SetTwoFactorSuccess,
-            SetPasswordSuccess,
-            RemoveLoginSuccess,
-            RemovePhoneSuccess,
-            Error
-        }
-
         private Task<AppUser> GetCurrentUserAsync()
         {
             return userManager.GetUserAsync(HttpContext.User);

@@ -10,7 +10,7 @@ namespace TicketSaleCore.Models.BLL.Infrastructure
     /// Interface for read data
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public interface IReadableService<T>
+    public interface IReadableBllService<T>
     {
         /// <summary>
         /// Get Data by id

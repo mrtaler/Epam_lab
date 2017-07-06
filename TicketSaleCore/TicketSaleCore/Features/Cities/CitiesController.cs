@@ -20,7 +20,7 @@ namespace TicketSaleCore.Features.Cities
         // GET: Cities
         public async Task<IActionResult> Index()
         {
-            return View(context.GetCities());
+            return View(context.GetAll());
         }
 
         [AllowAnonymous]
@@ -31,13 +31,11 @@ namespace TicketSaleCore.Features.Cities
                 return NotFound();
             }
 
-            var city = context.GetCity(id);
-               
+            var city = context.Get(id);
             if (city == null)
             {
                 return NotFound();
             }
-
             return View(city);
         }
     }

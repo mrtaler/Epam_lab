@@ -6,11 +6,8 @@ using TicketSaleCore.Models.DAL.IRepository;
 
 namespace TicketSaleCore.Models.BLL.Infrastructure
 {
-    public interface IBllService<T> : IEditableService<T>, IReadableService<T>
+    public interface IBllService<T> : IEditableBllService<T>, IReadableBllService<T>
     {
-      
-
         void Dispose();
-
     }
 }

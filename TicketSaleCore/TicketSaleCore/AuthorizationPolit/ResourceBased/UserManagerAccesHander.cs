@@ -10,7 +10,6 @@ namespace TicketSaleCore.AuthorizationPolit.ResourceBased
 {
     public class UserManagerAccesHander : AuthorizationHandler<OperationAuthorizationRequirement, UserManager<AppUser>>
     {
-
         protected override Task HandleRequirementAsync(
             AuthorizationHandlerContext context,
             OperationAuthorizationRequirement requirement,
@@ -26,5 +25,4 @@ namespace TicketSaleCore.AuthorizationPolit.ResourceBased
             return Task.FromResult(0);
         }
     }
-
 }

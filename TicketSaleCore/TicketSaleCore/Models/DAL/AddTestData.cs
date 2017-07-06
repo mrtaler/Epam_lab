@@ -343,44 +343,6 @@ namespace TicketSaleCore.Models.DAL
 
             #endregion
 
-            //AppUser user1 = new AppUser
-            //{
-            //    Email = "User1",
-            //    UserName = "User1",
-            //    EmailConfirmed = true,
-            //    FirstName = "Firstname1",
-            //    LastName = "LastName1",
-            //    Localization = "ru-RU",
-            //    Address = "adress1",
-            //    PhoneNumber = "5-53-53-56"
-            //};
-            //AppUser user2 = new AppUser
-            //{
-            //    Email = "User2",
-            //    UserName = "User2",
-            //    EmailConfirmed = true,
-            //    FirstName = "Firstname2",
-            //    LastName = "LastName2",
-            //    Localization = "ru-RU",
-            //    Address = "adress2",
-            //    PhoneNumber = "5-53-53-56"
-            //};
-            //AppUser user3 = new AppUser
-            //{
-            //    Email = "User3",
-            //    UserName = "User3",
-            //    EmailConfirmed = true,
-            //    FirstName = "Firstname3",
-            //    LastName = "LastName3",
-            //    Localization = "ru-RU",
-            //    Address = "adress3",
-            //    PhoneNumber = "5-53-53-56"
-            //};
-
-            //context.AppUsers.Add(user1);
-            //context.AppUsers.Add(user2);
-            //context.AppUsers.Add(user3);
-
             AppUser user1 = context.AppUsers.ToList().First(p => p.Email.Equals("User1"));
             AppUser user2 = context.AppUsers.ToList().First(p => p.Email.Equals("User2"));
             AppUser user3 = context.AppUsers.ToList().First(p => p.Email.Equals("User3"));
@@ -1442,7 +1404,6 @@ namespace TicketSaleCore.Models.DAL
             context.Orders.Add(order25);
             #endregion
 
-
             #region Order Table Init For User2
 
             var order31 = new Order
@@ -1511,7 +1472,6 @@ namespace TicketSaleCore.Models.DAL
             context.Orders.Add(order34);
             context.Orders.Add(order35);
             #endregion
-
 
             context.SaveChanges();
         }

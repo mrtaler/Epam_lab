@@ -33,11 +33,10 @@ namespace TicketSaleCore.CustomTagHelper
                 //.Select(c => new SelectListItem { Value = c.Name, Text = c.DisplayName })
                 .Select(c => new { Value = c.Name, Text = c.DisplayName,shValue =c.TwoLetterISOLanguageName,cul=c.NativeName})
                 .ToList();
-
             output.TagName = null;
 
             var strBld = new StringBuilder();
-            
+
             strBld.Append("<div class=\"ui icon top left pointing dropdown button\">");
                  strBld.Append("<i class='world icon'></i>");
                  strBld.Append("<div class='menu'>");
@@ -50,8 +49,6 @@ namespace TicketSaleCore.CustomTagHelper
                     case "be": flag = "by"; break;
                     case "ru": flag = "ru"; break;
                 }
-
-
                 strBld.Append($"<div class='item' " +
                             $"onclick=\"useCookieToChangeLanguage('{culture.Value}')\">" +
                               $"<i class=\"{flag} flag\"></i>" +
@@ -64,27 +61,10 @@ namespace TicketSaleCore.CustomTagHelper
             strBld.Append("<script type='text/javascript'>");
             strBld.Append("$('.ui.dropdown')");
             strBld.Append(".dropdown()");
-           
 
             strBld.Append(";</script>");
-            //   strBld.Append("<script type='text/javascript'>");
-
-
             output.Content.AppendHtml(strBld.ToString());
-            /**
-             *
-             *                          
-             */
-
- //           output.Content.AppendHtml(@"<script type='text/javascript'>
- //function useCookieToChangeLanguage(code) {
- //var culture = code;
- //var uiCulture = code;
- //var cookieValue = '" + CookieRequestCultureProvider.DefaultCookieName + @"=c='+code+'|uic='+code; 
- //document.cookie = cookieValue; 
- //window.location.reload();
- //}
- //</script>");
+            
         }
     }
 

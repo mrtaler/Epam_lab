@@ -13,7 +13,6 @@ namespace TicketSaleCore.Models.DAL._Ef
             : base(options)
         {
         }
-      
         public virtual DbSet<City> Citys { get; set; }
         public virtual DbSet<Event> Events { get; set; }
         public virtual DbSet<EventsType> EventsTypes { get; set; }
@@ -23,12 +22,6 @@ namespace TicketSaleCore.Models.DAL._Ef
         public virtual DbSet<Venue> Venues { get; set; }
         public virtual DbSet<AppUser> AppUsers { get; set; }
        
-        
-        //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        //{
-        //    base.OnConfiguring(optionsBuilder);
-        //    //optionsBuilder.UseSqlite(this.connectionString);
-        //}
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -98,27 +91,15 @@ namespace TicketSaleCore.Models.DAL._Ef
                 .HasForeignKey(t => t.CityFk);
             #endregion
 
-            #region MyRegion
-            //modelBuilder.Entity<TicketsOrder>()
-            //    .HasKey(key => new {key.OrderId, key.TicketId});
-            //modelBuilder.Entity<TicketsOrder>()
-            //    .HasOne(or => or.Order)
-            //    .WithMany(ti => ti.TicketsOrders)
-            //    .HasForeignKey(fk => fk.OrderId);
-
-            //modelBuilder.Entity<TicketsOrder>()
-            //    .HasOne(ti => ti.Ticket)
-            //    .WithMany(or => or.TicketsOrders)
-            //    .HasForeignKey(fk => fk.TicketId);
-            #endregion
-
+            #region next feature
             //modelBuilder.AddConfiguration(new CityConfiguration());
             // modelBuilder.AddConfiguration(new EventConfiguration());
             // modelBuilder.AddConfiguration(new OrderConfiguration());
             // modelBuilder.AddConfiguration(new TicketConfiguration());
             // modelBuilder.AddConfiguration(new UserConfiguration());
             // modelBuilder.AddConfiguration(new VenueConfiguration());
-            // modelBuilder.AddConfiguration(new StatusConfiguration());
+            // modelBuilder.AddConfiguration(new StatusConfiguration());.
+            #endregion
         }
     }
 }

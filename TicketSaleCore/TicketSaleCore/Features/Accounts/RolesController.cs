@@ -22,7 +22,6 @@ namespace TicketSaleCore.Features.Accounts
             this.userManager = userManager;
         }
         public IActionResult Index() => View(roleManager.Roles.ToList());
-
         public IActionResult Create() => View();
         [HttpPost]
         public async Task<IActionResult> Create(string name)
@@ -55,9 +54,7 @@ namespace TicketSaleCore.Features.Accounts
             }
             return RedirectToAction("Index");
         }
-
         public IActionResult UserList() => View(userManager.Users.ToList());
-
         public async Task<IActionResult> Edit(string id)
         {
             // получаем пользователя
@@ -76,7 +73,6 @@ namespace TicketSaleCore.Features.Accounts
                 };
                 return View(model);
             }
-
             return NotFound();
         }
         [HttpPost]
@@ -101,7 +97,6 @@ namespace TicketSaleCore.Features.Accounts
 
                 return RedirectToAction("UserList");
             }
-
             return NotFound();
         }
     }

@@ -31,7 +31,6 @@ namespace TicketSaleCore
         }
     }
 
-
     public class FeatureViewLocationExpander : IViewLocationExpander
     {
         public IEnumerable<string> ExpandViewLocations(ViewLocationExpanderContext context,
@@ -59,7 +58,6 @@ namespace TicketSaleCore
                 yield return location.Replace("{3}", featureName);
             }
         }
-
         public void PopulateValues(ViewLocationExpanderContext context)
         {
             context.Values["customviewlocation"] = nameof(FeatureViewLocationExpander);
@@ -81,44 +79,7 @@ namespace TicketSaleCore
             options.ViewLocationFormats.Add("/Features/{3}/Views/{0}.cshtml");
             options.ViewLocationFormats.Add("/Features/Shared/{0}.cshtml");
 
-            //options.ViewLocationFormats.Add("/Features/{3}/{0}.cshtml");
-            //options.ViewLocationFormats.Add("/Features/{3}/Views/{0}.cshtml");
-            //options.ViewLocationFormats.Add("/Features/Shared/{0}.cshtml");
-
             options.ViewLocationExpanders.Add(new FeatureViewLocationExpander());
         }
-
-
-
-
     }
-    ////public class FeatureViewLocationExpander : IViewLocationExpander
-    ////{
-    //    public IEnumerable<string> ExpandViewLocations(
-    //        ViewLocationExpanderContext context,
-    //        IEnumerable<string> viewLocations)
-    //    {
-    //        var controllerActionDescriptor = (context.ActionContext.ActionDescriptor as ControllerActionDescriptor);
-    //        if(controllerActionDescriptor != null && controllerActionDescriptor.ControllerTypeInfo.FullName.Contains("Features"))
-    //            return new List<string> { GetFeatureLocation(controllerActionDescriptor.ControllerTypeInfo.FullName) };
-    //        return viewLocations;
-    //    }
-    //    private string GetFeatureLocation(string fullControllerName)
-    //    {
-    //        var words = fullControllerName.Split('.');
-    //        var path = "";
-    //        bool isInFeature = false;
-    //        foreach(var word in words.Take(words.Count() - 1))
-    //        {
-    //            if(word.Equals("features", StringComparison.CurrentCultureIgnoreCase))
-    //                isInFeature = true;
-    //            if(isInFeature)
-    //                path = System.IO.Path.Combine(path, word);
-    //        }
-    //        return System.IO.Path.Combine(path, "views", "{0}.cshtml");
-    //    }
-    //    public void PopulateValues(ViewLocationExpanderContext context)
-    //    {
-    //    }
-    //}
 }

@@ -42,14 +42,6 @@ namespace TicketSaleCore
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            //use HTTPS
-            /*
-             *services.Configure<MvcOptions>(options =>
-             * {
-             * options.Filters.Add(new RequireHttpsAttribute());
-             * });
-             */
-
             //use localization
             services.Configure<RequestLocalizationOptions>(options =>
             {
@@ -86,41 +78,15 @@ namespace TicketSaleCore
             #endregion
 
             #region Use existing DB
-
             /*
              *services.AddDbContext<ApplicationContext>(options =>
              * options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
              */
             #endregion
 
-            #region deCommend if use MemoryUnitOfWork
-
-            //var userStore = new UserStoreWef();
-            //var roleStore = new RoleStoreWef();
-
-
-            // services.AddSingleton<IUserStore<AppUser>>(userStore);
-            // services.AddSingleton<IUserPasswordStore<AppUser>>(userStore);
-            // services.AddSingleton<IUserRoleStore<AppUser>>(userStore);
-            // services.AddSingleton<IRoleStore<IdentityRole>>(roleStore);
-
-            //  services.AddAuthentication();
-            //  
-
-            //https://github.com/timschreiber/Mvc5IdentityExample/tree/master/Mvc5IdentityExample
-            //http://techbrij.com/generic-repository-unit-of-work-entity-framework-unit-testing-asp-net-mvc
-            //https://aspnetboilerplate.com/Pages/Documents/Unit-Of-Work
-
-            #endregion
-
-
-
-
             #region Identity
             //Add Identity to services
             services.AddIdentity<AppUser, IdentityRole>()
-                  // .AddUserStore<UserStoreWef>()
-                  // .AddRoleStore<RoleStoreWef>()
                   .AddEntityFrameworkStores<ApplicationContext>()//comment if use MemoryUnitOfWork
                 .AddDefaultTokenProviders();
             services.AddAuthorization(options =>
@@ -131,7 +97,7 @@ namespace TicketSaleCore
                               });
             });
 
-            services.AddSingleton<IAuthorizationHandler, UserManagerAccesHander>();
+            services.AddScoped<IAuthorizationHandler, UserManagerAccesHander>();
 
             #endregion
 
@@ -155,12 +121,10 @@ namespace TicketSaleCore
             services.AddTransient<ICityService, CityService>();
             services.AddTransient<IEventService, EventService>();
             services.AddTransient<IOrdersService, OrdersService>();
-            services.AddTransient<IOrderStatusService, OrdersService>();
+            services.AddTransient<IOrderStatusService, OrderStatusService>();
             services.AddTransient<ITicketsService, TicketsService>();
             services.AddTransient<IVenuesService, VenuesService>();
             #endregion
-
-
 
             #region IUnitOfWork serv
             services.AddScoped<IUnitOfWork, ApplicationContext>();
@@ -218,8 +182,8 @@ namespace TicketSaleCore
             });
 
 
-            #region DbInit
-            //User&role Init 
+            #region Data base Init
+            //User&role&Claim Init 
             DbInit.UserInit(app.ApplicationServices).Wait();
             //Db content init
             DbInit.AddTestData(applicationContext).Wait();

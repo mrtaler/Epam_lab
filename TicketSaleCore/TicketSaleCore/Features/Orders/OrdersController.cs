@@ -15,13 +15,11 @@ namespace TicketSaleCore.Features.Orders
         {
             this.context = context;
         }
-
         // GET: Orders
         public async Task<IActionResult> Index(string id)
         {
             return View(context.GetUserOrders(id));
         }
-
         // GET: Orders/Details/5
         public async Task<IActionResult> Details(int? id)
         {
@@ -30,20 +28,12 @@ namespace TicketSaleCore.Features.Orders
                 return NotFound();
             }
 
-            var order =  context.GetOrder(id);
+            var order =  context.Get(id);
             if (order == null)
             {
                 return NotFound();
             }
-
             return View(order);
         }
-
-
-
-        //private bool OrderExists(int id)
-        //{
-        //    return context.Orders.Any(e => e.Id == id);
-        //}
     }
 }

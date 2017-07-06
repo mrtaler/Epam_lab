@@ -20,11 +20,7 @@ namespace TicketSaleCore.Features.Tickets
         // GET: Tickets
         public async Task<IActionResult> Index(int? id)
         {
-
             return View(ticketsService.GetTicketByEvent(id));
-
-            //  var applicationContext = context.TicketDbSet.Include(t => t.Event).Include(t => t.Seller);
-            //   return RedirectToAction("Index",await cont.ToListAsync());
         }
         [AllowAnonymous]
         // GET: Tickets/Details/5
@@ -35,7 +31,7 @@ namespace TicketSaleCore.Features.Tickets
                 return NotFound();
             }
 
-            var ticket = ticketsService.GetTicket(id);
+            var ticket = ticketsService.Get(id);
             if(ticket == null)
             {
                 return NotFound();

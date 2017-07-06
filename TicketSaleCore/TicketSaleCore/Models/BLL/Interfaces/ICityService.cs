@@ -1,12 +1,11 @@
 ﻿using System.Collections.Generic;
+using TicketSaleCore.Models.BLL.Infrastructure;
 using TicketSaleCore.Models.Entities;
 
 namespace TicketSaleCore.Models.BLL.Interfaces
 {
-  public  interface ICityService
+    public interface ICityService : IBllService<City>
     {
-        City GetCity(int? id);
-        IEnumerable<City> GetCities();
-        void Dispose();
+
     }
 }

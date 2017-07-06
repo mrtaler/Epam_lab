@@ -10,7 +10,7 @@ namespace TicketSaleCore.Models.BLL.Infrastructure
     /// interface for edit service in BLL
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public interface IEditableService<T>
+    public interface IEditableBllService<T>
     {
         /// <summary>
         /// Delete entry T from DAL

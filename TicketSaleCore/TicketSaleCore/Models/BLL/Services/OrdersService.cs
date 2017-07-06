@@ -3,15 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using TicketSaleCore.Models.BLL.Infrastructure;
 using TicketSaleCore.Models.BLL.Interfaces;
 using TicketSaleCore.Models.DAL.IRepository;
 using TicketSaleCore.Models.Entities;
 
 namespace TicketSaleCore.Models.BLL.Services
 {
-    public class OrdersService : IOrdersService, IOrderStatusService
+    public class OrdersService : IOrdersService
     {
-
         private IUnitOfWork Context
         {
             get;
@@ -26,14 +26,13 @@ namespace TicketSaleCore.Models.BLL.Services
            Context.Dispose();
         }
 
-        public Order GetOrder(int? id)
+        public Order Get(int? id)
         {
             return Context.Orders
                 .Include(o => o.Buyer)
                 .SingleOrDefault(m => m.Id == id);
         }
-
-        public IEnumerable<Order> GetOrders()
+        public IEnumerable<Order> GetAll()
         {
             return Context.Orders.Include(o => o.Buyer)
                 //  
@@ -43,20 +42,21 @@ namespace TicketSaleCore.Models.BLL.Services
         }
         public IEnumerable<Order> GetUserOrders(string id)
         {
-            return this.GetOrders().Where(s => s.Buyer.Id.Equals(id));
+            return this.GetAll().Where(s => s.Buyer.Id.Equals(id));
         }
 
-
-
-
-        public OrderStatus GetOrderStatus(int? id)
+        public bool Delete(Order entity)
         {
-           return this.GetOrderStatuses().SingleOrDefault(m => m.Id == id);
+            throw new NotImplementedException();
+        }
+        public Order Add(Order entity)
+        {
+            throw new NotImplementedException();
+        }
+        public Order Update(Order entity)
+        {
+            throw new NotImplementedException();
         }
 
-        public IEnumerable<OrderStatus> GetOrderStatuses()
-        {
-            return Context.OrderStatuses;
-        }
     }
 }

@@ -24,7 +24,7 @@
                     @Html.DisplayFor(modelItem => item.Price)
                 </td>
                 <td>
-                    @Html.ActionLink(@item.Event.Name, "Details", "Events",new {id=@item.Event.Id})
+                    @Html.ActionLink(@item.Event.Name, "Index", "Tickets", new {id=@item.Event.Id})
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.SellerNotes)

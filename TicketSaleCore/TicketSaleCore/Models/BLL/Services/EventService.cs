@@ -17,25 +17,17 @@ namespace TicketSaleCore.Models.BLL.Services
             this.context = context;
         }
 
-
-
         public Event Get(int? id)
         {
             if(id == null)
-                throw new ValidationException("Не установлено id", "");
+                throw new ValidationException("Not specified id", "");
             var _event = context.Events.Find(id.Value);
             if(_event == null)
-                throw new ValidationException("eventType не найден", "");
-            // Mapper.Initialize(cfg => cfg.CreateMap<EventsType, EventsTypeDTO>());
+                throw new ValidationException("eventType not found", "");
             return _event;
-            /*Mapper.Map<EventsType, EventsTypeDTO>(eventType);*/
         }
-
         public IEnumerable<Event> GetAll()
         {
-
-            //Mapper.Initialize(cfg => cfg.CreateMap<Event, EventsDTO>());
-            //  return Mapper.Map<IEnumerable<Event>, List<EventsDTO>>(
             return (
                 context.Events
                 .Include(p => p.Tickets)
@@ -43,14 +35,8 @@ namespace TicketSaleCore.Models.BLL.Services
                 .Include(p => p.Venue)
                 .ThenInclude(c => c.City)
                 .OrderBy(t => t.Date)
-
                 );
-            //.Where(t => t.Tickets.Count(c => c.Order == null) > 0)
-            //.Where(t=>t.Date>=DateTime.UtcNow)
-
-            //     );
         }
-
         public IEnumerable<Event> GetAllEventWithTickets()
         {
             return (
@@ -59,12 +45,10 @@ namespace TicketSaleCore.Models.BLL.Services
                 );
         }
 
-
         public void Dispose()
         {
             context.Dispose();
         }
-
         public bool Delete(Event entity)
         {
             try
@@ -77,18 +61,13 @@ namespace TicketSaleCore.Models.BLL.Services
             }
             return true;
         }
-
         public Event Add(Event entity)
         {
             return context.Events.Add(entity).Entity;
         }
-
-
         public Event Update(Event entity)
         {
             throw new NotImplementedException();
         }
-
-
     }
 }

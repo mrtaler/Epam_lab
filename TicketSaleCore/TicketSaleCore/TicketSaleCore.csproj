@@ -69,9 +69,9 @@
     <Folder Include="Features\Venues\ViewModels\" />
     <Folder Include="Models\BLL\BM\" />
     <Folder Include="Properties\PublishProfiles\" />
+    <Folder Include="Resources\Features\Home\" />
     <Folder Include="Resources\Features\Views\" />
     <Folder Include="Services\" />
-    <Folder Include="SSL\" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System.Data.Entity">

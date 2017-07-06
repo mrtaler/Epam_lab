@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using TicketSaleCore.Models.BLL.Infrastructure;
 using TicketSaleCore.Models.BLL.Interfaces;
 using TicketSaleCore.Models.BLL.Services;
 using TicketSaleCore.Models.Entities;
@@ -33,9 +34,9 @@ namespace TicketSaleCore.Features.Tickets
         {
             if(userId != null)
             {
-                if(!userId.Equals(User.FindFirst(p=>p.Type==ClaimTypes.NameIdentifier).Value))
+                if(!userId.Equals(User.FindFirst(p=>p.Type==ClaimTypes.NameIdentifier).Value)) //if id not equal Authorized User
                 {
-                    var qq = await userManager.Users.FirstOrDefaultAsync(p => p.Id == userId);
+                    var qq = await userManager.Users.FirstOrDefaultAsync(p => p.Id == userId);//find User id repository
                     return View(qq);
                 }
                 else
@@ -49,15 +50,15 @@ namespace TicketSaleCore.Features.Tickets
 
         public async Task<IActionResult> SellingTickets(string userId = null)
         {
-            return PartialView(context.GetAllUserTickets(userId, TicketStatus.SellingTickets));
+            return PartialView(context.GetAllUserTickets(userId, TicketStatusEnum.TicketStatus.SellingTickets));
         }
         public async Task<IActionResult> WaitingConfomition(string userId = null)
         {
-            return PartialView("SellingTickets", context.GetAllUserTickets(userId, TicketStatus.WaitingConfomition));
+            return PartialView("SellingTickets", context.GetAllUserTickets(userId, TicketStatusEnum.TicketStatus.WaitingConfomition));
         }
         public async Task<IActionResult> Sold(string userId = null)
         {
-            return PartialView("SellingTickets", context.GetAllUserTickets(userId, TicketStatus.Sold));
+            return PartialView("SellingTickets", context.GetAllUserTickets(userId, TicketStatusEnum.TicketStatus.Sold));
         }
 
     }
