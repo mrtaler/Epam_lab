@@ -1,0 +1,5 @@
+﻿Enable-Migrations -ProjectName "TicketSaleCore" -StartUpProjectName "TicketSaleCore" 
+Add-Migration  
+Update-Database -ProjectName "TicketSaleCore" -verbose
+
+Update-Database -TargetMigration  -ProjectName "TicketSaleCore"

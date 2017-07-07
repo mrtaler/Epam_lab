@@ -22,6 +22,7 @@ namespace TicketSaleCore.Models.DAL
         /// <returns></returns>
         public static async Task AddTestData(IUnitOfWork context)
         {
+            
 
             #region EventsType
 

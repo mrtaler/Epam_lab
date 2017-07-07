@@ -12,7 +12,11 @@ namespace TicketSaleCore.Models.DAL._Ef
         public ApplicationContext(DbContextOptions<ApplicationContext> options)
             : base(options)
         {
+          
         }
+
+        
+
         public virtual DbSet<City> Citys { get; set; }
         public virtual DbSet<Event> Events { get; set; }
         public virtual DbSet<EventsType> EventsTypes { get; set; }
@@ -101,5 +105,7 @@ namespace TicketSaleCore.Models.DAL._Ef
             // modelBuilder.AddConfiguration(new StatusConfiguration());.
             #endregion
         }
+
+        
     }
 }

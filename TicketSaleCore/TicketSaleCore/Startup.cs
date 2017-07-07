@@ -74,14 +74,14 @@ namespace TicketSaleCore
             services.AddLocalization(options => options.ResourcesPath = "Resources");
 
             #region use EF in memory
-            services.AddDbContext<ApplicationContext>(opt => opt.UseInMemoryDatabase());
+            //  services.AddDbContext<ApplicationContext>(opt => opt.UseInMemoryDatabase());
             #endregion
 
             #region Use existing DB
-            /*
-             *services.AddDbContext<ApplicationContext>(options =>
-             * options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
-             */
+
+            services.AddDbContext<ApplicationContext>(options =>
+            options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+
             #endregion
 
             #region Identity
@@ -181,12 +181,31 @@ namespace TicketSaleCore
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
 
+            #region del data in db 
 
+            using(var serviceScope = app.ApplicationServices.GetService<IServiceScopeFactory>().CreateScope())
+            {
+              var context = serviceScope.ServiceProvider.GetRequiredService<ApplicationContext>();
+              context.Database.ExecuteSqlCommand($"DELETE FROM dbo.Citys;" +
+                                                 $"DELETE FROM dbo.Events;" +
+                                                 $"DELETE FROM dbo.EventsTypes;" +
+                                                 $"DELETE FROM dbo.Orders;" +
+                                                 $"DELETE FROM dbo.OrderStatuses;" +
+                                                 $"DELETE FROM dbo.Tickets;" +
+                                                 $"DELETE FROM dbo.Venues;"
+                                                 );
+            //    context.Database.EnsureCreated();
+            //    //    .Migrate();
+                }
+            #endregion
             #region Data base Init
             //User&role&Claim Init 
             DbInit.UserInit(app.ApplicationServices).Wait();
             //Db content init
-            DbInit.AddTestData(applicationContext).Wait();
+
+        
+ DbInit.AddTestData(applicationContext).Wait();
+            
             #endregion
         }
     }

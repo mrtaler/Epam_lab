@@ -10,8 +10,7 @@ using TicketSaleCore.Models.Entities;
 
 namespace TicketSaleCore.Features.Accounts
 {
-    //[Authorize]
-    [Authorize(Roles = "NotTask01")]
+    [Authorize]
     public class ManageController : Controller
     {
         private readonly UserManager<AppUser> userManager;

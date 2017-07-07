@@ -127,7 +127,6 @@ namespace TicketSaleCore.Features.Accounts
         #endregion
 
         #region AccessDenied HttpGet
-        [AllowAnonymous]
         [HttpGet]
         public IActionResult AccessDenied()
         {

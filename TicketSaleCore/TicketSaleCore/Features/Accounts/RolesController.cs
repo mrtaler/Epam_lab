@@ -10,12 +10,12 @@ using TicketSaleCore.Models.Entities;
 
 namespace TicketSaleCore.Features.Accounts
 {
-    
-    [Authorize(Roles = "NotTask01")]
+
+    [Authorize(Roles = "admin")]
     public class RolesController : Controller
     {
-      private  readonly RoleManager<IdentityRole> roleManager;
-       private readonly UserManager<AppUser> userManager;
+        private readonly RoleManager<IdentityRole> roleManager;
+        private readonly UserManager<AppUser> userManager;
         public RolesController(RoleManager<IdentityRole> roleManager, UserManager<AppUser> userManager)
         {
             this.roleManager = roleManager;
@@ -26,16 +26,16 @@ namespace TicketSaleCore.Features.Accounts
         [HttpPost]
         public async Task<IActionResult> Create(string name)
         {
-            if (!string.IsNullOrEmpty(name))
+            if(!string.IsNullOrEmpty(name))
             {
                 IdentityResult result = await roleManager.CreateAsync(new IdentityRole(name));
-                if (result.Succeeded)
+                if(result.Succeeded)
                 {
                     return RedirectToAction("Index");
                 }
                 else
                 {
-                    foreach (var error in result.Errors)
+                    foreach(var error in result.Errors)
                     {
                         ModelState.AddModelError(string.Empty, error.Description);
                     }
@@ -48,7 +48,7 @@ namespace TicketSaleCore.Features.Accounts
         public async Task<IActionResult> Delete(string id)
         {
             IdentityRole role = await roleManager.FindByIdAsync(id);
-            if (role != null)
+            if(role != null)
             {
                 IdentityResult result = await roleManager.DeleteAsync(role);
             }
@@ -59,7 +59,7 @@ namespace TicketSaleCore.Features.Accounts
         {
             // получаем пользователя
             AppUser user = await userManager.FindByIdAsync(id);
-            if (user != null)
+            if(user != null)
             {
                 // получем список ролей пользователя
                 var userRoles = await userManager.GetRolesAsync(user);
@@ -80,7 +80,7 @@ namespace TicketSaleCore.Features.Accounts
         {
             // get user
             AppUser user = await userManager.FindByIdAsync(userId);
-            if (user != null)
+            if(user != null)
             {
                 // get usrer roles
                 var userRoles = await userManager.GetRolesAsync(user);
