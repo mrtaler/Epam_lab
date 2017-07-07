@@ -5,7 +5,6 @@ using TicketSaleCore.Features.Tickets.Tickets.ViewModels;
 using TicketSaleCore.Models.BLL.Infrastructure;
 using TicketSaleCore.Models.BLL.Services;
 using TicketSaleCore.Models.Entities;
-using static TicketSaleCore.Models.BLL.Infrastructure.TicketStatusEnum;
 
 namespace TicketSaleCore.Models.BLL.Interfaces
 {

@@ -1,4 +1,4 @@
-﻿namespace TicketSaleCore.Models.Entities
+﻿namespace Entities
 {
     public class Ticket
     {

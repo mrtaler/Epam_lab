@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace TicketSaleCore.Models.Entities
+namespace Entities
 {
     public class EventsType
     {
