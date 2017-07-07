@@ -1,8 +1,9 @@
 ﻿using System;
-using Entities;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using TicketSaleCore.Models.Entities;
 
-namespace RepositoryInterfaces
+namespace TicketSaleCore.Models.DAL.IRepository
 {
     public interface IUnitOfWork: IDisposable
     {

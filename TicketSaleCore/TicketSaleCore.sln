@@ -1,13 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26430.15
+VisualStudioVersion = 15.0.26403.7
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TicketSaleCore", "TicketSaleCore\TicketSaleCore.csproj", "{DB1EE85A-012F-49E5-AD3D-1D2E120BF7B9}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Domain", "Domain", "{1F41415A-85BE-438B-BA7E-717756E80305}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DAL", "Entities\DAL.csproj", "{89EA3B97-8C81-41CB-8A54-1B6F86546F94}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TicketSaleCore", "TicketSaleCore\TicketSaleCore.csproj", "{DB1EE85A-012F-49E5-AD3D-1D2E120BF7B9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -19,15 +15,8 @@ Global
 		{DB1EE85A-012F-49E5-AD3D-1D2E120BF7B9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DB1EE85A-012F-49E5-AD3D-1D2E120BF7B9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DB1EE85A-012F-49E5-AD3D-1D2E120BF7B9}.Release|Any CPU.Build.0 = Release|Any CPU
-		{89EA3B97-8C81-41CB-8A54-1B6F86546F94}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{89EA3B97-8C81-41CB-8A54-1B6F86546F94}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{89EA3B97-8C81-41CB-8A54-1B6F86546F94}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{89EA3B97-8C81-41CB-8A54-1B6F86546F94}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(NestedProjects) = preSolution
-		{89EA3B97-8C81-41CB-8A54-1B6F86546F94} = {1F41415A-85BE-438B-BA7E-717756E80305}
 	EndGlobalSection
 EndGlobal

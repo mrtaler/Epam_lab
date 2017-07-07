@@ -5,12 +5,13 @@ using System.Threading.Tasks;
 
 namespace TicketSaleCore.Models.BLL.Infrastructure
 {
-
-    public enum TicketStatus
+    public static class TicketStatusEnum
     {
-        SellingTickets,
-        WaitingConfomition,
-        Sold
+        public enum TicketStatus
+        {
+            SellingTickets,
+            WaitingConfomition,
+            Sold
+        }
     }
-
 }

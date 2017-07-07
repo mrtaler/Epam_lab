@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using TicketSaleCore.Features.Tickets.Tickets.ViewModels;
 using TicketSaleCore.Models.BLL.Interfaces;
+using TicketSaleCore.Models.DAL.IRepository;
+using TicketSaleCore.Models.Entities;
 using System;
-using TicketSaleCore.Models.BLL.Infrastructure;
+using static TicketSaleCore.Models.BLL.Infrastructure.TicketStatusEnum;
 
 namespace TicketSaleCore.Models.BLL.Services
 {

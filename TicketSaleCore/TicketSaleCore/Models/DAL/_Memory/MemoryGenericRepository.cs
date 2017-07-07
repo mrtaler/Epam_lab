@@ -5,14 +5,14 @@ using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 
-namespace DAL._Memory
+namespace TicketSaleCore.Models.DAL._Memory
 {/// <summary>
 /// Memory repository based on DbSet
 /// </summary>
 /// <typeparam name="T">Class</typeparam>
     public class MemoryGenericRepository<T> : DbSet<T>, IEnumerable<T> where T : class 
     {
-        private readonly List<T> list = new List<T>();
+        private List<T> list = new List<T>();
        /// <summary>
        /// Get all entities
        /// </summary>

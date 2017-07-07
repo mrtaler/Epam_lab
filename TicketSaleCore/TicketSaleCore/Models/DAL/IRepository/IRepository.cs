@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq.Expressions;
 
-namespace Repository.Interfaces
+namespace TicketSaleCore.Models.DAL.IRepository
 {
     public interface IRepository<T> where T : class
     {
