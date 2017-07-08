@@ -59,7 +59,7 @@
     <DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="1.0.0" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Features\Cities\ViewModels\" />
+    <Folder Include="Features\Accounts\AdminArea\ViewModels\" />
     <Folder Include="Features\Events\ViewModels\" />
     <Folder Include="Features\Home\ViewModels\" />
     <Folder Include="Features\Orders\ViewModels\" />
