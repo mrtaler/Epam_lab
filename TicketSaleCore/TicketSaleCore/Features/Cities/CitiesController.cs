@@ -122,5 +122,14 @@ namespace TicketSaleCore.Features.Cities
             return View(model);
         }
         #endregion
+
+        #region delete  [Authorize(Roles = "admin")]
+        [Authorize(Roles = "admin")]
+        [HttpGet]
+        public async Task<IActionResult> Delete(int id)
+        {
+            return View(context.Get(id));
+        }
+        #endregion
     }
 }
