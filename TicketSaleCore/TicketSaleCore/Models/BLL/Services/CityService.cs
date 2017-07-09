@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using TicketSaleCore.Models.BLL.Infrastructure;
 using System.Linq;
 using TicketSaleCore.Models.BLL.Interfaces;
 using TicketSaleCore.Models.DAL.IRepository;
 using TicketSaleCore.Models.Entities;
+
 
 namespace TicketSaleCore.Models.BLL.Services
 {
@@ -37,7 +39,16 @@ namespace TicketSaleCore.Models.BLL.Services
         }
         public City Add(City entity)
         {
-            throw new NotImplementedException();
+            if (!Context.Citys.Any(e => e.Name == entity.Name))
+            {
+                Context.Citys.Add(entity);
+                Context.SaveChanges();
+            }
+            else
+            {
+                throw new ValidationException($"This City {entity.Name} is alredy exist", "");
+            }
+            return entity;
         }
         public City Update(City entity)
         {
@@ -49,7 +60,7 @@ namespace TicketSaleCore.Models.BLL.Services
 
         public bool IsExists(int id)
         {
-            return   Context.Citys.Any(e => e.Id == id);
+            return Context.Citys.Any(e => e.Id == id);
         }
     }
 }

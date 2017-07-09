@@ -7,6 +7,8 @@ using TicketSaleCore.Models.BLL.Interfaces;
 using TicketSaleCore.Models.DAL.IRepository;
 using TicketSaleCore.Models.Entities;
 using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations;
+using System;
 
 namespace TicketSaleCore.Features.Cities
 {
@@ -30,24 +32,25 @@ namespace TicketSaleCore.Features.Cities
         [AllowAnonymous]
         public async Task<IActionResult> Details(int? id)
         {
-            if(id == null)
+            if (id == null)
             {
                 return NotFound();
             }
 
             var city = context.Get(id);
-            if(city == null)
+            if (city == null)
             {
                 return NotFound();
             }
             return View(city);
         }
+
         #region Edit [Authorize(Roles = "admin")]
         [Authorize(Roles = "admin")]
         [HttpGet]
         public async Task<IActionResult> Edit(int id)
         {
-            if(id == null)
+            if (id == null)
             {
                 return NotFound();
             }
@@ -55,7 +58,7 @@ namespace TicketSaleCore.Features.Cities
             Mapper.Initialize(cfg => cfg.CreateMap<City, CityEditCreateViewModel>());
             var qery = Mapper.Map<City, CityEditCreateViewModel>(context.Get(id));
 
-            if(qery == null)
+            if (qery == null)
             {
                 return NotFound();
             }
@@ -66,16 +69,16 @@ namespace TicketSaleCore.Features.Cities
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(CityEditCreateViewModel model)
         {
-            if(ModelState.IsValid)
+            if (ModelState.IsValid)
             {
                 try
                 {
                     Mapper.Initialize(cfg => cfg.CreateMap<CityEditCreateViewModel, City>());
                     context.Update(Mapper.Map<CityEditCreateViewModel, City>(model));
                 }
-                catch(DbUpdateConcurrencyException)
+                catch (DbUpdateConcurrencyException)
                 {
-                    if(!context.IsExists(model.Id))
+                    if (!context.IsExists(model.Id))
                     {
                         return NotFound();
                     }
@@ -89,6 +92,7 @@ namespace TicketSaleCore.Features.Cities
             return View(model);
         }
         #endregion
+
         #region Create  [Authorize(Roles = "admin")]
         [Authorize(Roles = "admin")]
         [HttpGet]
@@ -98,12 +102,22 @@ namespace TicketSaleCore.Features.Cities
         }
         public async Task<IActionResult> Create(CityEditCreateViewModel model)
         {
-            if(ModelState.IsValid)
+            if (ModelState.IsValid)
             {
-                Mapper.Initialize(cfg => cfg.CreateMap<CityEditCreateViewModel, City>());
-                context.Add(Mapper.Map<CityEditCreateViewModel, City>(model));
+                try
+                {
+                    Mapper.Initialize(cfg => cfg.CreateMap<CityEditCreateViewModel, City>());
+                    context.Add(Mapper.Map<CityEditCreateViewModel, City>(model));
 
-                return RedirectToAction("Index");
+                    return RedirectToAction("Index");
+                }
+                catch (Exception er)
+                {
+
+                    ModelState.AddModelError("Data exist", er.Message);
+                    return View(model);
+                }
+
             }
             return View(model);
         }
