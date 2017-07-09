@@ -58,5 +58,9 @@ namespace TicketSaleCore.Models.BLL.Services
             throw new NotImplementedException();
         }
 
+        public bool IsExists(int id)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

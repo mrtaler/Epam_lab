@@ -24,6 +24,11 @@ namespace TicketSaleCore.Models.BLL.Infrastructure
         /// </summary>
         /// <returns></returns>
         IEnumerable<T> GetAll();
-
+        /// <summary>
+        /// check on exist in db
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        bool IsExists(int id);
     }
 }

@@ -11,7 +11,7 @@ namespace TicketSaleCore.Models.BLL.Services
     {
         private IUnitOfWork Context
         {
-            get; 
+            get;
         }
         public CityService(IUnitOfWork context)
         {
@@ -20,15 +20,15 @@ namespace TicketSaleCore.Models.BLL.Services
 
         public void Dispose()
         {
-           Context.Dispose();
+            Context.Dispose();
         }
         public IEnumerable<City> GetAll()
         {
-          return (Context.Citys);
+            return (Context.Citys);
         }
         public City Get(int? id)
         {
-          return Context.Citys.SingleOrDefault(m => m.Id == id);
+            return Context.Citys.SingleOrDefault(m => m.Id == id);
         }
 
         public bool Delete(City entity)
@@ -41,7 +41,15 @@ namespace TicketSaleCore.Models.BLL.Services
         }
         public City Update(City entity)
         {
-            throw new NotImplementedException();
+            var updateEentitty = this.Get(entity.Id);
+            updateEentitty.Name = entity.Name;
+            Context.SaveChanges();
+            return entity;
+        }
+
+        public bool IsExists(int id)
+        {
+            return   Context.Citys.Any(e => e.Id == id);
         }
     }
 }

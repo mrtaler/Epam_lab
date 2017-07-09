@@ -102,7 +102,7 @@ namespace TicketSaleCore.Models.BLL.Services
                .SingleOrDefault(m => m.Id == ticketId);
             return ticket;
         }
-        public bool TicketExists(int id)
+        public bool IsExists(int id)
         {
             return context.Tickets.Any(e => e.Id == id);
         }

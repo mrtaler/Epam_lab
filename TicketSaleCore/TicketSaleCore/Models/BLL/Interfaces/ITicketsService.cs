@@ -22,7 +22,7 @@ namespace TicketSaleCore.Models.BLL.Interfaces
         /// </summary>
         /// <param name="id">ticket id</param>
         /// <returns></returns>
-        bool TicketExists(int id);
+        bool IsExists(int id);
 
         /// <summary>
         /// Get all User Ticket
