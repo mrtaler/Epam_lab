@@ -35,7 +35,21 @@ namespace TicketSaleCore.Models.BLL.Services
 
         public bool Delete(City entity)
         {
-            throw new NotImplementedException();
+            if (Context.Citys.Any(e => e.Name == entity.Name))
+            {
+                var ci = Context.Citys.Remove(entity);
+                Context.SaveChanges();
+                if (ci != null)
+                {
+                    return true;
+                }
+            }
+            else
+            {
+                throw new BllValidationException($"This City {entity.Name} cannot delete form DB", "");
+            }
+
+            return false;
         }
         public City Add(City entity)
         {
@@ -46,7 +60,7 @@ namespace TicketSaleCore.Models.BLL.Services
             }
             else
             {
-                throw new ValidationException($"This City {entity.Name} is alredy exist", "");
+                throw new BllValidationException($"This City {entity.Name} is alredy exist", "");
             }
             return entity;
         }

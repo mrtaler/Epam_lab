@@ -9,6 +9,7 @@ using TicketSaleCore.Models.Entities;
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 using System;
+using BllValidationException = TicketSaleCore.Models.BLL.Infrastructure.BllValidationException;
 
 namespace TicketSaleCore.Features.Cities
 {
@@ -111,13 +112,11 @@ namespace TicketSaleCore.Features.Cities
 
                     return RedirectToAction("Index");
                 }
-                catch (Exception er)
+                catch (BllValidationException er)
                 {
-
                     ModelState.AddModelError("Data exist", er.Message);
                     return View(model);
                 }
-
             }
             return View(model);
         }
@@ -126,9 +125,39 @@ namespace TicketSaleCore.Features.Cities
         #region delete  [Authorize(Roles = "admin")]
         [Authorize(Roles = "admin")]
         [HttpGet]
-        public async Task<IActionResult> Delete(int id)
+        public async Task<IActionResult> Delete(int? id)
         {
-            return View(context.Get(id));
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var cityDelete = context.Get(id);
+
+            if (cityDelete == null)
+            {
+                return NotFound();
+            }
+
+            return View(cityDelete);
+        }
+
+        [Authorize(Roles = "admin")]
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirm(int? id)
+        {
+            try
+            {
+                context.Delete(context.Get(id));
+                return RedirectToAction("Index");
+            }
+            catch (BllValidationException er)
+            {
+                ModelState.AddModelError("Data exist", er.Message);
+                return View(id);
+            }
+          
         }
         #endregion
     }

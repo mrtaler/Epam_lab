@@ -5,13 +5,13 @@ using System.Threading.Tasks;
 
 namespace TicketSaleCore.Models.BLL.Infrastructure
 {
-    public class ValidationException : Exception
+    public class BllValidationException : Exception
     {
         public string Property
         {
             get; protected set;
         }
-        public ValidationException(string message, string prop) : base(message)
+        public BllValidationException(string message, string prop) : base(message)
         {
             Property = prop;
         }

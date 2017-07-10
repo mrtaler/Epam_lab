@@ -20,10 +20,10 @@ namespace TicketSaleCore.Models.BLL.Services
         public Event Get(int? id)
         {
             if(id == null)
-                throw new ValidationException("Not specified id", "");
+                throw new BllValidationException("Not specified id", "");
             var _event = context.Events.Find(id.Value);
             if(_event == null)
-                throw new ValidationException("eventType not found", "");
+                throw new BllValidationException("eventType not found", "");
             return _event;
         }
         public IEnumerable<Event> GetAll()
