@@ -118,18 +118,18 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Create New" xml:space="preserve">
-    <value>Create New(ru)</value>
+    <value>Создать новую запись</value>
   </data>
   <data name="Delete" xml:space="preserve">
-    <value>Delete(ru)</value>
+    <value>Удалить</value>
   </data>
   <data name="Details" xml:space="preserve">
-    <value>Details(ru)</value>
+    <value>Детали</value>
   </data>
   <data name="Edit" xml:space="preserve">
-    <value>Edit(ru)</value>
+    <value>Редактировать</value>
   </data>
   <data name="Index" xml:space="preserve">
-    <value>Index(ru)</value>
+    <value>Каталог</value>
   </data>
 </root>
