@@ -2,25 +2,25 @@
 @using Microsoft.AspNetCore.Mvc.Localization
 @inject IViewLocalizer Localizer
 @{
-    ViewData["Title"] = "Create new City";
+    ViewData["Title"] = Localizer["Create new City"];
 }
 
-<h2>Create</h2>
+<h2>@Localizer["Create"]</h2>
 
 <form class="ui form"
       asp-controller="Cities"
       asp-action="Create" method="post">
     <div class="field">
         <label asp-for="Name"></label>
-        <input asp-for="Name" type="text" name="Name" placeholder="City name" />
+        <input asp-for="Name" type="text" name="Name" placeholder="@Localizer["City name"]" />
     </div>
   
-    <div class="ui blue submit button">Create</div>
+    <div class="ui blue submit button">@Localizer["Create"]</div>
     
 </form>
 @Html.ModelStateValidMsge(ViewData.ModelState, Localizer)
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index">@Localizer["Back to List"]</a>
 </div>
 
 <script type="text/javascript">
@@ -34,7 +34,7 @@
                     rules: [
                         {
                             type: 'empty',
-                            prompt: 'Please enter City name'
+                            prompt: '@Localizer["Please enter City name"]'
                         }
                     ]
                 }

@@ -22,9 +22,7 @@ namespace TicketSaleCore.Features.Cities
         {
             this.context = context;
         }
-
-        [AllowAnonymous]
-        // GET: Cities
+        
         public async Task<IActionResult> Index()
         {
             return View(context.GetAll());
@@ -49,7 +47,7 @@ namespace TicketSaleCore.Features.Cities
         #region Edit [Authorize(Roles = "admin")]
         [Authorize(Roles = "admin")]
         [HttpGet]
-        public async Task<IActionResult> Edit(int id)
+        public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
             {
@@ -101,6 +99,9 @@ namespace TicketSaleCore.Features.Cities
         {
             return View();
         }
+        [Authorize(Roles = "admin")]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(CityEditCreateViewModel model)
         {
             if (ModelState.IsValid)
@@ -150,12 +151,13 @@ namespace TicketSaleCore.Features.Cities
             try
             {
                 context.Delete(context.Get(id));
+             
                 return RedirectToAction("Index");
             }
             catch (BllValidationException er)
             {
-                ModelState.AddModelError("Data exist", er.Message);
-                return View(id);
+                ModelState.AddModelError(er.Property, er.Message);
+                return View(context.Get(id));
             }
           
         }
