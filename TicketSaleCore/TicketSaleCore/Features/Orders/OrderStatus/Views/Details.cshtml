@@ -1,0 +1,19 @@
+@model TicketSaleCore.Models.Entities.OrderStatus
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+@{
+    ViewData["Title"] = Localizer["Details"];
+}
+
+<h2>@Localizer["Details"]</h2>
+
+<div class="content">
+    <h2>
+        @Localizer["Name"] : @Html.DisplayFor(model => model.StatusName)
+    </h2>
+</div>
+
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.Id">@Localizer["Edit"]</a> |
+    <a asp-action="Index">@Localizer["Back to List"]</a>
+</div>

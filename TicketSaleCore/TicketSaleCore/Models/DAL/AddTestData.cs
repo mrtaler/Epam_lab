@@ -9,10 +9,12 @@ using TicketSaleCore.Models.DAL.IRepository;
 using TicketSaleCore.Models.Entities;
 using System.Security.Claims;
 using TicketSaleCore.AuthorizationPolit.ResourceBased;
+using TicketSaleCore.Models.BLL.Interfaces;
+using TicketSaleCore.Models.BLL.Infrastructure;
 
 namespace TicketSaleCore.Models.DAL
 {
-    
+
     public static class DbInit
     {
         /// <summary>
@@ -20,58 +22,152 @@ namespace TicketSaleCore.Models.DAL
         /// </summary>
         /// <param name="context">set you IUnitOfWork context</param>
         /// <returns></returns>
-        public static async Task AddTestData(IUnitOfWork context)
+        public static async Task AddTestData(IUnitOfWork context,
+            ICityService cityService, 
+            IEventTypeService eventTypeService,
+                IOrderStatusService orderStatusService)
         {
-            
+
 
             #region EventsType
 
-            var eventCinema = new EventsType
+            var eventCinema = new EventsType { NameEventsType = "Cinema" };
+            if (eventTypeService.IsExists(eventCinema.NameEventsType))
             {
-                NameEventsType = "Cinema"
-            };
-            var eventTheater = new EventsType
+                eventCinema = eventTypeService.Get(eventCinema.NameEventsType);
+            }
+            else
             {
-                NameEventsType = "Theater"
-            };
-            var eventSport = new EventsType
+                try { eventTypeService.Add(eventCinema); }
+                catch (BllValidationException) { }
+            }
+            
+            var eventTheater = new EventsType{NameEventsType = "Theater"};
+            if (eventTypeService.IsExists(eventTheater.NameEventsType))
             {
-                NameEventsType = "Sport"
-            };
+                eventTheater = eventTypeService.Get(eventTheater.NameEventsType);
+            }
+            else
+            {
+                try { eventTypeService.Add(eventTheater); }
+                catch (BllValidationException) { }
+            }
 
-            context.EventsTypes.Add(eventCinema);
-            context.EventsTypes.Add(eventTheater);
-            context.EventsTypes.Add(eventSport);
+            var eventSport = new EventsType{NameEventsType = "Sport"};
+            if (eventTypeService.IsExists(eventSport.NameEventsType))
+            {
+                eventSport = eventTypeService.Get(eventSport.NameEventsType);
+            }
+            else
+            {
+                try { eventTypeService.Add(eventSport); }
+                catch (BllValidationException) { }
+            }
 
             #endregion
 
             #region City Table Init
 
             var cityMinsk = new City { Name = "Minsk" };
+            if (cityService.IsExists(cityMinsk.Name))
+            {
+                cityMinsk = cityService.Get(cityMinsk.Name);
+            }
+            else
+            {
+                try { cityService.Add(cityMinsk); }
+                catch (BllValidationException) { }
+            }
+
             var cityGomel = new City { Name = "Gomel" };
+            if (cityService.IsExists(cityGomel.Name))
+            {
+                cityGomel = cityService.Get(cityGomel.Name);
+            }
+            else
+            {
+                try { cityService.Add(cityGomel); }
+                catch (BllValidationException) { }
+            }
+
             var cityGrodno = new City { Name = "Grodno" };
+            if (cityService.IsExists(cityGrodno.Name))
+            {
+                cityGrodno = cityService.Get(cityGrodno.Name);
+            }
+            else
+            {
+                try { cityService.Add(cityGrodno); }
+                catch (BllValidationException) { }
+            }
+
             var cityVitebsk = new City { Name = "Vitebsk" };
+            if (cityService.IsExists(cityVitebsk.Name))
+            {
+                cityVitebsk = cityService.Get(cityVitebsk.Name);
+            }
+            else
+            {
+                try { cityService.Add(cityVitebsk); }
+                catch (BllValidationException) { }
+            }
+
             var cityBrest = new City { Name = "Brest" };
+            if (cityService.IsExists(cityBrest.Name))
+            {
+                cityBrest = cityService.Get(cityBrest.Name);
+            }
+            else
+            {
+                try { cityService.Add(cityBrest); }
+                catch (BllValidationException) { }
+            }
+
             var cityMogilev = new City { Name = "Mogilev" };
-
-            context.Citys.Add(cityMinsk);
-            context.Citys.Add(cityGomel);
-            context.Citys.Add(cityGrodno);
-            context.Citys.Add(cityVitebsk);
-            context.Citys.Add(cityBrest);
-            context.Citys.Add(cityMogilev);
-
+            if (cityService.IsExists(cityMogilev.Name))
+            {
+                cityMogilev = cityService.Get(cityMogilev.Name);
+            }
+            else
+            {
+                try { cityService.Add(cityMogilev); }
+                catch (BllValidationException) { }
+            }
+            
             #endregion
 
             #region Order Status Table Init
 
             var statusWaiting = new OrderStatus { StatusName = "Waiting for conformation" };
+            if (orderStatusService.IsExists(statusWaiting.StatusName))
+            {
+                statusWaiting = orderStatusService.Get(statusWaiting.StatusName);
+            }
+            else
+            {
+                try { orderStatusService.Add(statusWaiting); }
+                catch (BllValidationException) { }
+            }
             var statusConfirmed = new OrderStatus { StatusName = "Confirmed" };
+            if (orderStatusService.IsExists(statusConfirmed.StatusName))
+            {
+                statusConfirmed = orderStatusService.Get(statusConfirmed.StatusName);
+            }
+            else
+            {
+                try { orderStatusService.Add(statusConfirmed); }
+                catch (BllValidationException) { }
+            }
             var statusRejected = new OrderStatus { StatusName = "Rejected" };
-
-            context.OrderStatuses.Add(statusWaiting);
-            context.OrderStatuses.Add(statusConfirmed);
-            context.OrderStatuses.Add(statusRejected);
+            if (orderStatusService.IsExists(statusRejected.StatusName))
+            {
+                statusRejected = orderStatusService.Get(statusRejected.StatusName);
+            }
+            else
+            {
+                try { orderStatusService.Add(statusRejected); }
+                catch (BllValidationException) { }
+            }
 
             #endregion
 
@@ -1493,29 +1589,29 @@ namespace TicketSaleCore.Models.DAL
 
             string adminEmail = "Admin";
             string password = "Admin";
-            if(await roleManager.FindByNameAsync("admin") == null)
+            if (await roleManager.FindByNameAsync("admin") == null)
             {
                 await roleManager.CreateAsync(new IdentityRole("admin"));
             }
-            if(await roleManager.FindByNameAsync("user") == null)
+            if (await roleManager.FindByNameAsync("user") == null)
             {
                 await roleManager.CreateAsync(new IdentityRole("user"));
             }
 
-        
+
 
             var create = new Claim(Operations.ClaimTypeForDbWork, Operations.Create.Name);
             var read = new Claim(Operations.ClaimTypeForDbWork, Operations.Read.Name);
             var update = new Claim(Operations.ClaimTypeForDbWork, Operations.Update.Name);
             var delete = new Claim(Operations.ClaimTypeForDbWork, Operations.Delete.Name);
 
-         
 
-            if(await userManager.FindByNameAsync(adminEmail) == null)
+
+            if (await userManager.FindByNameAsync(adminEmail) == null)
             {
                 AppUser admin = new AppUser { Email = adminEmail, UserName = adminEmail, EmailConfirmed = true };
                 IdentityResult result = await userManager.CreateAsync(admin, password);
-                if(result.Succeeded)
+                if (result.Succeeded)
                 {
                     await userManager.AddToRoleAsync(admin, "admin");
 
@@ -1563,10 +1659,10 @@ namespace TicketSaleCore.Models.DAL
 
                 var userManagerAcces = new Claim("UserManagerAcces", Operations.Read.Name);
 
-                foreach(var item in users)
+                foreach (var item in users)
                 {
                     IdentityResult result1 = await userManager.CreateAsync(item, item.Email);
-                    if(result1.Succeeded)
+                    if (result1.Succeeded)
                     {
                         await userManager.AddClaimAsync(item, create);
                         await userManager.AddClaimAsync(item, read);

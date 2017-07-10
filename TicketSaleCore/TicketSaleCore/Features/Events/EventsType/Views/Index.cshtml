@@ -1,0 +1,35 @@
+@model IEnumerable<TicketSaleCore.Models.Entities.EventsType>
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+
+@{
+    ViewData["Title"] = Localizer["Index"];
+}
+
+<p>
+    <a asp-action="Create">@Localizer["Create New"]</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th display-for="NameEventsType">
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.NameEventsType)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

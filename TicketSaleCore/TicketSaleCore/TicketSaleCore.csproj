@@ -60,10 +60,9 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Features\Accounts\AdminArea\ViewModels\" />
-    <Folder Include="Features\Events\ViewModels\" />
+    <Folder Include="Features\Events\Events\ViewModels\" />
     <Folder Include="Features\Home\ViewModels\" />
-    <Folder Include="Features\Orders\ViewModels\" />
-    <Folder Include="Features\Status\ViewModels\" />
+    <Folder Include="Features\Orders\Orders\ViewModels\" />
     <Folder Include="Features\Accounts\Users\ViewModels\" />
     <Folder Include="Features\Tickets\UserTickets\ViewModels\" />
     <Folder Include="Features\Venues\ViewModels\" />
@@ -86,6 +85,21 @@
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </Content>
     <Content Update="Features\Accounts\Account\Views\Register.cshtml">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="Features\Events\Events\Views\Create.cshtml">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="Features\Events\Events\Views\Delete.cshtml">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="Features\Events\Events\Views\Details.cshtml">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="Features\Events\Events\Views\Edit.cshtml">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="Features\Events\Events\Views\Index.cshtml">
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </Content>
   </ItemGroup>

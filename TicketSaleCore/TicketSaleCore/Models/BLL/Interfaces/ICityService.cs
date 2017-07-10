@@ -9,6 +9,7 @@ namespace TicketSaleCore.Models.BLL.Interfaces
     /// </summary>
     public interface ICityService : IBllService<City>
     {
-
+        bool IsExists(string name);
+        City Get(string name);
     }
 }

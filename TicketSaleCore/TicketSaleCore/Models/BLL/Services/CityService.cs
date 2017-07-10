@@ -30,7 +30,8 @@ namespace TicketSaleCore.Models.BLL.Services
         /// <returns>Cities with include Venues</returns>
         public IEnumerable<City> GetAll()
         {
-            return (Context.Citys.Include(p => p.Venues));
+            return (Context.Citys
+                .Include(p => p.Venues));
         }
         /// <summary>
         /// Get City by Id
@@ -39,7 +40,20 @@ namespace TicketSaleCore.Models.BLL.Services
         /// <returns>City with include Venues</returns>
         public City Get(int? id)
         {
-            return Context.Citys.Include(p => p.Venues).SingleOrDefault(m => m.Id == id);
+            return Context.Citys
+                .Include(p => p.Venues)
+                .SingleOrDefault(m => m.Id == id);
+        }
+        /// <summary>
+        /// Get City by Id
+        /// </summary>
+        /// <param name="id">Uniqe identifier</param>
+        /// <returns>City with include Venues</returns>
+        public City Get(string name)
+        {
+            return Context.Citys
+                .Include(p => p.Venues)
+                .SingleOrDefault(m => m.Name == name);
         }
         /// <summary>
         /// Delete City from db (not cascade)
@@ -82,7 +96,7 @@ namespace TicketSaleCore.Models.BLL.Services
         /// <returns></returns>
         public City Add(City entity)
         {
-            if (!IsExists(entity.Id))
+            if (!IsExists(entity.Name))
             {
                 Context.Citys.Add(entity);
                 Context.SaveChanges();
@@ -121,6 +135,11 @@ namespace TicketSaleCore.Models.BLL.Services
         public bool IsExists(int id)
         {
             return Context.Citys.Any(e => e.Id == id);
+        }
+
+        public bool IsExists(string name)
+        {
+            return Context.Citys.Any(e => e.Name == name);
         }
     }
 }

@@ -120,6 +120,7 @@ namespace TicketSaleCore
             #region BLL Services
             services.AddTransient<ICityService, CityService>();
             services.AddTransient<IEventService, EventService>();
+            services.AddTransient<IEventTypeService, EventTypeService>();
             services.AddTransient<IOrdersService, OrdersService>();
             services.AddTransient<IOrderStatusService, OrderStatusService>();
             services.AddTransient<ITicketsService, TicketsService>();
@@ -136,7 +137,10 @@ namespace TicketSaleCore
         public void Configure(IApplicationBuilder app,
                 IHostingEnvironment env,
                 ILoggerFactory loggerFactory,
-                IUnitOfWork applicationContext)
+                IUnitOfWork applicationContext
+            ,ICityService cityService
+            ,IEventTypeService eventTypeService
+            ,IOrderStatusService orderStatusService)
         {
             //Logger settings
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
@@ -186,11 +190,11 @@ namespace TicketSaleCore
             using(var serviceScope = app.ApplicationServices.GetService<IServiceScopeFactory>().CreateScope())
             {
               var context = serviceScope.ServiceProvider.GetRequiredService<ApplicationContext>();
-              context.Database.ExecuteSqlCommand($"DELETE FROM dbo.Citys;" +
+              context.Database.ExecuteSqlCommand(//$"DELETE FROM dbo.Citys;" +
                                                  $"DELETE FROM dbo.Events;" +
-                                                 $"DELETE FROM dbo.EventsTypes;" +
+                                                // $"DELETE FROM dbo.EventsTypes;" +
                                                  $"DELETE FROM dbo.Orders;" +
-                                                 $"DELETE FROM dbo.OrderStatuses;" +
+                                                // $"DELETE FROM dbo.OrderStatuses;" +
                                                  $"DELETE FROM dbo.Tickets;" +
                                                  $"DELETE FROM dbo.Venues;"
                                                  );
@@ -203,8 +207,7 @@ namespace TicketSaleCore
             DbInit.UserInit(app.ApplicationServices).Wait();
             //Db content init
 
-        
- DbInit.AddTestData(applicationContext).Wait();
+            DbInit.AddTestData(applicationContext, cityService, eventTypeService, orderStatusService).Wait();
             
             #endregion
         }

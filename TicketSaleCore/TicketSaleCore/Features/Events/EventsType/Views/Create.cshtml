@@ -1,5 +1,7 @@
-@model TicketSaleCore.Features.Cities.ViewModels.CityEditCreateViewModel
+@model TicketSaleCore.Features.Events.EventsType.ViewModels.EventsTypeEditCreateViewModel
 @using Microsoft.AspNetCore.Mvc.Localization
+@using TicketSaleCore.Features.Events.EventsType.ViewModels
+@using TicketSaleCore.Features.Orders.OrderStatus.ViewModels
 @inject IViewLocalizer Localizer
 @{
     ViewData["Title"] = Localizer["Create new City"];
@@ -10,8 +12,8 @@
 <form class="ui form"
       asp-action="Create" method="post">
     <div class="field">
-        <label asp-for="Name"></label>
-        <input asp-for="Name" type="text" name="Name" placeholder="@Localizer["City name"]" />
+        <label asp-for="NameEventsType"></label>
+        <input asp-for="NameEventsType" type="text" name="Name" placeholder="@Localizer["name"]" />
     </div>
   
     <div class="ui blue submit button">@Localizer["Create"]</div>
@@ -33,7 +35,7 @@
                     rules: [
                         {
                             type: 'empty',
-                            prompt: '@Localizer["Please enter City name"]'
+                            prompt: '@Localizer["Please enter name"]'
                         }
                     ]
                 }
