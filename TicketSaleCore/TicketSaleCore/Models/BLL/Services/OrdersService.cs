@@ -62,5 +62,15 @@ namespace TicketSaleCore.Models.BLL.Services
         {
             throw new NotImplementedException();
         }
+
+        public Order Get(string name)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool IsExists(string name)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

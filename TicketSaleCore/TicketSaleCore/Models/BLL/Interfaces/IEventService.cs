@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using TicketSaleCore.Models.BLL.DTO;
+﻿using System.Collections.Generic;
 using TicketSaleCore.Models.BLL.Infrastructure;
 using TicketSaleCore.Models.Entities;
 

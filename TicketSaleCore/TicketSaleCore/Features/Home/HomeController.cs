@@ -16,6 +16,7 @@ namespace TicketSaleCore.Features.Home
         private readonly IEventService eventService;
         public HomeController(
             IEventService eventService
+
             )
         {
             this.eventService = eventService;

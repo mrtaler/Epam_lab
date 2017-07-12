@@ -140,7 +140,10 @@ namespace TicketSaleCore
                 IUnitOfWork applicationContext
             ,ICityService cityService
             ,IEventTypeService eventTypeService
-            ,IOrderStatusService orderStatusService)
+            ,IOrderStatusService orderStatusService
+            , IEventService eventService,
+            IVenuesService venuesService,
+            ITicketsService ticketsService)
         {
             //Logger settings
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
@@ -191,12 +194,14 @@ namespace TicketSaleCore
             {
               var context = serviceScope.ServiceProvider.GetRequiredService<ApplicationContext>();
               context.Database.ExecuteSqlCommand(//$"DELETE FROM dbo.Citys;" +
-                                                 $"DELETE FROM dbo.Events;" +
-                                                // $"DELETE FROM dbo.EventsTypes;" +
-                                                 $"DELETE FROM dbo.Orders;" +
-                                                // $"DELETE FROM dbo.OrderStatuses;" +
-                                                 $"DELETE FROM dbo.Tickets;" +
-                                                 $"DELETE FROM dbo.Venues;"
+              //                                 //  $"DELETE FROM dbo.Events;" +
+              //                                  // $"DELETE FROM dbo.EventsTypes;" +
+                                         
+              //                                  // $"DELETE FROM dbo.OrderStatuses;" +
+            $"DELETE FROM dbo.Tickets;" +
+            $"DELETE FROM dbo.Orders;" +
+              //                                // $"DELETE FROM dbo.Venues;"
+                                                $"" 
                                                  );
             //    context.Database.EnsureCreated();
             //    //    .Migrate();
@@ -207,7 +212,9 @@ namespace TicketSaleCore
             DbInit.UserInit(app.ApplicationServices).Wait();
             //Db content init
 
-            DbInit.AddTestData(applicationContext, cityService, eventTypeService, orderStatusService).Wait();
+            DbInit.AddTestData(applicationContext, cityService,
+                eventTypeService, orderStatusService,
+                eventService, venuesService, ticketsService).Wait();
             
             #endregion
         }

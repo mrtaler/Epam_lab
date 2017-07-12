@@ -1,11 +1,12 @@
 ﻿using System;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Internal;
 using TicketSaleCore.Models.Entities;
 
 namespace TicketSaleCore.Models.DAL.IRepository
 {
-    public interface IUnitOfWork: IDisposable
+    public interface IUnitOfWork: IDisposable,ICurrentDbContext
     {
         DbSet<City> Citys
         {

@@ -23,9 +23,13 @@ namespace TicketSaleCore.Models.DAL
         /// <param name="context">set you IUnitOfWork context</param>
         /// <returns></returns>
         public static async Task AddTestData(IUnitOfWork context,
-            ICityService cityService, 
+            ICityService cityService,
             IEventTypeService eventTypeService,
-                IOrderStatusService orderStatusService)
+            IOrderStatusService orderStatusService,
+            IEventService eventService,
+            IVenuesService venuesService,
+            ITicketsService ticketsService
+            )
         {
 
 
@@ -41,8 +45,8 @@ namespace TicketSaleCore.Models.DAL
                 try { eventTypeService.Add(eventCinema); }
                 catch (BllValidationException) { }
             }
-            
-            var eventTheater = new EventsType{NameEventsType = "Theater"};
+
+            var eventTheater = new EventsType { NameEventsType = "Theater" };
             if (eventTypeService.IsExists(eventTheater.NameEventsType))
             {
                 eventTheater = eventTypeService.Get(eventTheater.NameEventsType);
@@ -53,7 +57,7 @@ namespace TicketSaleCore.Models.DAL
                 catch (BllValidationException) { }
             }
 
-            var eventSport = new EventsType{NameEventsType = "Sport"};
+            var eventSport = new EventsType { NameEventsType = "Sport" };
             if (eventTypeService.IsExists(eventSport.NameEventsType))
             {
                 eventSport = eventTypeService.Get(eventSport.NameEventsType);
@@ -133,7 +137,7 @@ namespace TicketSaleCore.Models.DAL
                 try { cityService.Add(cityMogilev); }
                 catch (BllValidationException) { }
             }
-            
+
             #endregion
 
             #region Order Status Table Init
@@ -177,264 +181,315 @@ namespace TicketSaleCore.Models.DAL
 
             #region CinemaEvent
 
-            //minsk
+            #region Venues
 
-            var cinemaEventMinsk1 = new Event
+
+            var venuesCreate = new List<Venue>
             {
-                Name = "cinemaEventMinskMoscow",
-                EventsType = eventCinema,
-                Date = DateTime.Now.AddDays(eventRandomDays.NextDouble() + eventRandomDays.Next(15)),
-                Banner = "/images/EventImg/0cb43207294335ec2b6274a39a54aa72.jpg",
-                Description = "this is test description for first cinema event in minsk moscow cinema",
-                Venue = new Venue
+              new Venue
+              {
+                  Name = "Moscow Cinema for test Add id db",
+                  Address = "Moscow Cinema address",
+                  City = cityMinsk
+              },
+              new Venue
                 {
-                    Name = "Moscow Cinema",
-                    Address = "Moscow Cinema address",
-                    City = cityMinsk
-                }
-            };
-            var cinemaEventMinsk2 = new Event
+                Name = "Aurora Cinema test to add with seriv(not exist)",
+                Address = "Aurora Cinema address",
+                City = cityMinsk
+            },
+          new Venue
             {
-                Name = "cinemaEventMinskAurora",
-                EventsType = eventCinema,
-                Date = DateTime.Now.AddDays(eventRandomDays.NextDouble() + eventRandomDays.Next(15)),
-                Banner = "/images/EventImg/0cb43207294335ec2b6274a39a54aa72.jpg",
-                Description = "this is test description for second cinema event in minsk Aurora cinema",
-                Venue = new Venue
-                {
-                    Name = "Aurora Cinema",
-                    Address = "Aurora Cinema address",
-                    City = cityMinsk
-                }
-            };
-            //Gomel
-            var cinemaEventGomel1 = new Event
+                Name = "1 random Cinema in gomel",
+                Address = "1 random Cinema in gomel address",
+                City = cityGomel
+            },
+            new Venue
             {
-                Name = "cinemaEventGomel1",
-                EventsType = eventCinema,
-                Date = DateTime.Now.AddDays(eventRandomDays.NextDouble() + eventRandomDays.Next(15)),
-                Banner = "/images/EventImg/0cb43207294335ec2b6274a39a54aa72.jpg",
-                Description = "this is test description for cinema event in Gomel #1",
-                Venue = new Venue
-                {
-                    Name = "1 random Cinema in gomel",
-                    Address = "1 random Cinema in gomel address",
-                    City = cityGomel
-                }
-            };
-            var cinemaEventGomel2 = new Event
+                Name = "2 random Cinema in gomel",
+                Address = "2 random Cinema in gomel address",
+                City = cityGomel
+            },
+           new Venue
             {
-                Name = "cinemaEventGomel2",
-                EventsType = eventCinema,
-                Date = DateTime.Now.AddDays(eventRandomDays.NextDouble() + eventRandomDays.Next(15)),
-                Banner = "/images/EventImg/0cb43207294335ec2b6274a39a54aa72.jpg",
-                Description = "this is test description for second cinema event in Gomel#2",
-                Venue = new Venue
-                {
-                    Name = "2 random Cinema in gomel",
-                    Address = "2 random Cinema in gomel address",
-                    City = cityGomel
-                }
-            };
-            var cinemaEventGomel3 = new Event
+                Name = "Random Cinema in grodno #1",
+                Address = "Random Cinema in Grodno address #1",
+                City = cityGrodno
+            },
+           new Venue
             {
-                Name = "cinemaEventGomel3",
-                EventsType = eventCinema,
-                Date = DateTime.Now.AddDays(eventRandomDays.NextDouble() + eventRandomDays.Next(15)),
-                Banner = "/images/EventImg/0cb43207294335ec2b6274a39a54aa72.jpg",
-                Description = "this is test description for second cinema event in Gomel#3",
-                Venue = new Venue
-                {
-                    Name = "3 random Cinema in gomel",
-                    Address = "3 random Cinema in gomel address",
-                    City = cityGomel
-                }
-            };
-            //grodno
-            var cinemaEventGrodno1 = new Event
+                Name = "3 random Cinema in gomel",
+                Address = "3 random Cinema in gomel address",
+                City = cityGomel
+            },
+           new Venue
             {
-                Name = "cinemaEventGrodno1",
-                EventsType = eventCinema,
-                Date = DateTime.Now.AddDays(eventRandomDays.NextDouble() + eventRandomDays.Next(15)),
-                Banner = "/images/EventImg/0cb43207294335ec2b6274a39a54aa72.jpg",
-                Description = "this is test description for first cinema event in Grodno #1",
-                Venue = new Venue
-                {
-                    Name = "Random Cinema in grodno #1",
-                    Address = "Random Cinema in Grodno address #1",
-                    City = cityGrodno
-                }
-            };
-            var cinemaEventGrodno2 = new Event
+                Name = "Random Cinema in grodno #2",
+                Address = "Random Cinema in Grodno address #2",
+                City = cityGrodno
+            },
+       new Venue
             {
-                Name = "cinemaEventGrodno2",
-                EventsType = eventCinema,
-                Date = DateTime.Now.AddDays(eventRandomDays.NextDouble() + eventRandomDays.Next(15)),
-                Banner = "/images/EventImg/0cb43207294335ec2b6274a39a54aa72.jpg",
-                Description = "this is test description for first cinema event in Grodno #2",
-                Venue = new Venue
-                {
-                    Name = "Random Cinema in grodno #2",
-                    Address = "Random Cinema in Grodno address #2",
-                    City = cityGrodno
-                }
-            };
-            //vitebsk
-            var cinemaEventVitebsk1 = new Event
+                Name = "Random Cinema in Vitebsk #1",
+                Address = "Random Cinema in Vitebsk address #1",
+                City = cityVitebsk
+            },
+           new Venue
             {
-                Name = "cinemaEventVitebsk1",
-                EventsType = eventCinema,
-                Date = DateTime.Now.AddDays(eventRandomDays.NextDouble() + eventRandomDays.Next(15)),
-                Banner = "/images/EventImg/0cb43207294335ec2b6274a39a54aa72.jpg",
-                Description = "this is test description for first cinema event in Vitebsk (single)",
-                Venue = new Venue
-                {
-                    Name = "Random Cinema in Vitebsk #1",
-                    Address = "Random Cinema in Vitebsk address #1",
-                    City = cityVitebsk
-                }
-            };
-            //brest
-            var cinemaEventBrest1 = new Event
+                Name = "Random Cinema in Brest #1",
+                Address = "Random Cinema in Brest address #1",
+                City = cityBrest
+            },
+           new Venue
             {
-                Name = "cinemaEventBrest1",
-                EventsType = eventCinema,
-                Date = DateTime.Now.AddDays(eventRandomDays.NextDouble() + eventRandomDays.Next(15)),
-                Banner = "/images/EventImg/0cb43207294335ec2b6274a39a54aa72.jpg",
-                Description = "this is test description for first cinema event in Brest cinema",
-                Venue = new Venue
-                {
-                    Name = "Random Cinema in Brest #1",
-                    Address = "Random Cinema in Brest address #1",
-                    City = cityBrest
-                }
-            };
-            //mogilev
-            var cinemaEventMogilev1 = new Event
+                Name = "Random Cinema in Mogilev #1",
+                Address = "Random Cinema in Mogilev address #1",
+                City = cityMogilev
+            },
+
+
+
+           new Venue
             {
-                Name = "cinemaEventMogilev1",
-                EventsType = eventCinema,
-                Date = DateTime.Now.AddDays(eventRandomDays.NextDouble() + eventRandomDays.Next(15)),
-                Banner = "/images/EventImg/0cb43207294335ec2b6274a39a54aa72.jpg",
-                Description = "this is test description for first cinema event in Mogilev cinema",
-                Venue = new Venue
+                Name = "Random Minsk Theater #1",
+                Address = "random Theater in Minsk address #1",
+                City = cityMinsk
+            },
+          new Venue
+            {
+                Name = "Random Minsk Theater #2",
+                Address = "random Theater in Minsk address #2",
+                City = cityMinsk
+            },
+           new Venue
+            {
+                Name = "1 random Theater in gomel",
+                Address = "1 random Theater in gomel address",
+                City = cityGomel
+            },
+           new Venue
+            {
+                Name = "2 random Theater in gomel",
+                Address = "2 random Theater in gomel address",
+                City = cityGomel
+            },
+            new Venue
+            {
+                Name = "Random TheaterEventGrodno1 in grodno #1",
+                Address = "Random TheaterEventGrodno1 in Grodno address #1",
+                City = cityGrodno
+            },
+            new Venue
+            {
+                Name = "Random TheaterEventVitebsk1 in Vitebsk #1",
+                Address = "Random TheaterEventVitebsk1 in Vitebsk address #1",
+                City = cityVitebsk
+            }
+        };
+
+            var venuesUse = new List<Venue>();
+            foreach (var item in venuesCreate)
+            {
+                if (venuesService.IsExists(item.Name))
                 {
-                    Name = "Random Cinema in Mogilev #1",
-                    Address = "Random Cinema in Mogilev address #1",
-                    City = cityMogilev
+                    venuesUse.Add(venuesService.Get(item.Name));
                 }
-            };
-            context.Events.Add(cinemaEventMinsk1);
-            context.Events.Add(cinemaEventMinsk2);
-            context.Events.Add(cinemaEventGomel1);
-            context.Events.Add(cinemaEventGrodno1);
-            context.Events.Add(cinemaEventVitebsk1);
-            context.Events.Add(cinemaEventBrest1);
-            context.Events.Add(cinemaEventMogilev1);
-            context.Events.Add(cinemaEventGomel2);
-            context.Events.Add(cinemaEventGomel3);
-            context.Events.Add(cinemaEventGrodno2);
+                else
+                {
+                    try
+                    {
+                        venuesService.Add(item);
+                        venuesUse.Add(venuesService.Get(item.Name));
+                    }
+                    catch (BllValidationException) { }
+                }
+            }
+
+
+
 
             #endregion
-
-            #region TheaterEvent
-
             //minsk
-            var theaterEventMinsk1 = new Event
+
+            var events = new List<Event>
             {
-                Name = "TheaterEventMinsk1",
-                EventsType = eventTheater,
-                Date = DateTime.Now.AddDays(eventRandomDays.NextDouble() + eventRandomDays.Next(15)),
-                Banner = "/images/EventImg/0cb43207294335ec2b6274a39a54aa72.jpg",
-                Description = "this is test description for first eventTheater in minsk",
-                Venue = new Venue
+                new Event
                 {
-                    Name = "Random Minsk Theater #1",
-                    Address = "random Theater in Minsk address #1",
-                    City = cityMinsk
-                }
-            };
-            var theaterEventMinsk2 = new Event
-            {
-                Name = "TheaterEventMinsk2",
-                EventsType = eventTheater,
-                Date = DateTime.Now.AddDays(eventRandomDays.NextDouble() + eventRandomDays.Next(15)),
-                Banner = "/images/EventImg/0cb43207294335ec2b6274a39a54aa72.jpg",
-                Description = "this is test description for second eventTheater in minsk",
-                Venue = new Venue
+                    Name = "cinemaEventMinskMoscow Test to exist add",
+                    EventsType = eventCinema,
+                    Date = DateTime.Now.AddDays(eventRandomDays.NextDouble() + eventRandomDays.Next(15)),
+                    Banner = "/images/EventImg/0cb43207294335ec2b6274a39a54aa72.jpg",
+                    Description = "this is test description for first cinema event in minsk moscow cinema",
+                    Venue = venuesUse[0]
+                },
+                new Event
                 {
-                    Name = "Random Minsk Theater #2",
-                    Address = "random Theater in Minsk address #2",
-                    City = cityMinsk
-                }
-            };
-            //Gomel
-            var theaterEventGomel1 = new Event
-            {
-                Name = "TheaterEventGomel1",
-                EventsType = eventTheater,
-                Date = DateTime.Now.AddDays(eventRandomDays.NextDouble() + eventRandomDays.Next(15)),
-                Banner = "/images/EventImg/0cb43207294335ec2b6274a39a54aa72.jpg",
-                Description = "this is test description for TheaterEventGomel1 in Gomel #1",
-                Venue = new Venue
+                    Name = "cinemaEventMinskAurora",
+                    EventsType = eventCinema,
+                    Date = DateTime.Now.AddDays(eventRandomDays.NextDouble() + eventRandomDays.Next(15)),
+                    Banner = "/images/EventImg/0cb43207294335ec2b6274a39a54aa72.jpg",
+                    Description = "this is test description for second cinema event in minsk Aurora cinema",
+                    Venue = venuesUse[1]
+                },
+                //Gomel
+                new Event
                 {
-                    Name = "1 random Theater in gomel",
-                    Address = "1 random Theater in gomel address",
-                    City = cityGomel
-                }
-            };
-            var theaterEventGomel2 = new Event
-            {
-                Name = "TheaterEventGomel2",
-                EventsType = eventTheater,
-                Date = DateTime.Now.AddDays(eventRandomDays.NextDouble() + eventRandomDays.Next(15)),
-                Banner = "/images/EventImg/0cb43207294335ec2b6274a39a54aa72.jpg",
-                Description = "this is test description for second TheaterEventGomel2 in Gomel#2",
-                Venue = new Venue
+                    Name = "cinemaEventGomel1",
+                    EventsType = eventCinema,
+                    Date = DateTime.Now.AddDays(eventRandomDays.NextDouble() + eventRandomDays.Next(15)),
+                    Banner = "/images/EventImg/0cb43207294335ec2b6274a39a54aa72.jpg",
+                    Description = "this is test description for cinema event in Gomel #1",
+                    Venue = venuesUse[2]
+                },
+                new Event
                 {
-                    Name = "2 random Theater in gomel",
-                    Address = "2 random Theater in gomel address",
-                    City = cityGomel
-                }
-            };
-            //grodno
-            var theaterEventGrodno1 = new Event
-            {
-                Name = "TheaterEventGrodno1",
-                EventsType = eventTheater,
-                Date = DateTime.Now.AddDays(eventRandomDays.NextDouble() + eventRandomDays.Next(15)),
-                Banner = "/images/EventImg/0cb43207294335ec2b6274a39a54aa72.jpg",
-                Description = "this is test description for first TheaterEventGrodno1 in Grodno #1",
-                Venue = new Venue
+                    Name = "cinemaEventGomel2",
+                    EventsType = eventCinema,
+                    Date = DateTime.Now.AddDays(eventRandomDays.NextDouble() + eventRandomDays.Next(15)),
+                    Banner = "/images/EventImg/0cb43207294335ec2b6274a39a54aa72.jpg",
+                    Description = "this is test description for second cinema event in Gomel#2",
+                    Venue = venuesUse[3]
+                },
+                new Event
                 {
-                    Name = "Random TheaterEventGrodno1 in grodno #1",
-                    Address = "Random TheaterEventGrodno1 in Grodno address #1",
-                    City = cityGrodno
-                }
-            };
-            //vitebsk
-            var theaterEventVitebsk1 = new Event
-            {
-                Name = "TheaterEventVitebsk1",
-                EventsType = eventTheater,
-                Date = DateTime.Now.AddDays(eventRandomDays.NextDouble() + eventRandomDays.Next(15)),
-                Banner = "/images/EventImg/0cb43207294335ec2b6274a39a54aa72.jpg",
-                Description = "this is test description for first TheaterEventVitebsk1 in Vitebsk (single)",
-                Venue = new Venue
+                    Name = "cinemaEventGomel3",
+                    EventsType = eventCinema,
+                    Date = DateTime.Now.AddDays(eventRandomDays.NextDouble() + eventRandomDays.Next(15)),
+                    Banner = "/images/EventImg/0cb43207294335ec2b6274a39a54aa72.jpg",
+                    Description = "this is test description for second cinema event in Gomel#3",
+                    Venue = venuesUse[4]
+                },
+                //grodno
+                new Event
                 {
-                    Name = "Random TheaterEventVitebsk1 in Vitebsk #1",
-                    Address = "Random TheaterEventVitebsk1 in Vitebsk address #1",
-                    City = cityVitebsk
-                }
-            };
+                    Name = "cinemaEventGrodno1",
+                    EventsType = eventCinema,
+                    Date = DateTime.Now.AddDays(eventRandomDays.NextDouble() + eventRandomDays.Next(15)),
+                    Banner = "/images/EventImg/0cb43207294335ec2b6274a39a54aa72.jpg",
+                    Description = "this is test description for first cinema event in Grodno #1",
+                    Venue = venuesUse[5]
+                },
+                new Event
+                {
+                    Name = "cinemaEventGrodno2",
+                    EventsType = eventCinema,
+                    Date = DateTime.Now.AddDays(eventRandomDays.NextDouble() + eventRandomDays.Next(15)),
+                    Banner = "/images/EventImg/0cb43207294335ec2b6274a39a54aa72.jpg",
+                    Description = "this is test description for first cinema event in Grodno #2",
+                    Venue = venuesUse[6]
+                },
+                //vitebsk
+                new Event
+                {
+                    Name = "cinemaEventVitebsk1",
+                    EventsType = eventCinema,
+                    Date = DateTime.Now.AddDays(eventRandomDays.NextDouble() + eventRandomDays.Next(15)),
+                    Banner = "/images/EventImg/0cb43207294335ec2b6274a39a54aa72.jpg",
+                    Description = "this is test description for first cinema event in Vitebsk (single)",
+                    Venue = venuesUse[7]
+                },
+                //brest
+                new Event
+                {
+                    Name = "cinemaEventBrest1",
+                    EventsType = eventCinema,
+                    Date = DateTime.Now.AddDays(eventRandomDays.NextDouble() + eventRandomDays.Next(15)),
+                    Banner = "/images/EventImg/0cb43207294335ec2b6274a39a54aa72.jpg",
+                    Description = "this is test description for first cinema event in Brest cinema",
+                    Venue = venuesUse[8]
+                },
+                //mogilev
+                new Event
+                {
+                    Name = "cinemaEventMogilev1",
+                    EventsType = eventCinema,
+                    Date = DateTime.Now.AddDays(eventRandomDays.NextDouble() + eventRandomDays.Next(15)),
+                    Banner = "/images/EventImg/0cb43207294335ec2b6274a39a54aa72.jpg",
+                    Description = "this is test description for first cinema event in Mogilev cinema",
+                    Venue = venuesUse[9]
+                },
 
 
-            context.Events.Add(theaterEventMinsk1);
-            context.Events.Add(theaterEventMinsk2);
-            context.Events.Add(theaterEventGomel1);
-            context.Events.Add(theaterEventGomel2);
-            context.Events.Add(theaterEventGrodno1);
-            context.Events.Add(theaterEventVitebsk1);
+
+                new Event
+                {
+                    Name = "TheaterEventMinsk1",
+                    EventsType = eventTheater,
+                    Date = DateTime.Now.AddDays(eventRandomDays.NextDouble() + eventRandomDays.Next(15)),
+                    Banner = "/images/EventImg/0cb43207294335ec2b6274a39a54aa72.jpg",
+                    Description = "this is test description for first eventTheater in minsk",
+                    Venue = venuesUse[10]
+                },
+                new Event
+                {
+                    Name = "TheaterEventMinsk2",
+                    EventsType = eventTheater,
+                    Date = DateTime.Now.AddDays(eventRandomDays.NextDouble() + eventRandomDays.Next(15)),
+                    Banner = "/images/EventImg/0cb43207294335ec2b6274a39a54aa72.jpg",
+                    Description = "this is test description for second eventTheater in minsk",
+                    Venue = venuesUse[11]
+                },
+                //Gomel
+
+                new Event
+                {
+                    Name = "TheaterEventGomel1",
+                    EventsType = eventTheater,
+                    Date = DateTime.Now.AddDays(eventRandomDays.NextDouble() + eventRandomDays.Next(15)),
+                    Banner = "/images/EventImg/0cb43207294335ec2b6274a39a54aa72.jpg",
+                    Description = "this is test description for TheaterEventGomel1 in Gomel #1",
+                    Venue = venuesUse[12]
+                },
+
+                new Event
+                {
+                    Name = "TheaterEventGomel2",
+                    EventsType = eventTheater,
+                    Date = DateTime.Now.AddDays(eventRandomDays.NextDouble() + eventRandomDays.Next(15)),
+                    Banner = "/images/EventImg/0cb43207294335ec2b6274a39a54aa72.jpg",
+                    Description = "this is test description for second TheaterEventGomel2 in Gomel#2",
+                    Venue = venuesUse[13]
+                },
+                //grodno
+                new Event
+                {
+                    Name = "TheaterEventGrodno1",
+                    EventsType = eventTheater,
+                    Date = DateTime.Now.AddDays(eventRandomDays.NextDouble() + eventRandomDays.Next(15)),
+                    Banner = "/images/EventImg/0cb43207294335ec2b6274a39a54aa72.jpg",
+                    Description = "this is test description for first TheaterEventGrodno1 in Grodno #1",
+                    Venue = venuesUse[14]
+                },
+                //vitebsk
+                new Event
+                {
+                    Name = "TheaterEventVitebsk1",
+                    EventsType = eventTheater,
+                    Date = DateTime.Now.AddDays(eventRandomDays.NextDouble() + eventRandomDays.Next(15)),
+                    Banner = "/images/EventImg/0cb43207294335ec2b6274a39a54aa72.jpg",
+                    Description = "this is test description for first TheaterEventVitebsk1 in Vitebsk (single)",
+                    Venue = venuesUse[15]
+                }
+            };
+            var eventsUse = new List<Event>();
+            foreach (var item in events)
+            {
+                if (eventService.IsExists(item.Name))
+                {
+                    eventsUse.Add(eventService.Get(item.Name));
+                }
+                else
+                {
+                    try
+                    {
+                        eventService.Add(item);
+                        eventsUse.Add(eventService.Get(item.Name));
+                    }
+                    catch (BllValidationException) { }
+                }
+            }
+
+
 
             #endregion
 
@@ -447,873 +502,819 @@ namespace TicketSaleCore.Models.DAL
             #region Tikets Table Init
 
             var ticketPriceRandom = eventRandomDays;
+            var tickets = new List<Ticket>
+            {
+                new Ticket
+                {
+                    Event = eventsUse[0],
+                    Price = Convert.ToDecimal(ticketPriceRandom.Next(13) + ticketPriceRandom.NextDouble()),
+                    Seller = user1,
+                    SellerNotes = "ticket1CinemaEventMinsk1 seller User 1",
+                    Order = null
+                }, //0
+                new Ticket
+                {
+                    Event = eventsUse[0],
+                    Price = Convert.ToDecimal(ticketPriceRandom.Next(13) + ticketPriceRandom.NextDouble()),
+                    Seller = user2,
+                    SellerNotes = "ticket2CinemaEventMinsk1 seller User 2",
+                    Order = null
+                }, //1
+                new Ticket
+                {
+                    Event = eventsUse[0],
+                    Price = Convert.ToDecimal(ticketPriceRandom.Next(13) + ticketPriceRandom.NextDouble()),
+                    Seller = user3,
+                    SellerNotes = "ticket3CinemaEventMinsk1 seller User 3",
+                    Order = null
+                }, //2
+                new Ticket
+                {
+                    Event = eventsUse[0],
+                    Price = Convert.ToDecimal(ticketPriceRandom.Next(13) + ticketPriceRandom.NextDouble()),
+                    Seller = user1,
+                    SellerNotes = "ticket4CinemaEventMinsk1 seller User 1",
+                    Order = null
+                }, //3
+                new Ticket
+                {
+                    Event = eventsUse[0],
+                    Price = Convert.ToDecimal(ticketPriceRandom.Next(13) + ticketPriceRandom.NextDouble()),
+                    Seller = user2,
+                    SellerNotes = "ticket5CinemaEventMinsk1 seller User 2",
+                    Order = null
+                }, //4
+                new Ticket
+                {
+                    Event = eventsUse[0],
+                    Price = Convert.ToDecimal(ticketPriceRandom.Next(13) + ticketPriceRandom.NextDouble()),
+                    Seller = user3,
+                    SellerNotes = "ticket6CinemaEventMinsk1 seller User 3",
+                    Order = null
+                }, //5
 
-            #region ticket for cinemaEventMinsk1
+                new Ticket
+                {
+                    Event = eventsUse[1],
+                    Price = Convert.ToDecimal(ticketPriceRandom.Next(13) + ticketPriceRandom.NextDouble()),
+                    Seller = user1,
+                    SellerNotes = "ticket1CinemaEventMinsk2 seller User 1"
+                }, //6
+                new Ticket
+                {
+                    Event = eventsUse[1],
+                    Price = Convert.ToDecimal(ticketPriceRandom.Next(13) + ticketPriceRandom.NextDouble()),
+                    Seller = user2,
+                    SellerNotes = "ticket2CinemaEventMinsk2 seller User 2"
+                }, //7
+                new Ticket
+                {
+                    Event = eventsUse[1],
+                    Price = Convert.ToDecimal(ticketPriceRandom.Next(13) + ticketPriceRandom.NextDouble()),
+                    Seller = user3,
+                    SellerNotes = "ticket3CinemaEventMinsk2 seller User 3"
+                }, //8
+                new Ticket
+                {
+                    Event = eventsUse[1],
+                    Price = Convert.ToDecimal(ticketPriceRandom.Next(13) + ticketPriceRandom.NextDouble()),
+                    Seller = user1,
+                    SellerNotes = "ticket4CinemaEventMinsk2 seller User 1"
+                }, //9
+                new Ticket
+                {
+                    Event = eventsUse[1],
+                    Price = Convert.ToDecimal(ticketPriceRandom.Next(13) + ticketPriceRandom.NextDouble()),
+                    Seller = user2,
+                    SellerNotes = "ticket5CinemaEventMinsk2 seller User 2"
+                }, //10
+                new Ticket
+                {
+                    Event = eventsUse[1],
+                    Price = Convert.ToDecimal(ticketPriceRandom.Next(13) + ticketPriceRandom.NextDouble()),
+                    Seller = user3,
+                    SellerNotes = "ticket6CinemaEventMinsk2 seller User 3"
+                } //11
 
-            var ticket1CinemaEventMinsk1 = new Ticket
-            {
-                Event = cinemaEventMinsk1,
-                Price = Convert.ToDecimal(ticketPriceRandom.Next(13) + ticketPriceRandom.NextDouble()),
-                Seller = user1,
-                SellerNotes = "ticket1CinemaEventMinsk1 seller User 1",
-                Order = null
+                ,
+                new Ticket
+                {
+                    Event = eventsUse[2],
+                    Price = Convert.ToDecimal(ticketPriceRandom.Next(13) + ticketPriceRandom.NextDouble()),
+                    Seller = user1,
+                    SellerNotes = "ticket1cinemaEventGomel1 seller User 1"
+                }, //12
+                new Ticket
+                {
+                    Event = eventsUse[2],
+                    Price = Convert.ToDecimal(ticketPriceRandom.Next(13) + ticketPriceRandom.NextDouble()),
+                    Seller = user2,
+                    SellerNotes = "ticket2cinemaEventGomel1 seller User 2"
+                }, //13
+                new Ticket
+                {
 
-            };
-            var ticket2CinemaEventMinsk1 = new Ticket
-            {
-                Event = cinemaEventMinsk1,
-                Price = Convert.ToDecimal(ticketPriceRandom.Next(13) + ticketPriceRandom.NextDouble()),
-                Seller = user2,
-                SellerNotes = "ticket2CinemaEventMinsk1 seller User 2",
-                Order = null
-            };
-            var ticket3CinemaEventMinsk1 = new Ticket
-            {
-                Event = cinemaEventMinsk1,
-                Price = Convert.ToDecimal(ticketPriceRandom.Next(13) + ticketPriceRandom.NextDouble()),
-                Seller = user3,
-                SellerNotes = "ticket3CinemaEventMinsk1 seller User 3",
-                Order = null
-            };
-            var ticket4CinemaEventMinsk1 = new Ticket
-            {
-                Event = cinemaEventMinsk1,
-                Price = Convert.ToDecimal(ticketPriceRandom.Next(13) + ticketPriceRandom.NextDouble()),
-                Seller = user1,
-                SellerNotes = "ticket4CinemaEventMinsk1 seller User 1",
-                Order = null
-            };
-            var ticket5CinemaEventMinsk1 = new Ticket
-            {
-                Event = cinemaEventMinsk1,
-                Price = Convert.ToDecimal(ticketPriceRandom.Next(13) + ticketPriceRandom.NextDouble()),
-                Seller = user2,
-                SellerNotes = "ticket5CinemaEventMinsk1 seller User 2",
-                Order = null
-            };
-            var ticket6CinemaEventMinsk1 = new Ticket
-            {
-                Event = cinemaEventMinsk1,
-                Price = Convert.ToDecimal(ticketPriceRandom.Next(13) + ticketPriceRandom.NextDouble()),
-                Seller = user3,
-                SellerNotes = "ticket6CinemaEventMinsk1 seller User 3",
-                Order = null
-            };
-            context.Tickets.Add(ticket1CinemaEventMinsk1);
-            context.Tickets.Add(ticket2CinemaEventMinsk1);
-            context.Tickets.Add(ticket3CinemaEventMinsk1);
-            context.Tickets.Add(ticket4CinemaEventMinsk1);
-            context.Tickets.Add(ticket5CinemaEventMinsk1);
-            context.Tickets.Add(ticket6CinemaEventMinsk1);
+                    Event = eventsUse[2],
+                    Price = Convert.ToDecimal(ticketPriceRandom.Next(13) + ticketPriceRandom.NextDouble()),
+                    Seller = user3,
+                    SellerNotes = "ticket3cinemaEventGomel1 seller User 3"
+                }, //14
+                new Ticket
+                {
+                    Event = eventsUse[2],
+                    Price = Convert.ToDecimal(ticketPriceRandom.Next(13) + ticketPriceRandom.NextDouble()),
+                    Seller = user1,
+                    SellerNotes = "ticket4cinemaEventGomel1 seller User 1"
+                }, //15
+                new Ticket
+                {
+                    Event = eventsUse[2],
+                    Price = Convert.ToDecimal(ticketPriceRandom.Next(13) + ticketPriceRandom.NextDouble()),
+                    Seller = user2,
+                    SellerNotes = "ticket5CinemaEventGomel1 seller User 2"
+                }, //16
+                new Ticket
+                {
+                    Event = eventsUse[2],
+                    Price = Convert.ToDecimal(ticketPriceRandom.Next(13) + ticketPriceRandom.NextDouble()),
+                    Seller = user3,
+                    SellerNotes = "ticket6CinemaEventGomel1 seller User 3"
+                }, //17
 
-            #endregion
+                new Ticket
+                {
+                    Event = eventsUse[3],
+                    Price = Convert.ToDecimal(ticketPriceRandom.Next(13) + ticketPriceRandom.NextDouble()),
+                    Seller = user1,
+                    SellerNotes = "ticket1CinemaEventGomel2 seller User 1"
+                }, //18
+                new Ticket
+                {
+                    Event = eventsUse[3],
+                    Price = Convert.ToDecimal(ticketPriceRandom.Next(13) + ticketPriceRandom.NextDouble()),
+                    Seller = user2,
+                    SellerNotes = "ticket2CinemaEventGomel2 seller User 2"
+                }, //19
+                new Ticket
+                {
+                    Event = eventsUse[3],
+                    Price = Convert.ToDecimal(ticketPriceRandom.Next(13) + ticketPriceRandom.NextDouble()),
+                    Seller = user3,
+                    SellerNotes = "ticket3CinemaEventGomel2 seller User 3"
+                }, //20
+                new Ticket
+                {
+                    Event = eventsUse[3],
+                    Price = Convert.ToDecimal(ticketPriceRandom.Next(13) + ticketPriceRandom.NextDouble()),
+                    Seller = user1,
+                    SellerNotes = "ticket4CinemaEventGomel2 seller User 1"
+                }, //21
+                new Ticket
+                {
+                    Event = eventsUse[3],
+                    Price = Convert.ToDecimal(ticketPriceRandom.Next(13) + ticketPriceRandom.NextDouble()),
+                    Seller = user2,
+                    SellerNotes = "ticket5CinemaEventGomel2 seller User 2"
+                }, //22
+                new Ticket
+                {
+                    Event = eventsUse[3],
+                    Price = Convert.ToDecimal(ticketPriceRandom.Next(13) + ticketPriceRandom.NextDouble()),
+                    Seller = user3,
+                    SellerNotes = "ticket6CinemaEventGomel2 seller User 3"
+                }, //23
 
-            #region ticket for cinemaEventMinsk2
+                new Ticket
+                {
+                    Event = eventsUse[4],
+                    Price = Convert.ToDecimal(ticketPriceRandom.Next(13) + ticketPriceRandom.NextDouble()),
+                    Seller = user1,
+                    SellerNotes = "ticket1CinemaEventGomel3 seller User 1"
+                }, //24
+                new Ticket
+                {
+                    Event = eventsUse[4],
+                    Price = Convert.ToDecimal(ticketPriceRandom.Next(13) + ticketPriceRandom.NextDouble()),
+                    Seller = user2,
+                    SellerNotes = "ticket2CinemaEventGomel3 seller User 2"
+                }, //25
+                new Ticket
+                {
+                    Event = eventsUse[4],
+                    Price = Convert.ToDecimal(ticketPriceRandom.Next(13) + ticketPriceRandom.NextDouble()),
+                    Seller = user3,
+                    SellerNotes = "ticket3CinemaEventGomel3 seller User 3"
+                }, //26
+                new Ticket
+                {
+                    Event = eventsUse[4],
+                    Price = Convert.ToDecimal(ticketPriceRandom.Next(13) + ticketPriceRandom.NextDouble()),
+                    Seller = user1,
+                    SellerNotes = "ticket4CinemaEventGomel3 seller User 1"
+                }, //27
+                new Ticket
+                {
+                    Event = eventsUse[4],
+                    Price = Convert.ToDecimal(ticketPriceRandom.Next(13) + ticketPriceRandom.NextDouble()),
+                    Seller = user2,
+                    SellerNotes = "ticket5CinemaEventGomel3 seller User 2"
+                }, //28
+                new Ticket
+                {
+                    Event = eventsUse[4],
+                    Price = Convert.ToDecimal(ticketPriceRandom.Next(13) + ticketPriceRandom.NextDouble()),
+                    Seller = user3,
+                    SellerNotes = "ticket6CinemaEventGomel3 seller User 3"
+                }, //29
 
-            var ticket1CinemaEventMinsk2 = new Ticket
-            {
-                Event = cinemaEventMinsk2,
-                Price = Convert.ToDecimal(ticketPriceRandom.Next(13) + ticketPriceRandom.NextDouble()),
-                Seller = user1,
-                SellerNotes = "ticket1CinemaEventMinsk2 seller User 1"
-            };
-            var ticket2CinemaEventMinsk2 = new Ticket
-            {
-                Event = cinemaEventMinsk2,
-                Price = Convert.ToDecimal(ticketPriceRandom.Next(13) + ticketPriceRandom.NextDouble()),
-                Seller = user2,
-                SellerNotes = "ticket2CinemaEventMinsk2 seller User 2"
-            };
-            var ticket3CinemaEventMinsk2 = new Ticket
-            {
-                Event = cinemaEventMinsk2,
-                Price = Convert.ToDecimal(ticketPriceRandom.Next(13) + ticketPriceRandom.NextDouble()),
-                Seller = user3,
-                SellerNotes = "ticket3CinemaEventMinsk2 seller User 3"
-            };
-            var ticket4CinemaEventMinsk2 = new Ticket
-            {
-                Event = cinemaEventMinsk2,
-                Price = Convert.ToDecimal(ticketPriceRandom.Next(13) + ticketPriceRandom.NextDouble()),
-                Seller = user1,
-                SellerNotes = "ticket4CinemaEventMinsk2 seller User 1"
-            };
-            var ticket5CinemaEventMinsk2 = new Ticket
-            {
-                Event = cinemaEventMinsk2,
-                Price = Convert.ToDecimal(ticketPriceRandom.Next(13) + ticketPriceRandom.NextDouble()),
-                Seller = user2,
-                SellerNotes = "ticket5CinemaEventMinsk2 seller User 2"
-            };
-            var ticket6CinemaEventMinsk2 = new Ticket
-            {
-                Event = cinemaEventMinsk2,
-                Price = Convert.ToDecimal(ticketPriceRandom.Next(13) + ticketPriceRandom.NextDouble()),
-                Seller = user3,
-                SellerNotes = "ticket6CinemaEventMinsk2 seller User 3"
-            };
+                new Ticket
+                {
+                    Event = eventsUse[5],
+                    Price = Convert.ToDecimal(ticketPriceRandom.Next(13) + ticketPriceRandom.NextDouble()),
+                    Seller = user1,
+                    SellerNotes = "ticket1CinemaEventGrodno1 seller User 1"
+                }, //30
+                new Ticket
+                {
+                    Event = eventsUse[5],
+                    Price = Convert.ToDecimal(ticketPriceRandom.Next(13) + ticketPriceRandom.NextDouble()),
+                    Seller = user2,
+                    SellerNotes = "ticket2CinemaEventGrodno1 seller User 2"
+                }, //31
+                new Ticket
+                {
+                    Event = eventsUse[5],
+                    Price = Convert.ToDecimal(ticketPriceRandom.Next(13) + ticketPriceRandom.NextDouble()),
+                    Seller = user3,
+                    SellerNotes = "ticket3CinemaEventGrodno1 seller User 3"
+                }, //32
+                new Ticket
+                {
+                    Event = eventsUse[5],
+                    Price = Convert.ToDecimal(ticketPriceRandom.Next(13) + ticketPriceRandom.NextDouble()),
+                    Seller = user1,
+                    SellerNotes = "ticket4CinemaEventGrodno1 seller User 1"
+                }, //33
+                new Ticket
+                {
+                    Event = eventsUse[5],
+                    Price = Convert.ToDecimal(ticketPriceRandom.Next(13) + ticketPriceRandom.NextDouble()),
+                    Seller = user2,
+                    SellerNotes = "ticket5CinemaEventGrodno1 seller User 2"
+                }, //34
+                new Ticket
+                {
+                    Event = eventsUse[5],
+                    Price = Convert.ToDecimal(ticketPriceRandom.Next(13) + ticketPriceRandom.NextDouble()),
+                    Seller = user3,
+                    SellerNotes = "ticket6CinemaEventGrodno1 seller User 3"
+                }, //35
 
-            context.Tickets.Add(ticket1CinemaEventMinsk2);
-            context.Tickets.Add(ticket2CinemaEventMinsk2);
-            context.Tickets.Add(ticket3CinemaEventMinsk2);
-            context.Tickets.Add(ticket4CinemaEventMinsk2);
-            context.Tickets.Add(ticket5CinemaEventMinsk2);
-            context.Tickets.Add(ticket6CinemaEventMinsk2);
+                new Ticket
+                {
+                    Event = eventsUse[6],
+                    Price = Convert.ToDecimal(ticketPriceRandom.Next(13) + ticketPriceRandom.NextDouble()),
+                    Seller = user1,
+                    SellerNotes = "ticket1CinemaEventGrodno2 seller User 1"
+                }, //36
+                new Ticket
+                {
+                    Event = eventsUse[6],
+                    Price = Convert.ToDecimal(ticketPriceRandom.Next(13) + ticketPriceRandom.NextDouble()),
+                    Seller = user2,
+                    SellerNotes = "ticket2CinemaEventGrodno2 seller User 2"
+                }, //37
+                new Ticket
+                {
+                    Event = eventsUse[6],
+                    Price = Convert.ToDecimal(ticketPriceRandom.Next(13) + ticketPriceRandom.NextDouble()),
+                    Seller = user3,
+                    SellerNotes = "ticket3CinemaEventGrodno2 seller User 3"
+                }, //38
+                new Ticket
+                {
+                    Event = eventsUse[6],
+                    Price = Convert.ToDecimal(ticketPriceRandom.Next(13) + ticketPriceRandom.NextDouble()),
+                    Seller = user1,
+                    SellerNotes = "ticket4CinemaEventGrodno2 seller User 1"
+                }, //39
+                new Ticket
+                {
+                    Event = eventsUse[6],
+                    Price = Convert.ToDecimal(ticketPriceRandom.Next(13) + ticketPriceRandom.NextDouble()),
+                    Seller = user2,
+                    SellerNotes = "ticket5CinemaEventGrodno2 seller User 2"
+                }, //40
+                new Ticket
+                {
+                    Event = eventsUse[6],
+                    Price = Convert.ToDecimal(ticketPriceRandom.Next(13) + ticketPriceRandom.NextDouble()),
+                    Seller = user3,
+                    SellerNotes = "ticket6CinemaEventGrodno2 seller User 3"
+                } //41
 
-            #endregion
+                ,
+                new Ticket
+                {
+                    Event = eventsUse[7],
+                    Price = Convert.ToDecimal(ticketPriceRandom.Next(13) + ticketPriceRandom.NextDouble()),
+                    Seller = user1,
+                    SellerNotes = "ticket1CinemaEventVitebsk1 seller User 1"
+                }, //42
+                new Ticket
+                {
+                    Event = eventsUse[7],
+                    Price = Convert.ToDecimal(ticketPriceRandom.Next(13) + ticketPriceRandom.NextDouble()),
+                    Seller = user2,
+                    SellerNotes = "ticket2CinemaEventVitebsk1 seller User 2"
+                }, //43
+                new Ticket
+                {
+                    Event = eventsUse[7],
+                    Price = Convert.ToDecimal(ticketPriceRandom.Next(13) + ticketPriceRandom.NextDouble()),
+                    Seller = user3,
+                    SellerNotes = "ticket3CinemaEventVitebsk1 seller User 3"
+                }, //44
+                new Ticket
+                {
+                    Event = eventsUse[7],
+                    Price = Convert.ToDecimal(ticketPriceRandom.Next(13) + ticketPriceRandom.NextDouble()),
+                    Seller = user1,
+                    SellerNotes = "ticket4CinemaEventVitebsk1 seller User 1"
+                }, //45
+                new Ticket
+                {
+                    Event = eventsUse[7],
+                    Price = Convert.ToDecimal(ticketPriceRandom.Next(13) + ticketPriceRandom.NextDouble()),
+                    Seller = user2,
+                    SellerNotes = "ticket5CinemaEventVitebsk1 seller User 2"
+                }, //46
+                new Ticket
+                {
+                    Event = eventsUse[7],
+                    Price = Convert.ToDecimal(ticketPriceRandom.Next(13) + ticketPriceRandom.NextDouble()),
+                    Seller = user3,
+                    SellerNotes = "ticket6CinemaEventVitebsk1 seller User 3"
+                }, //47
+                new Ticket
+                {
+                    Event = eventsUse[8],
+                    Price = Convert.ToDecimal(ticketPriceRandom.Next(13) + ticketPriceRandom.NextDouble()),
+                    Seller = user1,
+                    SellerNotes = "ticket1CinemaEventBrest1 seller User 1"
+                }, //48
+                new Ticket
+                {
+                    Event = eventsUse[8],
+                    Price = Convert.ToDecimal(ticketPriceRandom.Next(13) + ticketPriceRandom.NextDouble()),
+                    Seller = user2,
+                    SellerNotes = "ticket2CinemaEventBrest1 seller User 2"
+                }, //49
+                new Ticket
+                {
+                    Event = eventsUse[8],
+                    Price = Convert.ToDecimal(ticketPriceRandom.Next(13) + ticketPriceRandom.NextDouble()),
+                    Seller = user3,
+                    SellerNotes = "ticket3CinemaEventBrest1 seller User 3"
+                }, //50
+                new Ticket
+                {
+                    Event = eventsUse[8],
+                    Price = Convert.ToDecimal(ticketPriceRandom.Next(13) + ticketPriceRandom.NextDouble()),
+                    Seller = user1,
+                    SellerNotes = "ticket4CinemaEventBrest1 seller User 1"
+                }, //51
+                new Ticket
+                {
+                    Event = eventsUse[8],
+                    Price = Convert.ToDecimal(ticketPriceRandom.Next(13) + ticketPriceRandom.NextDouble()),
+                    Seller = user2,
+                    SellerNotes = "ticket5CinemaEventBrest1 seller User 2"
+                }, //52
+                new Ticket
+                {
+                    Event = eventsUse[8],
+                    Price = Convert.ToDecimal(ticketPriceRandom.Next(13) + ticketPriceRandom.NextDouble()),
+                    Seller = user3,
+                    SellerNotes = "ticket6CinemaEventBrest1 seller User 3"
+                }, //53
+                new Ticket
+                {
+                    Event = eventsUse[9],
+                    Price = Convert.ToDecimal(ticketPriceRandom.Next(13) + ticketPriceRandom.NextDouble()),
+                    Seller = user1,
+                    SellerNotes = "ticket1CinemaEventMogilev1 seller User 1"
+                }, //54
+                new Ticket
+                {
+                    Event = eventsUse[9],
+                    Price = Convert.ToDecimal(ticketPriceRandom.Next(13) + ticketPriceRandom.NextDouble()),
+                    Seller = user2,
+                    SellerNotes = "ticket2CinemaEventMogilev1 seller User 2"
+                }, //55
+                new Ticket
+                {
+                    Event = eventsUse[9],
+                    Price = Convert.ToDecimal(ticketPriceRandom.Next(13) + ticketPriceRandom.NextDouble()),
+                    Seller = user3,
+                    SellerNotes = "ticket3CinemaEventMogilev1 seller User 3"
+                }, //56
+                new Ticket
+                {
+                    Event = eventsUse[9],
+                    Price = Convert.ToDecimal(ticketPriceRandom.Next(13) + ticketPriceRandom.NextDouble()),
+                    Seller = user1,
+                    SellerNotes = "ticket4CinemaEventMogilev1 seller User 1"
+                }, //57
+                new Ticket
+                {
+                    Event = eventsUse[9],
+                    Price = Convert.ToDecimal(ticketPriceRandom.Next(13) + ticketPriceRandom.NextDouble()),
+                    Seller = user2,
+                    SellerNotes = "ticket5CinemaEventMogilev1 seller User 2"
+                }, //58
+                new Ticket
+                {
+                    Event = eventsUse[9],
+                    Price = Convert.ToDecimal(ticketPriceRandom.Next(13) + ticketPriceRandom.NextDouble()),
+                    Seller = user3,
+                    SellerNotes = "ticket6CinemaEventMogilev1 seller User 3"
+                }, //59
+                new Ticket
+                {
+                    Event = eventsUse[10],
+                    Price = Convert.ToDecimal(ticketPriceRandom.Next(13) + ticketPriceRandom.NextDouble()),
+                    Seller = user1,
+                    SellerNotes = "ticket1TheaterEventMinsk1 seller User 1"
+                }, //60
+                new Ticket
+                {
+                    Event = eventsUse[10],
+                    Price = Convert.ToDecimal(ticketPriceRandom.Next(13) + ticketPriceRandom.NextDouble()),
+                    Seller = user2,
+                    SellerNotes = "ticket2TheaterEventMinsk1 seller User 2"
+                }, //61
+                new Ticket
+                {
+                    Event = eventsUse[10],
+                    Price = Convert.ToDecimal(ticketPriceRandom.Next(13) + ticketPriceRandom.NextDouble()),
+                    Seller = user3,
+                    SellerNotes = "ticket3TheaterEventMinsk1 seller User 3"
+                }, //62
+                new Ticket
+                {
+                    Event = eventsUse[10],
+                    Price = Convert.ToDecimal(ticketPriceRandom.Next(13) + ticketPriceRandom.NextDouble()),
+                    Seller = user1,
+                    SellerNotes = "ticket4TheaterEventMinsk1 seller User 1"
+                }, //63
+                new Ticket
+                {
+                    Event = eventsUse[10],
+                    Price = Convert.ToDecimal(ticketPriceRandom.Next(13) + ticketPriceRandom.NextDouble()),
+                    Seller = user2,
+                    SellerNotes = "ticket5TheaterEventMinsk1 seller User 2"
+                }, //64
+                new Ticket
+                {
+                    Event = eventsUse[10],
+                    Price = Convert.ToDecimal(ticketPriceRandom.Next(13) + ticketPriceRandom.NextDouble()),
+                    Seller = user3,
+                    SellerNotes = "ticket6TheaterEventMinsk1 seller User 3"
+                }, //65
+                new Ticket
+                {
+                    Event = eventsUse[11],
+                    Price = Convert.ToDecimal(ticketPriceRandom.Next(13) + ticketPriceRandom.NextDouble()),
+                    Seller = user1,
+                    SellerNotes = "ticket1TheaterEventMinsk2 seller User 1"
+                }, //66
+                new Ticket
+                {
+                    Event = eventsUse[11],
+                    Price = Convert.ToDecimal(ticketPriceRandom.Next(13) + ticketPriceRandom.NextDouble()),
+                    Seller = user2,
+                    SellerNotes = "ticket2TheaterEventMinsk2 seller User 2"
+                }, //67
+                new Ticket
+                {
+                    Event = eventsUse[11],
+                    Price = Convert.ToDecimal(ticketPriceRandom.Next(13) + ticketPriceRandom.NextDouble()),
+                    Seller = user3,
+                    SellerNotes = "ticket3TheaterEventMinsk2 seller User 3"
+                }, //68
+                new Ticket
+                {
+                    Event = eventsUse[11],
+                    Price = Convert.ToDecimal(ticketPriceRandom.Next(13) + ticketPriceRandom.NextDouble()),
+                    Seller = user1,
+                    SellerNotes = "ticket4TheaterEventMinsk2 seller User 1"
+                }, //69
+                new Ticket
+                {
+                    Event = eventsUse[11],
+                    Price = Convert.ToDecimal(ticketPriceRandom.Next(13) + ticketPriceRandom.NextDouble()),
+                    Seller = user2,
+                    SellerNotes = "ticket5TheaterEventMinsk2 seller User 2"
+                }, //70
+                new Ticket
+                {
+                    Event = eventsUse[11],
+                    Price = Convert.ToDecimal(ticketPriceRandom.Next(13) + ticketPriceRandom.NextDouble()),
+                    Seller = user3,
+                    SellerNotes = "ticket6TheaterEventMinsk2 seller User 3"
+                }, //71
+                new Ticket
+                {
+                    Event = eventsUse[12],
+                    Price = Convert.ToDecimal(ticketPriceRandom.Next(13) + ticketPriceRandom.NextDouble()),
+                    Seller = user1,
+                    SellerNotes = "ticket1TheaterEventGomel1 seller User 1"
+                }, //72
+                new Ticket
+                {
+                    Event = eventsUse[12],
+                    Price = Convert.ToDecimal(ticketPriceRandom.Next(13) + ticketPriceRandom.NextDouble()),
+                    Seller = user2,
+                    SellerNotes = "ticket2TheaterEventGomel1 seller User 2"
+                }, //73
+                new Ticket
+                {
+                    Event = eventsUse[12],
+                    Price = Convert.ToDecimal(ticketPriceRandom.Next(13) + ticketPriceRandom.NextDouble()),
+                    Seller = user3,
+                    SellerNotes = "ticket3TheaterEventGomel1 seller User 3"
+                }, //74
+                new Ticket
+                {
+                    Event = eventsUse[12],
+                    Price = Convert.ToDecimal(ticketPriceRandom.Next(13) + ticketPriceRandom.NextDouble()),
+                    Seller = user1,
+                    SellerNotes = "ticket4TheaterEventGomel1 seller User 1"
+                }, //75
+                new Ticket
+                {
+                    Event = eventsUse[12],
+                    Price = Convert.ToDecimal(ticketPriceRandom.Next(13) + ticketPriceRandom.NextDouble()),
+                    Seller = user2,
+                    SellerNotes = "ticket5TheaterEventGomel1 seller User 2"
+                }, //76
+                new Ticket
+                {
+                    Event = eventsUse[12],
+                    Price = Convert.ToDecimal(ticketPriceRandom.Next(13) + ticketPriceRandom.NextDouble()),
+                    Seller = user3,
+                    SellerNotes = "ticket6TheaterEventGomel1 seller User 3"
+                }, //77
+                new Ticket
+                {
+                    Event = eventsUse[13],
+                    Price = Convert.ToDecimal(ticketPriceRandom.Next(13) + ticketPriceRandom.NextDouble()),
+                    Seller = user1,
+                    SellerNotes = "ticket1TheaterEventGomel2 seller User 1"
+                }, //78
+                new Ticket
+                {
+                    Event = eventsUse[13],
+                    Price = Convert.ToDecimal(ticketPriceRandom.Next(13) + ticketPriceRandom.NextDouble()),
+                    Seller = user2,
+                    SellerNotes = "ticket2TheaterEventGomel2 seller User 2"
+                }, //79
+                new Ticket
+                {
+                    Event = eventsUse[13],
+                    Price = Convert.ToDecimal(ticketPriceRandom.Next(13) + ticketPriceRandom.NextDouble()),
+                    Seller = user3,
+                    SellerNotes = "ticket3TheaterEventGomel2 seller User 3"
+                }, //80
+                new Ticket
+                {
+                    Event = eventsUse[13],
+                    Price = Convert.ToDecimal(ticketPriceRandom.Next(13) + ticketPriceRandom.NextDouble()),
+                    Seller = user1,
+                    SellerNotes = "ticket4TheaterEventGomel2 seller User 1"
+                }, //81
+                new Ticket
+                {
+                    Event = eventsUse[13],
+                    Price = Convert.ToDecimal(ticketPriceRandom.Next(13) + ticketPriceRandom.NextDouble()),
+                    Seller = user2,
+                    SellerNotes = "ticket5TheaterEventGomel2 seller User 2"
+                }, //82
+                new Ticket
+                {
+                    Event = eventsUse[13],
+                    Price = Convert.ToDecimal(ticketPriceRandom.Next(13) + ticketPriceRandom.NextDouble()),
+                    Seller = user3,
+                    SellerNotes = "ticket6TheaterEventGomel2 seller User 3"
+                }, //53
+                new Ticket
+                {
+                    Event = eventsUse[14],
+                    Price = Convert.ToDecimal(ticketPriceRandom.Next(13) + ticketPriceRandom.NextDouble()),
+                    Seller = user1,
+                    SellerNotes = "ticket1TheaterEventGrodno1 seller User 1"
+                }, //84
+                new Ticket
+                {
+                    Event = eventsUse[14],
+                    Price = Convert.ToDecimal(ticketPriceRandom.Next(13) + ticketPriceRandom.NextDouble()),
+                    Seller = user2,
+                    SellerNotes = "ticket2TheaterEventGrodno1 seller User 2"
+                }, //85
+                new Ticket
+                {
+                    Event = eventsUse[14],
+                    Price = Convert.ToDecimal(ticketPriceRandom.Next(13) + ticketPriceRandom.NextDouble()),
+                    Seller = user3,
+                    SellerNotes = "ticket3TheaterEventGrodno1 seller User 3"
+                }, //86
+                new Ticket
+                {
+                    Event = eventsUse[14],
+                    Price = Convert.ToDecimal(ticketPriceRandom.Next(13) + ticketPriceRandom.NextDouble()),
+                    Seller = user1,
+                    SellerNotes = "ticket4TheaterEventGrodno1 seller User 1"
+                }, //87
+                new Ticket
+                {
+                    Event = eventsUse[14],
+                    Price = Convert.ToDecimal(ticketPriceRandom.Next(13) + ticketPriceRandom.NextDouble()),
+                    Seller = user2,
+                    SellerNotes = "ticket5TheaterEventGrodno1 seller User 2"
+                }, //88
+                new Ticket
+                {
+                    Event = eventsUse[14],
+                    Price = Convert.ToDecimal(ticketPriceRandom.Next(13) + ticketPriceRandom.NextDouble()),
+                    Seller = user3,
+                    SellerNotes = "ticket6TheaterEventGrodno1 seller User 3"
+                } //89
 
-            #region ticket for cinemaEventGomel1
-
-            var ticket1CinemaEventGomel1 = new Ticket
-            {
-                Event = cinemaEventGomel1,
-                Price = Convert.ToDecimal(ticketPriceRandom.Next(13) + ticketPriceRandom.NextDouble()),
-                Seller = user1,
-                SellerNotes = "ticket1cinemaEventGomel1 seller User 1"
-            };
-            var ticket2CinemaEventGomel1 = new Ticket
-            {
-                Event = cinemaEventGomel1,
-                Price = Convert.ToDecimal(ticketPriceRandom.Next(13) + ticketPriceRandom.NextDouble()),
-                Seller = user2,
-                SellerNotes = "ticket2cinemaEventGomel1 seller User 2"
-            };
-            var ticket3CinemaEventGomel1 = new Ticket
-            {
-                Event = cinemaEventGomel1,
-                Price = Convert.ToDecimal(ticketPriceRandom.Next(13) + ticketPriceRandom.NextDouble()),
-                Seller = user3,
-                SellerNotes = "ticket3cinemaEventGomel1 seller User 3"
-            };
-            var ticket4CinemaEventGomel1 = new Ticket
-            {
-                Event = cinemaEventGomel1,
-                Price = Convert.ToDecimal(ticketPriceRandom.Next(13) + ticketPriceRandom.NextDouble()),
-                Seller = user1,
-                SellerNotes = "ticket4cinemaEventGomel1 seller User 1"
-            };
-            var ticket5CinemaEventGomel1 = new Ticket
-            {
-                Event = cinemaEventGomel1,
-                Price = Convert.ToDecimal(ticketPriceRandom.Next(13) + ticketPriceRandom.NextDouble()),
-                Seller = user2,
-                SellerNotes = "ticket5CinemaEventGomel1 seller User 2"
-            };
-            var ticket6CinemaEventGomel1 = new Ticket
-            {
-                Event = cinemaEventGomel1,
-                Price = Convert.ToDecimal(ticketPriceRandom.Next(13) + ticketPriceRandom.NextDouble()),
-                Seller = user3,
-                SellerNotes = "ticket6CinemaEventGomel1 seller User 3"
-            };
-
-            context.Tickets.Add(ticket1CinemaEventGomel1);
-            context.Tickets.Add(ticket2CinemaEventGomel1);
-            context.Tickets.Add(ticket3CinemaEventGomel1);
-            context.Tickets.Add(ticket4CinemaEventGomel1);
-            context.Tickets.Add(ticket5CinemaEventGomel1);
-            context.Tickets.Add(ticket6CinemaEventGomel1);
-
-            #endregion
-
-            #region ticket for cinemaEventGomel2
-
-            var ticket1CinemaEventGomel2 = new Ticket
-            {
-                Event = cinemaEventGomel2,
-                Price = Convert.ToDecimal(ticketPriceRandom.Next(13) + ticketPriceRandom.NextDouble()),
-                Seller = user1,
-                SellerNotes = "ticket1CinemaEventGomel2 seller User 1"
-            };
-            var ticket2CinemaEventGomel2 = new Ticket
-            {
-                Event = cinemaEventGomel2,
-                Price = Convert.ToDecimal(ticketPriceRandom.Next(13) + ticketPriceRandom.NextDouble()),
-                Seller = user2,
-                SellerNotes = "ticket2CinemaEventGomel2 seller User 2"
-            };
-            var ticket3CinemaEventGomel2 = new Ticket
-            {
-                Event = cinemaEventGomel2,
-                Price = Convert.ToDecimal(ticketPriceRandom.Next(13) + ticketPriceRandom.NextDouble()),
-                Seller = user3,
-                SellerNotes = "ticket3CinemaEventGomel2 seller User 3"
-            };
-            var ticket4CinemaEventGomel2 = new Ticket
-            {
-                Event = cinemaEventGomel2,
-                Price = Convert.ToDecimal(ticketPriceRandom.Next(13) + ticketPriceRandom.NextDouble()),
-                Seller = user1,
-                SellerNotes = "ticket4CinemaEventGomel2 seller User 1"
-            };
-            var ticket5CinemaEventGomel2 = new Ticket
-            {
-                Event = cinemaEventGomel2,
-                Price = Convert.ToDecimal(ticketPriceRandom.Next(13) + ticketPriceRandom.NextDouble()),
-                Seller = user2,
-                SellerNotes = "ticket5CinemaEventGomel2 seller User 2"
-            };
-            var ticket6CinemaEventGomel2 = new Ticket
-            {
-                Event = cinemaEventGomel2,
-                Price = Convert.ToDecimal(ticketPriceRandom.Next(13) + ticketPriceRandom.NextDouble()),
-                Seller = user3,
-                SellerNotes = "ticket6CinemaEventGomel2 seller User 3"
-            };
-
-            context.Tickets.Add(ticket1CinemaEventGomel2);
-            context.Tickets.Add(ticket2CinemaEventGomel2);
-            context.Tickets.Add(ticket3CinemaEventGomel2);
-            context.Tickets.Add(ticket4CinemaEventGomel2);
-            context.Tickets.Add(ticket5CinemaEventGomel2);
-            context.Tickets.Add(ticket6CinemaEventGomel2);
-
-            #endregion
-
-            #region ticket for cinemaEventGomel3
-
-            var ticket1CinemaEventGomel3 = new Ticket
-            {
-                Event = cinemaEventGomel3,
-                Price = Convert.ToDecimal(ticketPriceRandom.Next(13) + ticketPriceRandom.NextDouble()),
-                Seller = user1,
-                SellerNotes = "ticket1CinemaEventGomel3 seller User 1"
-            };
-            var ticket2CinemaEventGomel3 = new Ticket
-            {
-                Event = cinemaEventGomel3,
-                Price = Convert.ToDecimal(ticketPriceRandom.Next(13) + ticketPriceRandom.NextDouble()),
-                Seller = user2,
-                SellerNotes = "ticket2CinemaEventGomel3 seller User 2"
-            };
-            var ticket3CinemaEventGomel3 = new Ticket
-            {
-                Event = cinemaEventGomel3,
-                Price = Convert.ToDecimal(ticketPriceRandom.Next(13) + ticketPriceRandom.NextDouble()),
-                Seller = user3,
-                SellerNotes = "ticket3CinemaEventGomel3 seller User 3"
-            };
-            var ticket4CinemaEventGomel3 = new Ticket
-            {
-                Event = cinemaEventGomel3,
-                Price = Convert.ToDecimal(ticketPriceRandom.Next(13) + ticketPriceRandom.NextDouble()),
-                Seller = user1,
-                SellerNotes = "ticket4CinemaEventGomel3 seller User 1"
-            };
-            var ticket5CinemaEventGomel3 = new Ticket
-            {
-                Event = cinemaEventGomel3,
-                Price = Convert.ToDecimal(ticketPriceRandom.Next(13) + ticketPriceRandom.NextDouble()),
-                Seller = user2,
-                SellerNotes = "ticket5CinemaEventGomel3 seller User 2"
-            };
-            var ticket6CinemaEventGomel3 = new Ticket
-            {
-                Event = cinemaEventGomel3,
-                Price = Convert.ToDecimal(ticketPriceRandom.Next(13) + ticketPriceRandom.NextDouble()),
-                Seller = user3,
-                SellerNotes = "ticket6CinemaEventGomel3 seller User 3"
-            };
-            context.Tickets.Add(ticket1CinemaEventGomel3);
-            context.Tickets.Add(ticket2CinemaEventGomel3);
-            context.Tickets.Add(ticket3CinemaEventGomel3);
-            context.Tickets.Add(ticket4CinemaEventGomel3);
-            context.Tickets.Add(ticket5CinemaEventGomel3);
-            context.Tickets.Add(ticket6CinemaEventGomel3);
-
-            #endregion
-
-            #region ticket for cinemaEventGrodno1
-
-            var ticket1CinemaEventGrodno1 = new Ticket
-            {
-                Event = cinemaEventGrodno1,
-                Price = Convert.ToDecimal(ticketPriceRandom.Next(13) + ticketPriceRandom.NextDouble()),
-                Seller = user1,
-                SellerNotes = "ticket1CinemaEventGrodno1 seller User 1"
-            };
-            var ticket2CinemaEventGrodno1 = new Ticket
-            {
-                Event = cinemaEventGrodno1,
-                Price = Convert.ToDecimal(ticketPriceRandom.Next(13) + ticketPriceRandom.NextDouble()),
-                Seller = user2,
-                SellerNotes = "ticket2CinemaEventGrodno1 seller User 2"
-            };
-            var ticket3CinemaEventGrodno1 = new Ticket
-            {
-                Event = cinemaEventGrodno1,
-                Price = Convert.ToDecimal(ticketPriceRandom.Next(13) + ticketPriceRandom.NextDouble()),
-                Seller = user3,
-                SellerNotes = "ticket3CinemaEventGrodno1 seller User 3"
-            };
-            var ticket4CinemaEventGrodno1 = new Ticket
-            {
-                Event = cinemaEventGrodno1,
-                Price = Convert.ToDecimal(ticketPriceRandom.Next(13) + ticketPriceRandom.NextDouble()),
-                Seller = user1,
-                SellerNotes = "ticket4CinemaEventGrodno1 seller User 1"
-            };
-            var ticket5CinemaEventGrodno1 = new Ticket
-            {
-                Event = cinemaEventGrodno1,
-                Price = Convert.ToDecimal(ticketPriceRandom.Next(13) + ticketPriceRandom.NextDouble()),
-                Seller = user2,
-                SellerNotes = "ticket5CinemaEventGrodno1 seller User 2"
-            };
-            var ticket6CinemaEventGrodno1 = new Ticket
-            {
-                Event = cinemaEventGrodno1,
-                Price = Convert.ToDecimal(ticketPriceRandom.Next(13) + ticketPriceRandom.NextDouble()),
-                Seller = user3,
-                SellerNotes = "ticket6CinemaEventGrodno1 seller User 3"
-            };
-
-            context.Tickets.Add(ticket1CinemaEventGrodno1);
-            context.Tickets.Add(ticket2CinemaEventGrodno1);
-            context.Tickets.Add(ticket3CinemaEventGrodno1);
-            context.Tickets.Add(ticket4CinemaEventGrodno1);
-            context.Tickets.Add(ticket5CinemaEventGrodno1);
-            context.Tickets.Add(ticket6CinemaEventGrodno1);
-
-            #endregion
-
-            #region ticket for cinemaEventGrodno2
-
-            var ticket1CinemaEventGrodno2 = new Ticket
-            {
-                Event = cinemaEventGrodno2,
-                Price = Convert.ToDecimal(ticketPriceRandom.Next(13) + ticketPriceRandom.NextDouble()),
-                Seller = user1,
-                SellerNotes = "ticket1CinemaEventGrodno2 seller User 1"
-            };
-            var ticket2CinemaEventGrodno2 = new Ticket
-            {
-                Event = cinemaEventGrodno2,
-                Price = Convert.ToDecimal(ticketPriceRandom.Next(13) + ticketPriceRandom.NextDouble()),
-                Seller = user2,
-                SellerNotes = "ticket2CinemaEventGrodno2 seller User 2"
-            };
-            var ticket3CinemaEventGrodno2 = new Ticket
-            {
-                Event = cinemaEventGrodno2,
-                Price = Convert.ToDecimal(ticketPriceRandom.Next(13) + ticketPriceRandom.NextDouble()),
-                Seller = user3,
-                SellerNotes = "ticket3CinemaEventGrodno2 seller User 3"
-            };
-            var ticket4CinemaEventGrodno2 = new Ticket
-            {
-                Event = cinemaEventGrodno2,
-                Price = Convert.ToDecimal(ticketPriceRandom.Next(13) + ticketPriceRandom.NextDouble()),
-                Seller = user1,
-                SellerNotes = "ticket4CinemaEventGrodno2 seller User 1"
-            };
-            var ticket5CinemaEventGrodno2 = new Ticket
-            {
-                Event = cinemaEventGrodno2,
-                Price = Convert.ToDecimal(ticketPriceRandom.Next(13) + ticketPriceRandom.NextDouble()),
-                Seller = user2,
-                SellerNotes = "ticket5CinemaEventGrodno2 seller User 2"
-            };
-            var ticket6CinemaEventGrodno2 = new Ticket
-            {
-                Event = cinemaEventGrodno2,
-                Price = Convert.ToDecimal(ticketPriceRandom.Next(13) + ticketPriceRandom.NextDouble()),
-                Seller = user3,
-                SellerNotes = "ticket6CinemaEventGrodno2 seller User 3"
-            };
-
-            context.Tickets.Add(ticket1CinemaEventGrodno2);
-            context.Tickets.Add(ticket2CinemaEventGrodno2);
-            context.Tickets.Add(ticket3CinemaEventGrodno2);
-            context.Tickets.Add(ticket4CinemaEventGrodno2);
-            context.Tickets.Add(ticket5CinemaEventGrodno2);
-            context.Tickets.Add(ticket6CinemaEventGrodno2);
-
-            #endregion
-
-            #region ticket for cinemaEventVitebsk1
-
-            var ticket1CinemaEventVitebsk1 = new Ticket
-            {
-                Event = cinemaEventVitebsk1,
-                Price = Convert.ToDecimal(ticketPriceRandom.Next(13) + ticketPriceRandom.NextDouble()),
-                Seller = user1,
-                SellerNotes = "ticket1CinemaEventVitebsk1 seller User 1"
-            };
-            var ticket2CinemaEventVitebsk1 = new Ticket
-            {
-                Event = cinemaEventVitebsk1,
-                Price = Convert.ToDecimal(ticketPriceRandom.Next(13) + ticketPriceRandom.NextDouble()),
-                Seller = user2,
-                SellerNotes = "ticket2CinemaEventVitebsk1 seller User 2"
-            };
-            var ticket3CinemaEventVitebsk1 = new Ticket
-            {
-                Event = cinemaEventVitebsk1,
-                Price = Convert.ToDecimal(ticketPriceRandom.Next(13) + ticketPriceRandom.NextDouble()),
-                Seller = user3,
-                SellerNotes = "ticket3CinemaEventVitebsk1 seller User 3"
-            };
-            var ticket4CinemaEventVitebsk1 = new Ticket
-            {
-                Event = cinemaEventVitebsk1,
-                Price = Convert.ToDecimal(ticketPriceRandom.Next(13) + ticketPriceRandom.NextDouble()),
-                Seller = user1,
-                SellerNotes = "ticket4CinemaEventVitebsk1 seller User 1"
-            };
-            var ticket5CinemaEventVitebsk1 = new Ticket
-            {
-                Event = cinemaEventVitebsk1,
-                Price = Convert.ToDecimal(ticketPriceRandom.Next(13) + ticketPriceRandom.NextDouble()),
-                Seller = user2,
-                SellerNotes = "ticket5CinemaEventVitebsk1 seller User 2"
-            };
-            var ticket6CinemaEventVitebsk1 = new Ticket
-            {
-                Event = cinemaEventVitebsk1,
-                Price = Convert.ToDecimal(ticketPriceRandom.Next(13) + ticketPriceRandom.NextDouble()),
-                Seller = user3,
-                SellerNotes = "ticket6CinemaEventVitebsk1 seller User 3"
-            };
-
-            context.Tickets.Add(ticket1CinemaEventVitebsk1);
-            context.Tickets.Add(ticket2CinemaEventVitebsk1);
-            context.Tickets.Add(ticket3CinemaEventVitebsk1);
-            context.Tickets.Add(ticket4CinemaEventVitebsk1);
-            context.Tickets.Add(ticket5CinemaEventVitebsk1);
-            context.Tickets.Add(ticket6CinemaEventVitebsk1);
-
-            #endregion
-
-            #region ticket for cinemaEventBrest1
-
-            var ticket1CinemaEventBrest1 = new Ticket
-            {
-                Event = cinemaEventBrest1,
-                Price = Convert.ToDecimal(ticketPriceRandom.Next(13) + ticketPriceRandom.NextDouble()),
-                Seller = user1,
-                SellerNotes = "ticket1CinemaEventBrest1 seller User 1"
-            };
-            var ticket2CinemaEventBrest1 = new Ticket
-            {
-                Event = cinemaEventBrest1,
-                Price = Convert.ToDecimal(ticketPriceRandom.Next(13) + ticketPriceRandom.NextDouble()),
-                Seller = user2,
-                SellerNotes = "ticket2CinemaEventBrest1 seller User 2"
-            };
-            var ticket3CinemaEventBrest1 = new Ticket
-            {
-                Event = cinemaEventBrest1,
-                Price = Convert.ToDecimal(ticketPriceRandom.Next(13) + ticketPriceRandom.NextDouble()),
-                Seller = user3,
-                SellerNotes = "ticket3CinemaEventBrest1 seller User 3"
-            };
-            var ticket4CinemaEventBrest1 = new Ticket
-            {
-                Event = cinemaEventBrest1,
-                Price = Convert.ToDecimal(ticketPriceRandom.Next(13) + ticketPriceRandom.NextDouble()),
-                Seller = user1,
-                SellerNotes = "ticket4CinemaEventBrest1 seller User 1"
-            };
-            var ticket5CinemaEventBrest1 = new Ticket
-            {
-                Event = cinemaEventBrest1,
-                Price = Convert.ToDecimal(ticketPriceRandom.Next(13) + ticketPriceRandom.NextDouble()),
-                Seller = user2,
-                SellerNotes = "ticket5CinemaEventBrest1 seller User 2"
-            };
-            var ticket6CinemaEventBrest1 = new Ticket
-            {
-                Event = cinemaEventBrest1,
-                Price = Convert.ToDecimal(ticketPriceRandom.Next(13) + ticketPriceRandom.NextDouble()),
-                Seller = user3,
-                SellerNotes = "ticket6CinemaEventBrest1 seller User 3"
-            };
-
-            context.Tickets.Add(ticket1CinemaEventBrest1);
-            context.Tickets.Add(ticket2CinemaEventBrest1);
-            context.Tickets.Add(ticket3CinemaEventBrest1);
-            context.Tickets.Add(ticket4CinemaEventBrest1);
-            context.Tickets.Add(ticket5CinemaEventBrest1);
-            context.Tickets.Add(ticket6CinemaEventBrest1);
-
-            #endregion
-
-            #region ticket for cinemaEventMogilev1
-
-            var ticket1CinemaEventMogilev1 = new Ticket
-            {
-                Event = cinemaEventMogilev1,
-                Price = Convert.ToDecimal(ticketPriceRandom.Next(13) + ticketPriceRandom.NextDouble()),
-                Seller = user1,
-                SellerNotes = "ticket1CinemaEventMogilev1 seller User 1"
-            };
-            var ticket2CinemaEventMogilev1 = new Ticket
-            {
-                Event = cinemaEventMogilev1,
-                Price = Convert.ToDecimal(ticketPriceRandom.Next(13) + ticketPriceRandom.NextDouble()),
-                Seller = user2,
-                SellerNotes = "ticket2CinemaEventMogilev1 seller User 2"
-            };
-            var ticket3CinemaEventMogilev1 = new Ticket
-            {
-                Event = cinemaEventMogilev1,
-                Price = Convert.ToDecimal(ticketPriceRandom.Next(13) + ticketPriceRandom.NextDouble()),
-                Seller = user3,
-                SellerNotes = "ticket3CinemaEventMogilev1 seller User 3"
-            };
-            var ticket4CinemaEventMogilev1 = new Ticket
-            {
-                Event = cinemaEventMogilev1,
-                Price = Convert.ToDecimal(ticketPriceRandom.Next(13) + ticketPriceRandom.NextDouble()),
-                Seller = user1,
-                SellerNotes = "ticket4CinemaEventMogilev1 seller User 1"
-            };
-            var ticket5CinemaEventMogilev1 = new Ticket
-            {
-                Event = cinemaEventMogilev1,
-                Price = Convert.ToDecimal(ticketPriceRandom.Next(13) + ticketPriceRandom.NextDouble()),
-                Seller = user2,
-                SellerNotes = "ticket5CinemaEventMogilev1 seller User 2"
-            };
-            var ticket6CinemaEventMogilev1 = new Ticket
-            {
-                Event = cinemaEventMogilev1,
-                Price = Convert.ToDecimal(ticketPriceRandom.Next(13) + ticketPriceRandom.NextDouble()),
-                Seller = user3,
-                SellerNotes = "ticket6CinemaEventMogilev1 seller User 3"
-            };
-
-            context.Tickets.Add(ticket1CinemaEventMogilev1);
-            context.Tickets.Add(ticket2CinemaEventMogilev1);
-            context.Tickets.Add(ticket3CinemaEventMogilev1);
-            context.Tickets.Add(ticket4CinemaEventMogilev1);
-            context.Tickets.Add(ticket5CinemaEventMogilev1);
-            context.Tickets.Add(ticket6CinemaEventMogilev1);
-
-            #endregion
-
-            #region ticket for theaterEventMinsk1
-
-            var ticket1TheaterEventMinsk1 = new Ticket
-            {
-                Event = theaterEventMinsk1,
-                Price = Convert.ToDecimal(ticketPriceRandom.Next(13) + ticketPriceRandom.NextDouble()),
-                Seller = user1,
-                SellerNotes = "ticket1TheaterEventMinsk1 seller User 1"
-            };
-            var ticket2TheaterEventMinsk1 = new Ticket
-            {
-                Event = theaterEventMinsk1,
-                Price = Convert.ToDecimal(ticketPriceRandom.Next(13) + ticketPriceRandom.NextDouble()),
-                Seller = user2,
-                SellerNotes = "ticket2TheaterEventMinsk1 seller User 2"
-            };
-            var ticket3TheaterEventMinsk1 = new Ticket
-            {
-                Event = theaterEventMinsk1,
-                Price = Convert.ToDecimal(ticketPriceRandom.Next(13) + ticketPriceRandom.NextDouble()),
-                Seller = user3,
-                SellerNotes = "ticket3TheaterEventMinsk1 seller User 3"
-            };
-            var ticket4TheaterEventMinsk1 = new Ticket
-            {
-                Event = theaterEventMinsk1,
-                Price = Convert.ToDecimal(ticketPriceRandom.Next(13) + ticketPriceRandom.NextDouble()),
-                Seller = user1,
-                SellerNotes = "ticket4TheaterEventMinsk1 seller User 1"
-            };
-            var ticket5TheaterEventMinsk1 = new Ticket
-            {
-                Event = theaterEventMinsk1,
-                Price = Convert.ToDecimal(ticketPriceRandom.Next(13) + ticketPriceRandom.NextDouble()),
-                Seller = user2,
-                SellerNotes = "ticket5TheaterEventMinsk1 seller User 2"
-            };
-            var ticket6TheaterEventMinsk1 = new Ticket
-            {
-                Event = theaterEventMinsk1,
-                Price = Convert.ToDecimal(ticketPriceRandom.Next(13) + ticketPriceRandom.NextDouble()),
-                Seller = user3,
-                SellerNotes = "ticket6TheaterEventMinsk1 seller User 3"
-            };
-
-            context.Tickets.Add(ticket1TheaterEventMinsk1);
-            context.Tickets.Add(ticket2TheaterEventMinsk1);
-            context.Tickets.Add(ticket3TheaterEventMinsk1);
-            context.Tickets.Add(ticket4TheaterEventMinsk1);
-            context.Tickets.Add(ticket5TheaterEventMinsk1);
-            context.Tickets.Add(ticket6TheaterEventMinsk1);
-
-            #endregion
-
-            #region ticket for theaterEventMinsk2
-
-            var ticket1TheaterEventMinsk2 = new Ticket
-            {
-                Event = theaterEventMinsk2,
-                Price = Convert.ToDecimal(ticketPriceRandom.Next(13) + ticketPriceRandom.NextDouble()),
-                Seller = user1,
-                SellerNotes = "ticket1TheaterEventMinsk2 seller User 1"
-            };
-            var ticket2TheaterEventMinsk2 = new Ticket
-            {
-                Event = theaterEventMinsk2,
-                Price = Convert.ToDecimal(ticketPriceRandom.Next(13) + ticketPriceRandom.NextDouble()),
-                Seller = user2,
-                SellerNotes = "ticket2TheaterEventMinsk2 seller User 2"
-            };
-            var ticket3TheaterEventMinsk2 = new Ticket
-            {
-                Event = theaterEventMinsk2,
-                Price = Convert.ToDecimal(ticketPriceRandom.Next(13) + ticketPriceRandom.NextDouble()),
-                Seller = user3,
-                SellerNotes = "ticket3TheaterEventMinsk2 seller User 3"
-            };
-            var ticket4TheaterEventMinsk2 = new Ticket
-            {
-                Event = theaterEventMinsk2,
-                Price = Convert.ToDecimal(ticketPriceRandom.Next(13) + ticketPriceRandom.NextDouble()),
-                Seller = user1,
-                SellerNotes = "ticket4TheaterEventMinsk2 seller User 1"
-            };
-            var ticket5TheaterEventMinsk2 = new Ticket
-            {
-                Event = theaterEventMinsk2,
-                Price = Convert.ToDecimal(ticketPriceRandom.Next(13) + ticketPriceRandom.NextDouble()),
-                Seller = user2,
-                SellerNotes = "ticket5TheaterEventMinsk2 seller User 2"
-            };
-            var ticket6TheaterEventMinsk2 = new Ticket
-            {
-                Event = theaterEventMinsk2,
-                Price = Convert.ToDecimal(ticketPriceRandom.Next(13) + ticketPriceRandom.NextDouble()),
-                Seller = user3,
-                SellerNotes = "ticket6TheaterEventMinsk2 seller User 3"
-            };
-
-            context.Tickets.Add(ticket1TheaterEventMinsk2);
-            context.Tickets.Add(ticket2TheaterEventMinsk2);
-            context.Tickets.Add(ticket3TheaterEventMinsk2);
-            context.Tickets.Add(ticket4TheaterEventMinsk2);
-            context.Tickets.Add(ticket5TheaterEventMinsk2);
-            context.Tickets.Add(ticket6TheaterEventMinsk2);
-
-            #endregion
-
-            #region ticket for theaterEventGomel1
-
-            var ticket1TheaterEventGomel1 = new Ticket
-            {
-                Event = theaterEventGomel1,
-                Price = Convert.ToDecimal(ticketPriceRandom.Next(13) + ticketPriceRandom.NextDouble()),
-                Seller = user1,
-                SellerNotes = "ticket1TheaterEventGomel1 seller User 1"
-            };
-            var ticket2TheaterEventGomel1 = new Ticket
-            {
-                Event = theaterEventGomel1,
-                Price = Convert.ToDecimal(ticketPriceRandom.Next(13) + ticketPriceRandom.NextDouble()),
-                Seller = user2,
-                SellerNotes = "ticket2TheaterEventGomel1 seller User 2"
-            };
-            var ticket3TheaterEventGomel1 = new Ticket
-            {
-                Event = theaterEventGomel1,
-                Price = Convert.ToDecimal(ticketPriceRandom.Next(13) + ticketPriceRandom.NextDouble()),
-                Seller = user3,
-                SellerNotes = "ticket3TheaterEventGomel1 seller User 3"
-            };
-            var ticket4TheaterEventGomel1 = new Ticket
-            {
-                Event = theaterEventGomel1,
-                Price = Convert.ToDecimal(ticketPriceRandom.Next(13) + ticketPriceRandom.NextDouble()),
-                Seller = user1,
-                SellerNotes = "ticket4TheaterEventGomel1 seller User 1"
-            };
-            var ticket5TheaterEventGomel1 = new Ticket
-            {
-                Event = theaterEventGomel1,
-                Price = Convert.ToDecimal(ticketPriceRandom.Next(13) + ticketPriceRandom.NextDouble()),
-                Seller = user2,
-                SellerNotes = "ticket5TheaterEventGomel1 seller User 2"
-            };
-            var ticket6TheaterEventGomel1 = new Ticket
-            {
-                Event = theaterEventGomel1,
-                Price = Convert.ToDecimal(ticketPriceRandom.Next(13) + ticketPriceRandom.NextDouble()),
-                Seller = user3,
-                SellerNotes = "ticket6TheaterEventGomel1 seller User 3"
+                ,
+                new Ticket
+                {
+                    Event = eventsUse[15],
+                    Price = Convert.ToDecimal(ticketPriceRandom.Next(13) + ticketPriceRandom.NextDouble()),
+                    Seller = user1,
+                    SellerNotes = "ticket1TheaterEventVitebsk1 seller User 1"
+                },//90
+                new Ticket
+                {
+                    Event = eventsUse[15],
+                    Price = Convert.ToDecimal(ticketPriceRandom.Next(13) + ticketPriceRandom.NextDouble()),
+                    Seller = user2,
+                    SellerNotes = "ticket2TheaterEventVitebsk1 seller User 2"
+                },//91
+                new Ticket
+                {
+                    Event = eventsUse[15],
+                    Price = Convert.ToDecimal(ticketPriceRandom.Next(13) + ticketPriceRandom.NextDouble()),
+                    Seller = user3,
+                    SellerNotes = "ticket3TheaterEventVitebsk1 seller User 3"
+                },//92
+                new Ticket
+                {
+                    Event = eventsUse[15],
+                    Price = Convert.ToDecimal(ticketPriceRandom.Next(13) + ticketPriceRandom.NextDouble()),
+                    Seller = user1,
+                    SellerNotes = "ticket4TheaterEventVitebsk1 seller User 1"
+                },//93
+                new Ticket
+                {
+                    Event = eventsUse[15],
+                    Price = Convert.ToDecimal(ticketPriceRandom.Next(13) + ticketPriceRandom.NextDouble()),
+                    Seller = user2,
+                    SellerNotes = "ticket5TheaterEventVitebsk1 seller User 2"
+                },//94
+                new Ticket
+                {
+                    Event = eventsUse[15],
+                    Price = Convert.ToDecimal(ticketPriceRandom.Next(13) + ticketPriceRandom.NextDouble()),
+                    Seller = user3,
+                    SellerNotes = "ticket6TheaterEventVitebsk1 seller User 3"
+                }//95
             };
 
-            context.Tickets.Add(ticket1TheaterEventGomel1);
-            context.Tickets.Add(ticket2TheaterEventGomel1);
-            context.Tickets.Add(ticket3TheaterEventGomel1);
-            context.Tickets.Add(ticket4TheaterEventGomel1);
-            context.Tickets.Add(ticket5TheaterEventGomel1);
-            context.Tickets.Add(ticket6TheaterEventGomel1);
 
-            #endregion
+            #region tickets
 
-            #region ticket for theaterEventGomel2
+            var ticketsUse = new List<Ticket>();
+            foreach (var item in tickets)
+            {
+                if (ticketsService.IsExists(item.SellerNotes))
+                {
+                    ticketsUse.Add(ticketsService.Get(item.SellerNotes));
+                }
+                else
+                {
+                    try
+                    {
+                        ticketsService.Add(item);
+                        ticketsUse.Add(ticketsService.Get(item.SellerNotes));
+                    }
+                    catch (BllValidationException) { }
+                }
+            }
 
-            var ticket1TheaterEventGomel2 = new Ticket
-            {
-                Event = theaterEventGomel2,
-                Price = Convert.ToDecimal(ticketPriceRandom.Next(13) + ticketPriceRandom.NextDouble()),
-                Seller = user1,
-                SellerNotes = "ticket1TheaterEventGomel2 seller User 1"
-            };
-            var ticket2TheaterEventGomel2 = new Ticket
-            {
-                Event = theaterEventGomel2,
-                Price = Convert.ToDecimal(ticketPriceRandom.Next(13) + ticketPriceRandom.NextDouble()),
-                Seller = user2,
-                SellerNotes = "ticket2TheaterEventGomel2 seller User 2"
-            };
-            var ticket3TheaterEventGomel2 = new Ticket
-            {
-                Event = theaterEventGomel2,
-                Price = Convert.ToDecimal(ticketPriceRandom.Next(13) + ticketPriceRandom.NextDouble()),
-                Seller = user3,
-                SellerNotes = "ticket3TheaterEventGomel2 seller User 3"
-            };
-            var ticket4TheaterEventGomel2 = new Ticket
-            {
-                Event = theaterEventGomel2,
-                Price = Convert.ToDecimal(ticketPriceRandom.Next(13) + ticketPriceRandom.NextDouble()),
-                Seller = user1,
-                SellerNotes = "ticket4TheaterEventGomel2 seller User 1"
-            };
-            var ticket5TheaterEventGomel2 = new Ticket
-            {
-                Event = theaterEventGomel2,
-                Price = Convert.ToDecimal(ticketPriceRandom.Next(13) + ticketPriceRandom.NextDouble()),
-                Seller = user2,
-                SellerNotes = "ticket5TheaterEventGomel2 seller User 2"
-            };
-            var ticket6TheaterEventGomel2 = new Ticket
-            {
-                Event = theaterEventGomel2,
-                Price = Convert.ToDecimal(ticketPriceRandom.Next(13) + ticketPriceRandom.NextDouble()),
-                Seller = user3,
-                SellerNotes = "ticket6TheaterEventGomel2 seller User 3"
-            };
 
-            context.Tickets.Add(ticket1TheaterEventGomel2);
-            context.Tickets.Add(ticket2TheaterEventGomel2);
-            context.Tickets.Add(ticket3TheaterEventGomel2);
-            context.Tickets.Add(ticket4TheaterEventGomel2);
-            context.Tickets.Add(ticket5TheaterEventGomel2);
-            context.Tickets.Add(ticket6TheaterEventGomel2);
 
-            #endregion
-
-            #region ticket for theaterEventGrodno1
-
-            var ticket1TheaterEventGrodno1 = new Ticket
-            {
-                Event = theaterEventGrodno1,
-                Price = Convert.ToDecimal(ticketPriceRandom.Next(13) + ticketPriceRandom.NextDouble()),
-                Seller = user1,
-                SellerNotes = "ticket1TheaterEventGrodno1 seller User 1"
-            };
-            var ticket2TheaterEventGrodno1 = new Ticket
-            {
-                Event = theaterEventGrodno1,
-                Price = Convert.ToDecimal(ticketPriceRandom.Next(13) + ticketPriceRandom.NextDouble()),
-                Seller = user2,
-                SellerNotes = "ticket2TheaterEventGrodno1 seller User 2"
-            };
-            var ticket3TheaterEventGrodno1 = new Ticket
-            {
-                Event = theaterEventGrodno1,
-                Price = Convert.ToDecimal(ticketPriceRandom.Next(13) + ticketPriceRandom.NextDouble()),
-                Seller = user3,
-                SellerNotes = "ticket3TheaterEventGrodno1 seller User 3"
-            };
-            var ticket4TheaterEventGrodno1 = new Ticket
-            {
-                Event = theaterEventGrodno1,
-                Price = Convert.ToDecimal(ticketPriceRandom.Next(13) + ticketPriceRandom.NextDouble()),
-                Seller = user1,
-                SellerNotes = "ticket4TheaterEventGrodno1 seller User 1"
-            };
-            var ticket5TheaterEventGrodno1 = new Ticket
-            {
-                Event = theaterEventGrodno1,
-                Price = Convert.ToDecimal(ticketPriceRandom.Next(13) + ticketPriceRandom.NextDouble()),
-                Seller = user2,
-                SellerNotes = "ticket5TheaterEventGrodno1 seller User 2"
-            };
-            var ticket6TheaterEventGrodno1 = new Ticket
-            {
-                Event = theaterEventGrodno1,
-                Price = Convert.ToDecimal(ticketPriceRandom.Next(13) + ticketPriceRandom.NextDouble()),
-                Seller = user3,
-                SellerNotes = "ticket6TheaterEventGrodno1 seller User 3"
-            };
-
-            context.Tickets.Add(ticket1TheaterEventGrodno1);
-            context.Tickets.Add(ticket2TheaterEventGrodno1);
-            context.Tickets.Add(ticket3TheaterEventGrodno1);
-            context.Tickets.Add(ticket4TheaterEventGrodno1);
-            context.Tickets.Add(ticket5TheaterEventGrodno1);
-            context.Tickets.Add(ticket6TheaterEventGrodno1);
-
-            #endregion
-
-            #region ticket for theaterEventVitebsk1
-
-            var ticket1TheaterEventVitebsk1 = new Ticket
-            {
-                Event = theaterEventVitebsk1,
-                Price = Convert.ToDecimal(ticketPriceRandom.Next(13) + ticketPriceRandom.NextDouble()),
-                Seller = user1,
-                SellerNotes = "ticket1TheaterEventVitebsk1 seller User 1"
-            };
-            var ticket2TheaterEventVitebsk1 = new Ticket
-            {
-                Event = theaterEventVitebsk1,
-                Price = Convert.ToDecimal(ticketPriceRandom.Next(13) + ticketPriceRandom.NextDouble()),
-                Seller = user2,
-                SellerNotes = "ticket2TheaterEventVitebsk1 seller User 2"
-            };
-            var ticket3TheaterEventVitebsk1 = new Ticket
-            {
-                Event = theaterEventVitebsk1,
-                Price = Convert.ToDecimal(ticketPriceRandom.Next(13) + ticketPriceRandom.NextDouble()),
-                Seller = user3,
-                SellerNotes = "ticket3TheaterEventVitebsk1 seller User 3"
-            };
-            var ticket4TheaterEventVitebsk1 = new Ticket
-            {
-                Event = theaterEventVitebsk1,
-                Price = Convert.ToDecimal(ticketPriceRandom.Next(13) + ticketPriceRandom.NextDouble()),
-                Seller = user1,
-                SellerNotes = "ticket4TheaterEventVitebsk1 seller User 1"
-            };
-            var ticket5TheaterEventVitebsk1 = new Ticket
-            {
-                Event = theaterEventVitebsk1,
-                Price = Convert.ToDecimal(ticketPriceRandom.Next(13) + ticketPriceRandom.NextDouble()),
-                Seller = user2,
-                SellerNotes = "ticket5TheaterEventVitebsk1 seller User 2"
-            };
-            var ticket6TheaterEventVitebsk1 = new Ticket
-            {
-                Event = theaterEventVitebsk1,
-                Price = Convert.ToDecimal(ticketPriceRandom.Next(13) + ticketPriceRandom.NextDouble()),
-                Seller = user3,
-                SellerNotes = "ticket6TheaterEventVitebsk1 seller User 3"
-            };
-
-            context.Tickets.Add(ticket1TheaterEventVitebsk1);
-            context.Tickets.Add(ticket2TheaterEventVitebsk1);
-            context.Tickets.Add(ticket3TheaterEventVitebsk1);
-            context.Tickets.Add(ticket4TheaterEventVitebsk1);
-            context.Tickets.Add(ticket5TheaterEventVitebsk1);
-            context.Tickets.Add(ticket6TheaterEventVitebsk1);
+            var ticket1CinemaEventMinsk1 = ticketsUse[0];
+            var ticket2CinemaEventMinsk1 = ticketsUse[1];
+            var ticket3CinemaEventMinsk1 = ticketsUse[2];
+            var ticket4CinemaEventMinsk1 = ticketsUse[3];
+            var ticket5CinemaEventMinsk1 = ticketsUse[4];
+            var ticket6CinemaEventMinsk1 = ticketsUse[5];
+            var ticket1CinemaEventMinsk2 = ticketsUse[6];
+            var ticket2CinemaEventMinsk2 = ticketsUse[7];
+            var ticket3CinemaEventMinsk2 = ticketsUse[8];
+            var ticket4CinemaEventMinsk2 = ticketsUse[9];
+            var ticket5CinemaEventMinsk2 = ticketsUse[10];
+            var ticket6CinemaEventMinsk2 = ticketsUse[11];
+            var ticket1CinemaEventGomel1 = ticketsUse[12];
+            var ticket2CinemaEventGomel1 = ticketsUse[13];
+            var ticket3CinemaEventGomel1 = ticketsUse[14];
+            var ticket4CinemaEventGomel1 = ticketsUse[15];
+            var ticket5CinemaEventGomel1 = ticketsUse[16];
+            var ticket6CinemaEventGomel1 = ticketsUse[17];
+            var ticket1CinemaEventGomel2 = ticketsUse[18];
+            var ticket2CinemaEventGomel2 = ticketsUse[19];
+            var ticket3CinemaEventGomel2 = ticketsUse[20];
+            var ticket4CinemaEventGomel2 = ticketsUse[21];
+            var ticket5CinemaEventGomel2 = ticketsUse[22];
+            var ticket6CinemaEventGomel2 = ticketsUse[23];
+            var ticket1CinemaEventGomel3 = ticketsUse[24];
+            var ticket2CinemaEventGomel3 = ticketsUse[25];
+            var ticket3CinemaEventGomel3 = ticketsUse[26];
+            var ticket4CinemaEventGomel3 = ticketsUse[27];
+            var ticket5CinemaEventGomel3 = ticketsUse[28];
+            var ticket6CinemaEventGomel3 = ticketsUse[29];
+            var ticket1CinemaEventGrodno1 = ticketsUse[30];
+            var ticket2CinemaEventGrodno1 = ticketsUse[31];
+            var ticket3CinemaEventGrodno1 = ticketsUse[32];
+            var ticket4CinemaEventGrodno1 = ticketsUse[33];
+            var ticket5CinemaEventGrodno1 = ticketsUse[34];
+            var ticket6CinemaEventGrodno1 = ticketsUse[35];
+            var ticket1CinemaEventGrodno2 = ticketsUse[36];
+            var ticket2CinemaEventGrodno2 = ticketsUse[37];
+            var ticket3CinemaEventGrodno2 = ticketsUse[38];
+            var ticket4CinemaEventGrodno2 = ticketsUse[39];
+            var ticket5CinemaEventGrodno2 = ticketsUse[40];
+            var ticket6CinemaEventGrodno2 = ticketsUse[41];
+            var ticket1CinemaEventVitebsk1 = ticketsUse[42];
+            var ticket2CinemaEventVitebsk1 = ticketsUse[43];
+            var ticket3CinemaEventVitebsk1 = ticketsUse[44];
+            var ticket4CinemaEventVitebsk1 = ticketsUse[45];
+            var ticket5CinemaEventVitebsk1 = ticketsUse[46];
+            var ticket6CinemaEventVitebsk1 = ticketsUse[47];
+            var ticket1CinemaEventBrest1 = ticketsUse[48];
+            var ticket2CinemaEventBrest1 = ticketsUse[49];
+            var ticket3CinemaEventBrest1 = ticketsUse[50];
+            var ticket4CinemaEventBrest1 = ticketsUse[51];
+            var ticket5CinemaEventBrest1 = ticketsUse[52];
+            var ticket6CinemaEventBrest1 = ticketsUse[53];
+            var ticket1CinemaEventMogilev1 = ticketsUse[54];
+            var ticket2CinemaEventMogilev1 = ticketsUse[55];
+            var ticket3CinemaEventMogilev1 = ticketsUse[56];
+            var ticket4CinemaEventMogilev1 = ticketsUse[57];
+            var ticket5CinemaEventMogilev1 = ticketsUse[58];
+            var ticket6CinemaEventMogilev1 = ticketsUse[59];
+            var ticket1TheaterEventMinsk1 = ticketsUse[60];
+            var ticket2TheaterEventMinsk1 = ticketsUse[61];
+            var ticket3TheaterEventMinsk1 = ticketsUse[62];
+            var ticket4TheaterEventMinsk1 = ticketsUse[63];
+            var ticket5TheaterEventMinsk1 = ticketsUse[64];
+            var ticket6TheaterEventMinsk1 = ticketsUse[65];
+            var ticket1TheaterEventMinsk2 = ticketsUse[66];
+            var ticket2TheaterEventMinsk2 = ticketsUse[67];
+            var ticket3TheaterEventMinsk2 = ticketsUse[68];
+            var ticket4TheaterEventMinsk2 = ticketsUse[69];
+            var ticket5TheaterEventMinsk2 = ticketsUse[70];
+            var ticket6TheaterEventMinsk2 = ticketsUse[71];
+            var ticket1TheaterEventGomel1 = ticketsUse[72];
+            var ticket2TheaterEventGomel1 = ticketsUse[73];
+            var ticket3TheaterEventGomel1 = ticketsUse[74];
+            var ticket4TheaterEventGomel1 = ticketsUse[75];
+            var ticket5TheaterEventGomel1 = ticketsUse[76];
+            var ticket6TheaterEventGomel1 = ticketsUse[77];
+            var ticket1TheaterEventGomel2 = ticketsUse[78];
+            var ticket2TheaterEventGomel2 = ticketsUse[79];
+            var ticket3TheaterEventGomel2 = ticketsUse[80];
+            var ticket4TheaterEventGomel2 = ticketsUse[81];
+            var ticket5TheaterEventGomel2 = ticketsUse[82];
+            var ticket6TheaterEventGomel2 = ticketsUse[83];
+            var ticket1TheaterEventGrodno1 = ticketsUse[84];
+            var ticket2TheaterEventGrodno1 = ticketsUse[85];
+            var ticket3TheaterEventGrodno1 = ticketsUse[86];
+            var ticket4TheaterEventGrodno1 = ticketsUse[87];
+            var ticket5TheaterEventGrodno1 = ticketsUse[88];
+            var ticket6TheaterEventGrodno1 = ticketsUse[89];
+            var ticket1TheaterEventVitebsk1 = ticketsUse[90];
+            var ticket2TheaterEventVitebsk1 = ticketsUse[91];
+            var ticket3TheaterEventVitebsk1 = ticketsUse[92];
+            var ticket4TheaterEventVitebsk1 = ticketsUse[93];
+            var ticket5TheaterEventVitebsk1 = ticketsUse[94];
+            var ticket6TheaterEventVitebsk1 = ticketsUse[95];
 
             #endregion
 

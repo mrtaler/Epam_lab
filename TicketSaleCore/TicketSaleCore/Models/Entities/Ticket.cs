@@ -16,6 +16,10 @@
         public int EventId { get; set; }
         public Event Event { get; set; }
 
+        //public override int GetHashCode()
+        //{
+        //    return 1; //1 hashcode;
+        //}
     }
     //public class TicketConfiguration : EntityTypeConfiguration<Ticket>
     //{

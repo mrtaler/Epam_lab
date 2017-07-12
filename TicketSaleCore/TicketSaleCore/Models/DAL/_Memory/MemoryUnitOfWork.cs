@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using System;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using TicketSaleCore.Models.DAL.IRepository;
 using TicketSaleCore.Models.Entities;
@@ -69,6 +70,8 @@ namespace TicketSaleCore.Models.DAL._Memory
         public DbSet<IdentityUserToken<string>> UserTokens => userTokens ?? (userTokens = new MemoryGenericRepository<IdentityUserToken<string>>());
         public DbSet<IdentityRole> Roles => roles ?? (roles = new MemoryGenericRepository<IdentityRole>());
         public DbSet<IdentityRoleClaim<string>> RoleClaims => roleClaims ?? (roleClaims = new MemoryGenericRepository<IdentityRoleClaim<string>>());
+
+        public DbContext Context => throw new NotImplementedException();
         #endregion
 
 

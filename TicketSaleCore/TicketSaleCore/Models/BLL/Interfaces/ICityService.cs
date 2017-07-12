@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using TicketSaleCore.Models.BLL.Infrastructure;
+﻿using TicketSaleCore.Models.BLL.Infrastructure;
 using TicketSaleCore.Models.Entities;
 
 namespace TicketSaleCore.Models.BLL.Interfaces
@@ -9,7 +8,6 @@ namespace TicketSaleCore.Models.BLL.Interfaces
     /// </summary>
     public interface ICityService : IBllService<City>
     {
-        bool IsExists(string name);
-        City Get(string name);
+
     }
 }

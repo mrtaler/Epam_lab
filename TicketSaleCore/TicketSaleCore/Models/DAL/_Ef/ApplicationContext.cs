@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using System;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using TicketSaleCore.Models.DAL.IRepository;
 using TicketSaleCore.Models.Entities;
@@ -25,7 +26,9 @@ namespace TicketSaleCore.Models.DAL._Ef
         public virtual DbSet<Ticket> Tickets { get; set; }
         public virtual DbSet<Venue> Venues { get; set; }
         public virtual DbSet<AppUser> AppUsers { get; set; }
-       
+
+        public DbContext Context => this;
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
