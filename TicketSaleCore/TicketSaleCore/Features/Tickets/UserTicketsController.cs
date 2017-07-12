@@ -50,15 +50,15 @@ namespace TicketSaleCore.Features.Tickets
 
         public async Task<IActionResult> SellingTickets(string userId = null)
         {
-            return PartialView(context.GetAllUserTickets(userId, TicketStatusEnum.TicketStatus.SellingTickets));
+            return PartialView(context.GetAllUserTickets(userId, TicketStatus.SellingTickets));
         }
         public async Task<IActionResult> WaitingConfomition(string userId = null)
         {
-            return PartialView("SellingTickets", context.GetAllUserTickets(userId, TicketStatusEnum.TicketStatus.WaitingConfomition));
+            return PartialView("SellingTickets", context.GetAllUserTickets(userId, TicketStatus.WaitingConfomition));
         }
         public async Task<IActionResult> Sold(string userId = null)
         {
-            return PartialView("SellingTickets", context.GetAllUserTickets(userId, TicketStatusEnum.TicketStatus.Sold));
+            return PartialView("SellingTickets", context.GetAllUserTickets(userId, TicketStatus.Sold));
         }
 
     }

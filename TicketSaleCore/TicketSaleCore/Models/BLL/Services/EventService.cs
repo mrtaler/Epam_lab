@@ -33,9 +33,14 @@ namespace TicketSaleCore.Models.BLL.Services
             return (
                 Context.Events
                 .Include(p => p.Tickets)
-                .ThenInclude(e => e.Order)
+                    .ThenInclude(e => e.Order)
+                .Include(p => p.Tickets)
+                    .ThenInclude(e => e.Order)
+                        .ThenInclude(p => p.Status)
+                .Include(p => p.Tickets)
+                    .ThenInclude(p => p.Seller)
                 .Include(p => p.Venue)
-                .ThenInclude(c => c.City)
+                    .ThenInclude(c => c.City)
                 .OrderBy(t => t.Date)
                 );
         }
@@ -95,10 +100,10 @@ namespace TicketSaleCore.Models.BLL.Services
         {
             if (IsExists(entity.Id))
             {
-               // var updateEentitty = Get(entity.Id);
+                // var updateEentitty = Get(entity.Id);
 
-              //  updateEentitty = entity;
-                Context.Events.Update(entity).State= EntityState.Modified;
+                //  updateEentitty = entity;
+                Context.Events.Update(entity).State = EntityState.Modified;
                 //  Context.Context.Entry(entity).State = EntityState.Modified;
                 //  updateEentitty.Name = entity.Name;
                 Context.SaveChanges();

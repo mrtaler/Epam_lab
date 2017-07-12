@@ -14,15 +14,35 @@ namespace TicketSaleCore.Features.Home
     public class HomeController : Controller
     {
         private readonly IEventService eventService;
+        private IOrdersService ordersService;
         public HomeController(
-            IEventService eventService
+            IEventService eventService, IOrdersService ordersService
 
             )
         {
+            this.ordersService = ordersService;
             this.eventService = eventService;
         }
         public async Task<IActionResult> Index()
         {
+            var tic = eventService.GetAll().First().Tickets.ToList();
+            tic.AddRange(eventService.GetAll().Last().Tickets);
+
+            var sing= ordersService.Get("User1 Order #1");
+
+            if (sing!=null)
+            {
+                sing.TrackNo = "new test";
+
+                var up = ordersService.NewOrder(tic);
+
+                //var upRes = ordersService.Update(sing);
+
+                //var resDel = ordersService.Delete(sing);
+            }
+
+
+
             var events = eventService.GetAllEventWithTickets();
             return View(events);
         }
