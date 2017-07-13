@@ -1,3 +1,4 @@
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -18,9 +19,10 @@ namespace TicketSaleCore.Features.Orders
         // GET: Orders
         public async Task<IActionResult> Index(string id)
         {
-            return View(context.GetUserOrders(id));
+            var qq = context.GetUserOrders(id).Where(p=>p.OrderTickets.Count>0);
+            return View(qq);
         }
-        // GET: Orders/Details/5
+        // GET: Ordrs/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)

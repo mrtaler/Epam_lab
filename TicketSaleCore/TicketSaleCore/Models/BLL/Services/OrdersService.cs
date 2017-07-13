@@ -1,161 +1,269 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
-using TicketSaleCore.Models.BLL.Infrastructure;
-using TicketSaleCore.Models.BLL.Interfaces;
-using TicketSaleCore.Models.DAL.IRepository;
-using TicketSaleCore.Models.Entities;
-
-namespace TicketSaleCore.Models.BLL.Services
+﻿namespace TicketSaleCore.Models.BLL.Services
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+
+    using Microsoft.EntityFrameworkCore;
+
+    using Infrastructure;
+    using Interfaces;
+    using DAL.IRepository;
+    using Entities;
+
+    /// <summary>
+    /// The orders service.
+    /// </summary>
     public class OrdersService : IOrdersService
     {
-        private IUnitOfWork Context
+        /// <summary>
+        /// Gets the context.
+        /// </summary>
+        private  IUnitOfWork context;
+
+        private  IOrderStatusService orderStatusService;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="OrdersService"/> class.
+        /// </summary>
+        /// <param name="context">
+        /// The context.
+        /// </param>
+        public OrdersService(IUnitOfWork context,IOrderStatusService orderStatusService)
         {
-            get;
-        }
-        public OrdersService(IUnitOfWork context)
-        {
-            this.Context = context;
+            this.orderStatusService = orderStatusService;
+            this.context = context;
         }
 
+        /// <summary>
+        /// The dispose.
+        /// </summary>
         public void Dispose()
         {
-            Context.Dispose();
+            context.Dispose();
         }
 
-
+        /// <summary>
+        /// The get Order by unique identifier
+        /// </summary>
+        /// <param name="id">
+        /// The id.
+        /// </param>
+        /// <returns>
+        /// The <see cref="Order"/>.
+        /// </returns>
         public Order Get(int? id)
         {
-            return Context.Orders
+            return context.Orders
                 .Include(o => o.Buyer)
                 .SingleOrDefault(m => m.Id == id);
         }
 
+        /// <summary>
+        /// The get all Orders id DB
+        /// </summary>
+        /// <returns>
+        /// The <see cref="IEnumerable"/>.
+        /// </returns>
         public IEnumerable<Order> GetAll()
         {
-            return Context.Orders.Include(o => o.Buyer)
-                //  
+            return context.Orders.Include(o => o.Buyer)
                 .Include(st => st.Status)
                 .Include(t => t.OrderTickets).ThenInclude(z => z.Event)
                 .Include(t => t.OrderTickets).ThenInclude(z => z.Seller);
         }
+
+        /// <summary>
+        /// The get user orders by buyer id
+        /// </summary>
+        /// <param name="id">
+        /// The id.
+        /// </param>
+        /// <returns>
+        /// The Order <see cref="IEnumerable"/>.
+        /// </returns>
         public IEnumerable<Order> GetUserOrders(string id)
         {
-            return this.GetAll().Where(s => s.Buyer.Id.Equals(id));
+
+            return context.Orders.Include(o => o.Buyer)
+                .Include(st => st.Status)
+                .Include(t => t.OrderTickets).ThenInclude(z => z.Event)
+                .Include(t => t.OrderTickets).ThenInclude(z => z.Seller)
+                .Where(s => s.Buyer.Id.Equals(id));
         }
 
-
-
-
+        /// <summary>
+        /// The delete.
+        /// </summary>
+        /// <param name="entity">
+        /// The entity.
+        /// </param>
+        /// <returns>
+        /// The <see cref="bool"/>.
+        /// </returns>
+        /// <exception cref="BllValidationException">
+        /// </exception>
         public bool Delete(Order entity)
         {
             if (IsExists(entity.Id))
             {
-                //if (entity.OrderTickets.Count != 0)
-                //{
-                //    throw new BllValidationException($"This Order {entity.TrackNo} cannot delete" +
-                //                                     $" form DB because need cascade delete", "Need cascade");
-                //}
-                //else
-                //{
-                //  context.Entry(item).State = EntityState.Deleted
-                Context.Orders.Remove(entity).State = EntityState.Deleted;
-                //   Remove(entity);
-                return Convert.ToBoolean(Context.SaveChanges());
-                //}
+                // if (entity.OrderTickets.Count != 0)
+                // {
+                // throw new BllValidationException($"This Order {entity.TrackNo} cannot delete" +
+                // $" form DB because need cascade delete", "Need cascade");
+                // }
+                // else
+                // {
+                // context.Entry(item).State = EntityState.Deleted
+                context.Orders.Remove(entity).State = EntityState.Deleted;
+                return Convert.ToBoolean(context.SaveChanges());
             }
             else
             {
-                throw new BllValidationException($"This Venue {entity.TrackNo} cannot delete form DB because is not exist", "");
+                throw new BllValidationException($"This Venue {entity.TrackNo} cannot delete form DB because is not exist", string.Empty);
             }
         }
+
+        /// <summary>
+        /// The update.
+        /// </summary>
+        /// <param name="entity">
+        /// The entity.
+        /// </param>
+        /// <returns>
+        /// The <see cref="Order"/>.
+        /// </returns>
+        /// <exception cref="BllValidationException">
+        /// </exception>
         public Order Update(Order entity)
         {
             if (IsExists(entity.Id))
             {
-                // var updateEentitty = Get(entity.Id);
+                // var updateEntity = Get(entity.Id);
 
-                //  updateEentitty = entity;
-                Context.Orders.Update(entity).State = EntityState.Modified;
+                //  updateEntity = entity;
+                context.Orders.Update(entity).State = EntityState.Modified;
+
                 //  Context.Context.Entry(entity).State = EntityState.Modified;
                 //  updateEentitty.Name = entity.Name;
-                Context.SaveChanges();
+                context.SaveChanges();
             }
             else
             {
-                throw new BllValidationException($" cannot Update" +
-                                                 $" in DB because is not exist", "");
+                throw new BllValidationException($" cannot Update" + $" in DB because is not exist", string.Empty);
             }
             return entity;
         }
 
-
-
+        /// <summary>
+        /// The add.
+        /// </summary>
+        /// <param name="entity">
+        /// The entity.
+        /// </param>
+        /// <returns>
+        /// The <see cref="Order"/>.
+        /// </returns>
+        /// <exception cref="NotImplementedException">
+        /// </exception>
         public Order Add(Order entity)
+        {
+            if (!IsExists(entity.TrackNo))
+            {
+                context.Orders.Add(entity).State=EntityState.Added;
+                context.SaveChanges();
+            }
+            else
+            {
+                //throw new BllValidationException($"This City {entity.Name} is alredy exist", "alredy exist");
+            }
+            return entity;
+        }
+
+        public Order NewOrderWithTicket(IEnumerable<Ticket> orderingTickets)
         {
             throw new NotImplementedException();
         }
 
-        public Order NewOrder(IEnumerable<Ticket> orderingTickets)
+        public IEnumerable<Order> NewOrderWithTickets(IEnumerable<Ticket> orderingTickets)
         {
-            var newOrder = new Order();
+            List<Order> newOrders = new List<Order>(); // new order
 
+            // dictionary for Seller and his tickets
             var ticketBySeller = new Dictionary<AppUser, List<Ticket>>();
-            var sellers = orderingTickets.Select(p => p.Seller).GroupBy(p => p).ToList();
-            var byer = sellers.First();
-            var sel = sellers.Remove(byer);
+
+            // get orderingTickets as List<Ticket>
+            var orderingTicketsEnumerable =
+                orderingTickets as IList<Ticket>
+                ?? orderingTickets.ToList();
+
+            // find all uniqe seller in Ticket list
+            var sellers = orderingTicketsEnumerable.Select(p => p.Seller).Distinct().ToList();
+            // GroupBy(p => p).ToList();
+
+            var buyer = sellers.First(); // Test buyer
+
+            var sel = sellers.Remove(buyer);
+
+            // make seller ticket dictionary group by Seller 
             foreach (var seller in sellers)
             {
-                ticketBySeller.Add(seller.Key, new List<Ticket>());
+                ticketBySeller.Add(seller, new List<Ticket>());
             }
 
-            //ticketBySeller.Add("user1",new List<Ticket>());
-            //ticketBySeller.Add("user2", new List<Ticket>());
-            //ticketBySeller.Add("user3", new List<Ticket>());
-
-            foreach (var ticket in orderingTickets)
+            foreach (var ticket in orderingTicketsEnumerable)
             {
+                // find ticket seller
                 var sellerT = ticket.Seller;
-                if (ticket.Seller != byer)
+
+                //check current buyer cannnot sell and buy himself tickets
+                if (!Equals(ticket.Seller, buyer))
                 {
+                    //check selling ticket
                     if (ticket.Order == null)
                     {
-                        var sellerOr = ticketBySeller[sellerT];
-                        sellerOr.Add(ticket);
+                        ticketBySeller[sellerT].Add(ticket); // add current ticket to equal seller
                     }
                     else
                     {
-                        var ss = ticket.Order.Status.StatusName;
-                        if (ticket.Order.Status.StatusName != (nameof(TicketStatus.Sold)))
+                        // ticket cannot be a sold
+                        if (ticket.Order.Status.StatusName != ("Confirmed"/*nameof(TicketStatus.Sold)*/))
                         {
-                            var sellerOr = ticketBySeller[sellerT];
-                            sellerOr.Add(ticket);
+                            ticketBySeller[sellerT].Add(ticket);
                         }
                     }
                 }
             }
+            foreach (var ti in ticketBySeller)
+            {
+                var order = new Order
+                {
+                    Buyer = buyer,
+                    Status = orderStatusService.Get("Waiting for conformation"/*nameof(TicketStatus.WaitingConfomition)*/),
+                    OrderTickets = ti.Value,
+                    TrackNo = $"Buyer :{buyer.FirstName}, " +
+                              $"Seller:{ti.Key.FirstName}"
+                };
 
-            return newOrder;
+                this.Add(order);
+                newOrders.Add(order);   
+            }
+            return newOrders;
         }
-
-
 
         public bool IsExists(int id)
         {
-            return Context.Orders.Any(e => e.Id == id);
+            return context.Orders.Any(e => e.Id == id);
         }
         public Order Get(string name)
         {
-            return Context.Orders
+            return context.Orders
                 .Include(o => o.Buyer)
                 .SingleOrDefault(m => m.TrackNo == name);
         }
         public bool IsExists(string name)
         {
-            return Context.Orders.Any(e => e.TrackNo == name);
+            return context.Orders.Any(e => e.TrackNo == name);
         }
     }
 }

@@ -6,8 +6,9 @@ namespace TicketSaleCore.Models.BLL.Interfaces
 {
     public interface IOrdersService : IBllService<Order>
     {
-        Order NewOrder(IEnumerable<Ticket> orderingTickets);
-       
+        IEnumerable<Order> NewOrderWithTickets(IEnumerable<Ticket> orderingTickets);
+        Order NewOrderWithTicket(IEnumerable<Ticket> orderingTickets);
+
         IEnumerable<Order> GetUserOrders(string id);
     }
 }
