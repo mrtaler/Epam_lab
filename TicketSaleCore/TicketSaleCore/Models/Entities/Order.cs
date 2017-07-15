@@ -9,6 +9,7 @@ namespace TicketSaleCore.Models.Entities
             OrderTickets=new List<Ticket>();
         }
 
+
         public int Id { get; set; }
 
         public virtual OrderStatus Status { get; set; }

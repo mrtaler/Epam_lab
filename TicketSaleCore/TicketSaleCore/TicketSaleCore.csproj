@@ -102,6 +102,9 @@
     <Content Update="Features\Events\Events\Views\Index.cshtml">
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </Content>
+    <Content Update="Features\Orders\OrderCart\Views\Index.cshtml">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Update="Resources\Features\Cities\Views\Index.be.resx">
